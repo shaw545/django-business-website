@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Portfolio - Yusuf Business Solutions{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Portfolio</h2>
+        <p class="muted-text">Selected project work demonstrating web development and analytics capability.</p>
+    </div>
+
+    <div class="card shadow-soft mb-4">
+        <div class="card-body p-5">
+            <span class="portfolio-badge">Django • Python • Render • GitHub</span>
+            <h3>Live Business Website with Lead Capture</h3>
+            <p class="muted-text">
+                Designed and deployed a professional business website with premium UI, multi-page routing,
+                lead capture form, admin-managed submissions, GitHub integration, Render hosting, and custom domain setup.
+            </p>
+            <ul>
+                <li>Built with Django views, templates, and models</li>
+                <li>Stored incoming contact leads in a database</li>
+                <li>Deployed live with Render and connected a custom domain</li>
+                <li>Structured as a recruiter-ready portfolio project</li>
+            </ul>
+            <a href="https://www.yusufbusinesssolutions.com" class="btn btn-primary" target="_blank">Visit Live Website</a>
+            <a href="https://github.com/shaw545/django-business-website" class="btn btn-outline-primary ms-2" target="_blank">View GitHub</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,9 +6,10 @@
 <div class="container section-padding">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-sm">
+            <div class="card shadow-soft">
                 <div class="card-body p-5">
-                    <h2 class="mb-4">Contact Us</h2>
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="muted-text">Tell us what support you need and we’ll get back to you.</p>
 
                     {% if success %}
                         <div class="alert alert-success">
@@ -30,6 +31,21 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">Company</label>
+                            <input type="text" name="company" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Service Interest</label>
+                            <select name="service_interest" class="form-select" required>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Accounting Support">Accounting Support</option>
+                                <option value="Data Analytics">Data Analytics</option>
+                                <option value="Business Solutions">Business Solutions</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Your Message</label>
                             <textarea name="message" class="form-control" rows="6" required></textarea>
                         </div>
@@ -40,7 +56,6 @@
                     <hr class="my-4">
 
                     <p><strong>Email:</strong> shawyusuf@gmail.com</p>
-                    <p><strong>Phone:</strong> (301) 379-0483</p>
                     <p><strong>Location:</strong> Riverdale, MD, USA</p>
                 </div>
             </div>
