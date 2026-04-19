@@ -1,13 +1,47 @@
 {% extends 'base.html' %}
 
-{% block title %}Services{% endblock %}
+{% block title %}Services - Yusuf Business Solutions{% endblock %}
 
 {% block content %}
-<h2>Our Services</h2>
+<div class="container section-padding">
+    <div class="text-center mb-5">
+        <h2>Our Services</h2>
+        <p class="text-muted">We offer practical support across finance, analytics, and business operations.</p>
+    </div>
 
-<ul>
-    <li>Accounting Support</li>
-    <li>Data Analytics</li>
-    <li>Business Reporting</li>
-</ul>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Accounting Support</h5>
+                    <p class="card-text">
+                        Bookkeeping, reconciliations, accounts payable/receivable tracking, and financial reporting.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Data Analytics</h5>
+                    <p class="card-text">
+                        Python-based analysis, dashboards, KPI reporting, and business intelligence solutions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Business Solutions</h5>
+                    <p class="card-text">
+                        Process improvement, reporting automation, and decision-support services for growing organizations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

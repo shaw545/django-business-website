@@ -1,14 +1,59 @@
 
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home - Yusuf Business Solutions{% endblock %}
 
 {% block content %}
-<h2>Finance, Accounting & Data Analytics Solutions</h2>
-<p>
-Helping businesses improve reporting, streamline financial processes,
-and make smarter decisions.
-</p>
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Finance, Accounting & Data Analytics Solutions</h1>
+        <p class="lead mt-3">
+            Helping businesses improve reporting, streamline financial processes,
+            and make smarter decisions through accounting expertise and data insights.
+        </p>
+        <a href="/services/" class="btn btn-light btn-lg mt-3">Explore Services</a>
+    </div>
+</div>
 
-<a href="/services/"><button class="btn">Explore Services</button></a>
+<div class="container section-padding">
+    <div class="text-center mb-5">
+        <h2>Our Services</h2>
+        <p class="text-muted">Professional solutions designed to support business growth and decision-making.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Accounting Support</h5>
+                    <p class="card-text">
+                        Bookkeeping, reconciliations, AP/AR tracking, and financial reporting support.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Data Analytics</h5>
+                    <p class="card-text">
+                        Dashboard development, Python analytics, and business intelligence insights.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Business Solutions</h5>
+                    <p class="card-text">
+                        Process improvement, reporting optimization, and decision support solutions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

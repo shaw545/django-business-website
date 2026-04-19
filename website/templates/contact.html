@@ -1,19 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}Contact - Yusuf Business Solutions{% endblock %}
 
 {% block content %}
-<h2>Contact Us</h2>
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h2 class="mb-4">Contact Us</h2>
 
-{% if success %}
-<p style="color:green;">Message sent successfully!</p>
-{% endif %}
+                    {% if success %}
+                        <div class="alert alert-success">
+                            Your message has been sent successfully.
+                        </div>
+                    {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="name" placeholder="Name" required><br><br>
-    <input type="email" name="email" placeholder="Email" required><br><br>
-    <textarea name="message" placeholder="Message" required></textarea><br><br>
-    <button class="btn" type="submit">Send</button>
-</form>
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Your Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Your Message</label>
+                            <textarea name="message" class="form-control" rows="6" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p><strong>Email:</strong> shawyusuf@gmail.com</p>
+                    <p><strong>Phone:</strong> (301) 379-0483</p>
+                    <p><strong>Location:</strong> Riverdale, MD, USA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
