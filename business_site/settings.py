@@ -4,16 +4,18 @@ from pathlib import Path
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key secret!
-SECRET_KEY = 'django-insecure-1234567890'
+# SECURITY
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this-key')
 
-# Turn OFF debug in production
-DEBUG = True
+DEBUG = False
 
-# Allow all hosts (for Render)
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'django-business-website.onrender.com',
+    'www.yusufbusinesssolutions.com',
+    'yusufbusinesssolutions.com'
+]
 
-# Installed apps
+# APPLICATIONS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,9 +26,10 @@ INSTALLED_APPS = [
     'website',
 ]
 
-# Middleware
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -35,10 +38,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLs
+# URL CONFIG
 ROOT_URLCONF = 'business_site.urls'
 
-# Templates
+# TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -57,7 +60,7 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'business_site.wsgi.application'
 
-# Database (SQLite for now)
+# DATABASE (SQLite is fine for now)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -65,10 +68,10 @@ DATABASES = {
     }
 }
 
-# Password validation
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = []
 
-# Language & Time
+# INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -76,7 +79,14 @@ USE_TZ = True
 
 # STATIC FILES (VERY IMPORTANT FOR RENDER)
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Default primary key
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# DEFAULT PRIMARY KEY
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
