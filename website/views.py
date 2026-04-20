@@ -1,6 +1,7 @@
-from django.core.mail import send_mail
+
 from django.shortcuts import render
-from .models import ContactMessage
+from django.core.mail import send_mail
+from .models import ContactMessage, Product
 
 def home(request):
     return render(request, 'home.html')
@@ -14,6 +15,10 @@ def services(request):
 def portfolio(request):
     return render(request, 'portfolio.html')
 
+def products(request):
+    products = Product.objects.filter(available=True)
+    return render(request, 'products.html', {'products': products})
+
 def contact(request):
     success = False
 
@@ -24,7 +29,6 @@ def contact(request):
         service_interest = request.POST.get('service_interest')
         message = request.POST.get('message')
 
-        # Save to database
         ContactMessage.objects.create(
             name=name,
             email=email,
@@ -33,7 +37,6 @@ def contact(request):
             message=message
         )
 
-        # Send email notification
         send_mail(
             subject=f'New Contact Form Submission from {name}',
             message=f"""
