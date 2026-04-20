@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
 from .models import ContactMessage, Product
 
@@ -18,6 +18,10 @@ def portfolio(request):
 def products(request):
     products = Product.objects.filter(available=True)
     return render(request, 'products.html', {'products': products})
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id, available=True)
+    return render(request, 'product_detail.html', {'product': product})
 
 def contact(request):
     success = False

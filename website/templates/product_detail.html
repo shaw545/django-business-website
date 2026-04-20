@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Yusuf Business Solutions{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="row g-5 align-items-start">
+
+        <div class="col-lg-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" 
+                 alt="{{ product.name }}" 
+                 class="img-fluid rounded shadow-soft">
+            {% else %}
+            <div class="card shadow-soft p-5 text-center">
+                <p class="muted-text mb-0">No image available</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-6">
+            <span class="portfolio-badge">Product Detail</span>
+            <h2 class="section-title">{{ product.name }}</h2>
+            <h4 class="text-primary mb-3">${{ product.price }}</h4>
+            <p class="muted-text">{{ product.description }}</p>
+
+            <div class="mt-4">
+                <a href="/contact/" class="btn btn-primary me-2">Order Now</a>
+                <a href="/products/" class="btn btn-outline-secondary">Back to Products</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
