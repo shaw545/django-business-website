@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render
 from .models import ContactMessage
 
@@ -23,6 +24,7 @@ def contact(request):
         service_interest = request.POST.get('service_interest')
         message = request.POST.get('message')
 
+        # Save to database
         ContactMessage.objects.create(
             name=name,
             email=email,
@@ -30,6 +32,24 @@ def contact(request):
             service_interest=service_interest,
             message=message
         )
+
+        # Send email notification
+        send_mail(
+            subject=f'New Contact Form Submission from {name}',
+            message=f"""
+Name: {name}
+Email: {email}
+Company: {company}
+Service Interest: {service_interest}
+
+Message:
+{message}
+""",
+            from_email=None,
+            recipient_list=['info@yusufbusinesssolutions.com'],
+            fail_silently=False,
+        )
+
         success = True
 
     return render(request, 'contact.html', {'success': success})
