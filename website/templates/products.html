@@ -6,35 +6,23 @@
 <div class="container section-padding">
     <div class="text-center mb-5">
         <h2 class="section-title">Our Products</h2>
-        <p class="muted-text">Browse our available products and click any item for full details.</p>
+        <p class="muted-text">Browse products and choose your preferred currency.</p>
     </div>
 
     <div class="row g-4">
         {% for product in products %}
         <div class="col-md-4">
             <div class="card shadow-soft h-100">
-
-                <!-- ✅ IMAGE SECTION (FIXED FOR UPLOADED IMAGES) -->
                 {% if product.image %}
-                <img src="{{ product.image.url }}" 
-                     class="card-img-top" 
-                     alt="{{ product.name }}" 
-                     style="height: 250px; object-fit: cover; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                {% else %}
-                <div class="p-5 text-center">
-                    <p class="muted-text">No image available</p>
-                </div>
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
                 {% endif %}
-
                 <div class="card-body p-4">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="text-primary fw-bold">${{ product.price }}</p>
+                    <h5>{{ product.name }}</h5>
+                    <p class="text-primary fw-bold">USD ${{ product.price_usd }}</p>
+                    <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
                     <p class="muted-text">{{ product.description|truncatewords:20 }}</p>
-
-                    <a href="{% url 'product_detail' product.id %}" 
-                       class="btn btn-outline-primary">
-                        View Details
-                    </a>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary me-2">View Details</a>
+                    <a href="{% url 'checkout' product.id %}" class="btn btn-primary">Checkout</a>
                 </div>
             </div>
         </div>

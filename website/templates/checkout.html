@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - Yusuf Business Solutions{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-soft">
+                <div class="card-body p-5">
+                    <h2 class="section-title">Checkout</h2>
+
+                    {% if success %}
+                    <div class="alert alert-success">
+                        Your order has been submitted successfully.
+                    </div>
+                    {% endif %}
+
+                    <h4>{{ product.name }}</h4>
+                    <p class="text-primary fw-bold">USD ${{ product.price_usd }}</p>
+                    <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="customer_name" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" name="quantity" class="form-control" value="1" min="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Currency</label>
+                            <select name="currency" class="form-select" required>
+                                <option value="USD">US Dollar (USD)</option>
+                                <option value="SLE">Sierra Leone Leone (SLE)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
