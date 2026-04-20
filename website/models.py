@@ -42,6 +42,7 @@ class Order(models.Model):
     customer_name = models.CharField(max_length=150)
     email = models.EmailField()
     phone = models.CharField(max_length=50)
+    address = models.TextField()
     quantity = models.PositiveIntegerField(default=1)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
