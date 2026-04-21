@@ -151,3 +151,27 @@
     </div>
 </div>
 {% endblock %}
+<h3>Available Balance: {{ available_balance }}</h3>
+
+<form method="POST" action="{% url 'request_withdrawal' %}">
+    {% csrf_token %}
+    <input type="number" name="amount" step="0.01" placeholder="Enter amount" required>
+    <button type="submit" class="btn btn-primary">Request Withdrawal</button>
+</form>
+<h3 class="mt-4">Payout Requests</h3>
+
+<table class="table">
+    <tr>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Date</th>
+    </tr>
+
+    {% for payout in payouts %}
+    <tr>
+        <td>{{ payout.amount }}</td>
+        <td>{{ payout.status }}</td>
+        <td>{{ payout.request_date }}</td>
+    </tr>
+    {% endfor %}
+</table>

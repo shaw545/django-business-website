@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactMessage, Product, Order
+from .models import ContactMessage, Product, Order, PayoutRequest
 
 
 @admin.register(ContactMessage)
@@ -31,3 +31,6 @@ class OrderAdmin(admin.ModelAdmin):
     )
     search_fields = ('customer_name', 'email', 'phone', 'address')
     list_filter = ('currency', 'created_at')
+@admin.register(PayoutRequest)
+class PayoutAdmin(admin.ModelAdmin):
+    list_display = ('seller', 'amount', 'status', 'request_date')
