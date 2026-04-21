@@ -4,8 +4,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Sum
-from .models import ContactMessage, Product, Order
+from .models import ContactMessage, Category, Product, Order, PayoutRequest
 from .forms import SellerRegistrationForm, ProductForm
 
 
@@ -26,8 +27,25 @@ def portfolio(request):
 
 
 def products(request):
+    query = request.GET.get('q')
+    category_id = request.GET.get('category')
+
     products = Product.objects.filter(available=True).order_by('-created_at')
-    return render(request, 'products.html', {'products': products})
+
+    if query:
+        products = products.filter(name__icontains=query)
+
+    if category_id:
+        products = products.filter(category_id=category_id)
+
+    categories = Category.objects.all()
+
+    return render(request, 'products.html', {
+        'products': products,
+        'categories': categories,
+        'query': query or '',
+        'selected_category': category_id or '',
+    })
 
 
 def product_detail(request, product_id):
@@ -159,7 +177,13 @@ def seller_dashboard(request):
     total_products = seller_products.count()
     total_orders = seller_orders.count()
     seller_total_earnings = seller_orders.aggregate(total=Sum('seller_earning'))['total'] or Decimal('0.00')
-    platform_total_fees = seller_orders.aggregate(total=Sum('platform_fee_amount'))['total'] or Decimal('0.00')
+
+    seller_payouts = PayoutRequest.objects.filter(seller=request.user).order_by('-request_date')
+    total_requested = seller_payouts.exclude(status='Rejected').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+
+    available_balance = seller_total_earnings - total_requested
+    if available_balance < 0:
+        available_balance = Decimal('0.00')
 
     return render(request, 'seller_dashboard.html', {
         'seller_products': seller_products,
@@ -167,7 +191,8 @@ def seller_dashboard(request):
         'total_products': total_products,
         'total_orders': total_orders,
         'seller_total_earnings': seller_total_earnings,
-        'platform_total_fees': platform_total_fees,
+        'available_balance': available_balance,
+        'seller_payouts': seller_payouts,
     })
 
 
@@ -184,6 +209,40 @@ def add_product(request):
         form = ProductForm()
 
     return render(request, 'add_product.html', {'form': form})
+
+
+@login_required
+def request_withdrawal(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+
+        try:
+            amount = Decimal(amount)
+        except:
+            messages.error(request, 'Enter a valid amount.')
+            return redirect('seller_dashboard')
+
+        seller_orders = Order.objects.filter(product__seller=request.user)
+        seller_total_earnings = seller_orders.aggregate(total=Sum('seller_earning'))['total'] or Decimal('0.00')
+
+        seller_payouts = PayoutRequest.objects.filter(seller=request.user)
+        total_requested = seller_payouts.exclude(status='Rejected').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+
+        available_balance = seller_total_earnings - total_requested
+
+        if amount <= 0:
+            messages.error(request, 'Amount must be greater than zero.')
+        elif amount > available_balance:
+            messages.error(request, 'Insufficient available balance.')
+        else:
+            PayoutRequest.objects.create(
+                seller=request.user,
+                amount=amount,
+                status='Pending'
+            )
+            messages.success(request, 'Withdrawal request submitted successfully.')
+
+    return redirect('seller_dashboard')
 
 
 def seller_logout(request):

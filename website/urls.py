@@ -17,4 +17,5 @@ urlpatterns = [
     path('logout/', views.seller_logout, name='logout'),
     path('seller/dashboard/', views.seller_dashboard, name='seller_dashboard'),
     path('seller/add-product/', views.add_product, name='add_product'),
+    path('seller/withdraw/', views.request_withdrawal, name='request_withdrawal'),
 ]

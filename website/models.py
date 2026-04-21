@@ -25,11 +25,24 @@ class ContactMessage(models.Model):
         return f"{self.name} - {self.service_interest}"
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     seller = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='products',
+        null=True,
+        blank=True
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True
     )
