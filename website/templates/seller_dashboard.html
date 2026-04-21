@@ -17,6 +17,12 @@
         </div>
     </div>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <div class="row g-4 mb-5">
         <div class="col-md-3">
             <div class="card shadow-soft h-100">
@@ -41,9 +47,9 @@
         <div class="col-md-3">
             <div class="card shadow-soft h-100">
                 <div class="card-body p-4 text-center">
-                    <h5 class="text-dark">Your Earnings</h5>
+                    <h5 class="text-dark">Total Earnings</h5>
                     <h2>{{ seller_total_earnings }}</h2>
-                    <p class="muted-text mb-0">After platform fee</p>
+                    <p class="muted-text mb-0">Before payout deduction</p>
                 </div>
             </div>
         </div>
@@ -51,9 +57,9 @@
         <div class="col-md-3">
             <div class="card shadow-soft h-100">
                 <div class="card-body p-4 text-center">
-                    <h5 class="text-danger">Platform Fee</h5>
-                    <h2>{{ platform_total_fees }}</h2>
-                    <p class="muted-text mb-0">Commission on your sales</p>
+                    <h5 class="text-danger">Available Balance</h5>
+                    <h2>{{ available_balance }}</h2>
+                    <p class="muted-text mb-0">Available for withdrawal</p>
                 </div>
             </div>
         </div>
@@ -61,10 +67,25 @@
 
     <div class="card shadow-soft mb-5">
         <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0">Your Products</h4>
-                <a href="{% url 'add_product' %}" class="btn btn-sm btn-primary">Add New</a>
-            </div>
+            <h4 class="mb-3">Request Withdrawal</h4>
+            <form method="POST" action="{% url 'request_withdrawal' %}">
+                {% csrf_token %}
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Amount</label>
+                        <input type="number" step="0.01" name="amount" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Request Withdrawal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-soft mb-5">
+        <div class="card-body p-4">
+            <h4 class="mb-4">Your Products</h4>
 
             {% if seller_products %}
                 <div class="row g-4">
@@ -81,6 +102,13 @@
 
                             <div class="card-body">
                                 <h5>{{ product.name }}</h5>
+
+                                {% if product.category %}
+                                    <p class="small text-muted mb-2">Category: {{ product.category.name }}</p>
+                                {% else %}
+                                    <p class="small text-muted mb-2">Category: Not assigned</p>
+                                {% endif %}
+
                                 <p class="text-primary fw-bold mb-1">USD ${{ product.price_usd }}</p>
                                 <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
                                 <p class="muted-text">{{ product.description|truncatewords:18 }}</p>
@@ -151,27 +179,3 @@
     </div>
 </div>
 {% endblock %}
-<h3>Available Balance: {{ available_balance }}</h3>
-
-<form method="POST" action="{% url 'request_withdrawal' %}">
-    {% csrf_token %}
-    <input type="number" name="amount" step="0.01" placeholder="Enter amount" required>
-    <button type="submit" class="btn btn-primary">Request Withdrawal</button>
-</form>
-<h3 class="mt-4">Payout Requests</h3>
-
-<table class="table">
-    <tr>
-        <th>Amount</th>
-        <th>Status</th>
-        <th>Date</th>
-    </tr>
-
-    {% for payout in payouts %}
-    <tr>
-        <td>{{ payout.amount }}</td>
-        <td>{{ payout.status }}</td>
-        <td>{{ payout.request_date }}</td>
-    </tr>
-    {% endfor %}
-</table>
