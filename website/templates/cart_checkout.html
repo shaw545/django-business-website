@@ -14,7 +14,12 @@
                     <div class="alert alert-success">
                         Your order has been submitted successfully.
                     </div>
-                    {% endif %}
+
+                    <div class="mt-4">
+                        <a href="{% url 'products' %}" class="btn btn-primary me-2">Continue Shopping</a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
+                    </div>
+                    {% else %}
 
                     {% if cart_items %}
                         <h5 class="mb-3">Order Summary</h5>
@@ -30,7 +35,6 @@
                         <h4 class="mb-4">Grand Total: {{ grand_total }}</h4>
                     {% endif %}
 
-                    {% if not success %}
                     <form method="POST">
                         {% csrf_token %}
 
@@ -56,28 +60,11 @@
 
                         <button type="submit" class="btn btn-primary">Create Order</button>
                     </form>
+
                     {% endif %}
-
-                    <hr class="my-4">
-
-                    <h5>PayPal Payment Setup</h5>
-                    <p class="muted-text">
-                        After your order is created, the next step is to connect your live PayPal client ID and server-side order capture.
-                    </p>
-
-                    <div id="paypal-button-container"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-{% if paypal_client_id %}
-<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
-<script>
-  if (window.paypal) {
-    paypal.Buttons().render('#paypal-button-container');
-  }
-</script>
-{% endif %}
 {% endblock %}
