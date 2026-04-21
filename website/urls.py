@@ -16,7 +16,6 @@ urlpatterns = [
     path('checkout/<int:product_id>/', views.checkout, name='checkout'),
     path('cart/checkout/', views.cart_checkout, name='cart_checkout'),
     path('contact/', views.contact, name='contact'),
-
     path('register/', views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', views.seller_logout, name='logout'),
