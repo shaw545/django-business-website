@@ -13,7 +13,11 @@ class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     company = models.CharField(max_length=150, blank=True)
-    service_interest = models.CharField(max_length=100, choices=SERVICE_CHOICES, default='General Inquiry')
+    service_interest = models.CharField(
+        max_length=100,
+        choices=SERVICE_CHOICES,
+        default='General Inquiry'
+    )
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -30,9 +34,9 @@ class Product(models.Model):
         blank=True
     )
     name = models.CharField(max_length=200)
-    price_usd = models.DecimalField(max_digits=10, decimal_places=2)
-    price_sle = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
+    price_sle = models.DecimalField(max_digits=10, decimal_places=2)
+    price_usd = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -54,13 +58,11 @@ class Order(models.Model):
     address = models.TextField()
     quantity = models.PositiveIntegerField(default=1)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
-
     unit_price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     platform_fee_percent = models.DecimalField(max_digits=5, decimal_places=2, default=10)
     platform_fee_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     seller_earning = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

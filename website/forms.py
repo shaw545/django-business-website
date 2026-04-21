@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Product
 
+
 class SellerRegistrationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,

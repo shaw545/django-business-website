@@ -26,7 +26,7 @@ def portfolio(request):
 
 
 def products(request):
-    products = Product.objects.filter(available=True)
+    products = Product.objects.filter(available=True).order_by('-created_at')
     return render(request, 'products.html', {'products': products})
 
 
@@ -91,12 +91,6 @@ Seller Earning: {seller_earning}
         )
 
         success = True
-
-        return render(request, 'checkout.html', {
-            'product': product,
-            'success': success,
-            'platform_fee_percent': platform_fee_percent,
-        })
 
     return render(request, 'checkout.html', {
         'product': product,
@@ -164,14 +158,8 @@ def seller_dashboard(request):
 
     total_products = seller_products.count()
     total_orders = seller_orders.count()
-
-    seller_total_earnings = seller_orders.aggregate(
-        total=Sum('seller_earning')
-    )['total'] or Decimal('0.00')
-
-    platform_total_fees = seller_orders.aggregate(
-        total=Sum('platform_fee_amount')
-    )['total'] or Decimal('0.00')
+    seller_total_earnings = seller_orders.aggregate(total=Sum('seller_earning'))['total'] or Decimal('0.00')
+    platform_total_fees = seller_orders.aggregate(total=Sum('platform_fee_amount'))['total'] or Decimal('0.00')
 
     return render(request, 'seller_dashboard.html', {
         'seller_products': seller_products,
