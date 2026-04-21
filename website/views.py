@@ -6,10 +6,48 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
-from .models import ContactMessage, Category, Product, CartItem, Order, PayoutRequest
+
+from .models import ContactMessage, Category, Product, Order, PayoutRequest
 from .forms import SellerRegistrationForm, ProductForm
 
-from .models import Product, Category
+
+def _get_cart(request):
+    return request.session.get('cart', [])
+
+
+def _save_cart(request, cart):
+    request.session['cart'] = cart
+    request.session.modified = True
+
+
+def _build_cart_rows(request):
+    cart = _get_cart(request)
+    cart_rows = []
+    grand_total = Decimal('0.00')
+
+    for item in cart:
+        product = Product.objects.filter(id=item['product_id'], available=True).first()
+        if not product:
+            continue
+
+        quantity = int(item.get('quantity', 1))
+        currency = item.get('currency', 'SLE')
+
+        unit_price = product.price_sle if currency == 'SLE' else product.price_usd
+        unit_price = Decimal(unit_price)
+        row_total = unit_price * quantity
+        grand_total += row_total
+
+        cart_rows.append({
+            'product': product,
+            'quantity': quantity,
+            'currency': currency,
+            'unit_price': unit_price,
+            'row_total': row_total,
+        })
+
+    return cart_rows, grand_total
+
 
 def home(request):
     products = Product.objects.filter(available=True)[:8]
@@ -19,6 +57,7 @@ def home(request):
         'products': products,
         'categories': categories
     })
+
 
 def about(request):
     return render(request, 'about.html')
@@ -59,79 +98,65 @@ def product_detail(request, product_id):
     return render(request, 'product_detail.html', {'product': product})
 
 
-@login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id, available=True)
-    currency = request.POST.get('currency', 'USD')
+    currency = request.POST.get('currency', 'SLE')
 
-    cart_item, created = CartItem.objects.get_or_create(
-        user=request.user,
-        product=product,
-        currency=currency,
-        defaults={'quantity': 1}
-    )
+    cart = _get_cart(request)
 
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
+    found = False
+    for item in cart:
+        if item['product_id'] == product.id and item['currency'] == currency:
+            item['quantity'] += 1
+            found = True
+            break
 
+    if not found:
+        cart.append({
+            'product_id': product.id,
+            'quantity': 1,
+            'currency': currency
+        })
+
+    _save_cart(request, cart)
     messages.success(request, 'Product added to cart.')
     return redirect('cart')
 
 
-@login_required
 def cart_view(request):
-    cart_items = CartItem.objects.filter(user=request.user).select_related('product')
-
-    cart_rows = []
-    grand_total = Decimal('0.00')
-
-    for item in cart_items:
-        unit_price = item.product.price_usd if item.currency == 'USD' else item.product.price_sle
-        unit_price = Decimal(unit_price)
-        row_total = unit_price * item.quantity
-        grand_total += row_total
-
-        cart_rows.append({
-            'id': item.id,
-            'product': item.product,
-            'quantity': item.quantity,
-            'currency': item.currency,
-            'unit_price': unit_price,
-            'row_total': row_total,
-        })
+    cart_items, grand_total = _build_cart_rows(request)
 
     return render(request, 'cart.html', {
-        'cart_items': cart_rows,
+        'cart_items': cart_items,
         'grand_total': grand_total,
-        'paypal_client_id': settings.PAYPAL_CLIENT_ID,
     })
 
 
-@login_required
-def update_cart_item(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, user=request.user)
+def update_cart_item(request, index):
+    cart = _get_cart(request)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 0 <= index < len(cart):
         quantity = int(request.POST.get('quantity', 1))
         if quantity <= 0:
-            item.delete()
+            cart.pop(index)
         else:
-            item.quantity = quantity
-            item.save()
+            cart[index]['quantity'] = quantity
+        _save_cart(request, cart)
 
     return redirect('cart')
 
 
-@login_required
-def remove_cart_item(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, user=request.user)
-    item.delete()
-    messages.info(request, 'Item removed from cart.')
+def remove_cart_item(request, index):
+    cart = _get_cart(request)
+
+    if 0 <= index < len(cart):
+        cart.pop(index)
+        _save_cart(request, cart)
+        messages.info(request, 'Item removed from cart.')
+
     return redirect('cart')
 
 
-@login_required
 def checkout(request, product_id):
     product = get_object_or_404(Product, id=product_id, available=True)
     success = False
@@ -143,9 +168,9 @@ def checkout(request, product_id):
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         quantity = int(request.POST.get('quantity', 1))
-        currency = request.POST.get('currency')
+        currency = request.POST.get('currency', 'SLE')
 
-        unit_price = product.price_usd if currency == 'USD' else product.price_sle
+        unit_price = product.price_sle if currency == 'SLE' else product.price_usd
         unit_price = Decimal(unit_price)
         total_amount = unit_price * Decimal(quantity)
         platform_fee_amount = (platform_fee_percent / Decimal('100')) * total_amount
@@ -197,9 +222,8 @@ Seller Earning: {seller_earning}
     })
 
 
-@login_required
 def cart_checkout(request):
-    cart_items = CartItem.objects.filter(user=request.user).select_related('product')
+    cart_items, grand_total = _build_cart_rows(request)
     success = False
     platform_fee_percent = Decimal(str(settings.PLATFORM_FEE_PERCENT))
 
@@ -210,20 +234,23 @@ def cart_checkout(request):
         address = request.POST.get('address')
 
         for item in cart_items:
-            unit_price = item.product.price_usd if item.currency == 'USD' else item.product.price_sle
-            unit_price = Decimal(unit_price)
-            total_amount = unit_price * item.quantity
+            product = item['product']
+            quantity = item['quantity']
+            currency = item['currency']
+            unit_price = item['unit_price']
+            total_amount = item['row_total']
+
             platform_fee_amount = (platform_fee_percent / Decimal('100')) * total_amount
             seller_earning = total_amount - platform_fee_amount
 
             Order.objects.create(
-                product=item.product,
+                product=product,
                 customer_name=customer_name,
                 email=email,
                 phone=phone,
                 address=address,
-                quantity=item.quantity,
-                currency=item.currency,
+                quantity=quantity,
+                currency=currency,
                 unit_price=unit_price,
                 total_amount=total_amount,
                 platform_fee_percent=platform_fee_percent,
@@ -232,36 +259,19 @@ def cart_checkout(request):
                 payment_status='Pending',
             )
 
-        cart_items.delete()
+        _save_cart(request, [])
         success = True
 
         return render(request, 'cart_checkout.html', {
             'success': success,
-            'paypal_client_id': settings.PAYPAL_CLIENT_ID,
-        })
-
-    cart_rows = []
-    grand_total = Decimal('0.00')
-
-    for item in cart_items:
-        unit_price = item.product.price_usd if item.currency == 'USD' else item.product.price_sle
-        unit_price = Decimal(unit_price)
-        row_total = unit_price * item.quantity
-        grand_total += row_total
-
-        cart_rows.append({
-            'product': item.product,
-            'quantity': item.quantity,
-            'currency': item.currency,
-            'unit_price': unit_price,
-            'row_total': row_total,
+            'cart_items': [],
+            'grand_total': Decimal('0.00'),
         })
 
     return render(request, 'cart_checkout.html', {
-        'cart_items': cart_rows,
+        'cart_items': cart_items,
         'grand_total': grand_total,
         'success': success,
-        'paypal_client_id': settings.PAYPAL_CLIENT_ID,
     })
 
 
@@ -324,9 +334,10 @@ def seller_dashboard(request):
 
     total_products = seller_products.count()
     total_orders = seller_orders.count()
-    paid_orders = seller_orders.filter(payment_status='Paid')
 
+    paid_orders = seller_orders.filter(payment_status='Paid')
     seller_total_earnings = paid_orders.aggregate(total=Sum('seller_earning'))['total'] or Decimal('0.00')
+
     seller_payouts = PayoutRequest.objects.filter(seller=request.user).order_by('-request_date')
     total_requested = seller_payouts.exclude(status='Rejected').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 

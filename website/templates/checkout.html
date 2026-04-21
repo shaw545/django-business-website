@@ -14,12 +14,16 @@
                     <div class="alert alert-success">
                         Your order has been submitted successfully.
                     </div>
-                    {% endif %}
+
+                    <div class="mt-4">
+                        <a href="{% url 'products' %}" class="btn btn-primary me-2">Continue Shopping</a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
+                    </div>
+                    {% else %}
 
                     <h4>{{ product.name }}</h4>
-                    <p class="text-primary fw-bold">USD ${{ product.price_usd }}</p>
-                    <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
-                    <p class="muted-text">Platform fee applied: {{ platform_fee_percent }}%</p>
+                    <p class="text-primary fw-bold">SLE {{ product.price_sle }}</p>
+                    <p class="text-success fw-bold">USD ${{ product.price_usd }}</p>
 
                     <form method="POST">
                         {% csrf_token %}
@@ -52,13 +56,17 @@
                         <div class="mb-3">
                             <label class="form-label">Currency</label>
                             <select name="currency" class="form-select" required>
-                                <option value="USD">US Dollar (USD)</option>
                                 <option value="SLE">Sierra Leone Leone (SLE)</option>
+                                <option value="USD">US Dollar (USD)</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Place Order</button>
+                        <button type="submit" class="btn btn-primary me-2">Place Order</button>
+                        <a href="{% url 'products' %}" class="btn btn-outline-secondary me-2">Continue Shopping</a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-dark">Back Home</a>
                     </form>
+
+                    {% endif %}
                 </div>
             </div>
         </div>

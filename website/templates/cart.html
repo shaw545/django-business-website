@@ -32,7 +32,7 @@
                         <td>{{ item.currency }}</td>
                         <td>{{ item.unit_price }}</td>
                         <td>
-                            <form method="POST" action="{% url 'update_cart_item' item.id %}" class="d-flex">
+                            <form method="POST" action="{% url 'update_cart_item' forloop.counter0 %}" class="d-flex">
                                 {% csrf_token %}
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control me-2" style="width: 90px;">
                                 <button class="btn btn-sm btn-outline-primary">Update</button>
@@ -40,7 +40,7 @@
                         </td>
                         <td>{{ item.row_total }}</td>
                         <td>
-                            <a href="{% url 'remove_cart_item' item.id %}" class="btn btn-sm btn-outline-danger">Remove</a>
+                            <a href="{% url 'remove_cart_item' forloop.counter0 %}" class="btn btn-sm btn-outline-danger">Remove</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -50,9 +50,15 @@
 
         <h4 class="mt-4">Grand Total: {{ grand_total }}</h4>
 
-        <a href="{% url 'cart_checkout' %}" class="btn btn-primary mt-3">Proceed to Checkout</a>
+        <div class="mt-3">
+            <a href="{% url 'cart_checkout' %}" class="btn btn-primary me-2">Proceed to Checkout</a>
+            <a href="{% url 'products' %}" class="btn btn-outline-secondary me-2">Continue Shopping</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-dark">Back Home</a>
+        </div>
     {% else %}
         <p class="muted-text">Your cart is empty.</p>
+        <a href="{% url 'products' %}" class="btn btn-primary me-2">Shop Products</a>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
     {% endif %}
 </div>
 {% endblock %}

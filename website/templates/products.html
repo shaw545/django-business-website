@@ -13,6 +13,7 @@
     </form>
 
     <div class="row">
+
         <div class="col-md-3">
             <h5>Categories</h5>
             <ul class="list-group">
@@ -27,9 +28,11 @@
 
         <div class="col-md-9">
             <div class="row g-4">
+
                 {% for product in products %}
                 <div class="col-md-4">
                     <div class="card shadow-soft h-100">
+
                         {% if product.image %}
                         <img src="{{ product.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
                         {% else %}
@@ -45,30 +48,31 @@
                             <p class="muted-text small mb-2">{{ product.category.name }}</p>
                             {% endif %}
 
-                            <p class="text-primary fw-bold mb-1">${{ product.price_usd }}</p>
-                            <p class="text-success">SLE {{ product.price_sle }}</p>
+                            <p class="text-primary fw-bold mb-1">SLE {{ product.price_sle }}</p>
+                            <p class="text-success">${{ product.price_usd }}</p>
 
                             <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                            <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-success">Buy Now</a>
 
-                            {% if user.is_authenticated %}
                             <form method="POST" action="{% url 'add_to_cart' product.id %}" class="d-inline">
                                 {% csrf_token %}
                                 <input type="hidden" name="currency" value="SLE">
                                 <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
                             </form>
-                            {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-sm btn-primary">Login to Buy</a>
-                            {% endif %}
                         </div>
+
                     </div>
                 </div>
                 {% empty %}
                 <div class="col-12">
                     <p>No products found.</p>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}
