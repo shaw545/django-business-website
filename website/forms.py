@@ -22,12 +22,21 @@ class SellerRegistrationForm(UserCreationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'price_usd', 'price_sle', 'description', 'image', 'available']
+        fields = [
+            'name',
+            'description',
+            'price_usd',
+            'price_sle',
+            'category',
+            'image',
+            'available'
+        ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'price_usd': forms.NumberInput(attrs={'class': 'form-control'}),
             'price_sle': forms.NumberInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
