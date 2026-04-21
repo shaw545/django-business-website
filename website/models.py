@@ -54,7 +54,13 @@ class Order(models.Model):
     address = models.TextField()
     quantity = models.PositiveIntegerField(default=1)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+
+    unit_price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    platform_fee_percent = models.DecimalField(max_digits=5, decimal_places=2, default=10)
+    platform_fee_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    seller_earning = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

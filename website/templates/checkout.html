@@ -19,6 +19,7 @@
                     <h4>{{ product.name }}</h4>
                     <p class="text-primary fw-bold">USD ${{ product.price_usd }}</p>
                     <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
+                    <p class="muted-text">Platform fee applied: {{ platform_fee_percent }}%</p>
 
                     <form method="POST">
                         {% csrf_token %}

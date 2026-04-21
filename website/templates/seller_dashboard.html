@@ -18,44 +18,48 @@
     </div>
 
     <div class="row g-4 mb-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-soft h-100">
                 <div class="card-body p-4 text-center">
                     <h5 class="text-primary">Total Products</h5>
-                    <h2>{{ seller_products|length }}</h2>
-                    <p class="muted-text mb-0">Products you have listed</p>
+                    <h2>{{ total_products }}</h2>
+                    <p class="muted-text mb-0">Products listed</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-soft h-100">
                 <div class="card-body p-4 text-center">
-                    <h5 class="text-success">Available Products</h5>
-                    <h2>
-                        {% for product in seller_products %}
-                            {% if product.available %}1{% endif %}
-                        {% empty %}
-                            0
-                        {% endfor %}
-                    </h2>
-                    <p class="muted-text mb-0">Currently active listings</p>
+                    <h5 class="text-success">Total Orders</h5>
+                    <h2>{{ total_orders }}</h2>
+                    <p class="muted-text mb-0">Orders received</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-soft h-100">
                 <div class="card-body p-4 text-center">
-                    <h5 class="text-dark">Quick Action</h5>
-                    <p class="muted-text">Add a new product to your marketplace store.</p>
-                    <a href="{% url 'add_product' %}" class="btn btn-outline-primary">Upload Product</a>
+                    <h5 class="text-dark">Your Earnings</h5>
+                    <h2>{{ seller_total_earnings }}</h2>
+                    <p class="muted-text mb-0">After platform fee</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-soft h-100">
+                <div class="card-body p-4 text-center">
+                    <h5 class="text-danger">Platform Fee</h5>
+                    <h2>{{ platform_total_fees }}</h2>
+                    <p class="muted-text mb-0">Commission on your sales</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-soft">
+    <div class="card shadow-soft mb-5">
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Your Products</h4>
@@ -78,7 +82,7 @@
                             <div class="card-body">
                                 <h5>{{ product.name }}</h5>
                                 <p class="text-primary fw-bold mb-1">USD ${{ product.price_usd }}</p>
-                                <p class="text-success fw-bold mb-2">SLE {{ product.price_sle }}</p>
+                                <p class="text-success fw-bold">SLE {{ product.price_sle }}</p>
                                 <p class="muted-text">{{ product.description|truncatewords:18 }}</p>
 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
@@ -103,6 +107,45 @@
                     <p class="muted-text">You have not added any products yet.</p>
                     <a href="{% url 'add_product' %}" class="btn btn-primary">Add Your First Product</a>
                 </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-soft">
+        <div class="card-body p-4">
+            <h4 class="mb-4">Recent Orders</h4>
+
+            {% if seller_orders %}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Currency</th>
+                                <th>Total</th>
+                                <th>Fee</th>
+                                <th>Earning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in seller_orders %}
+                            <tr>
+                                <td>{{ order.customer_name }}</td>
+                                <td>{{ order.product.name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.currency }}</td>
+                                <td>{{ order.total_amount }}</td>
+                                <td>{{ order.platform_fee_amount }}</td>
+                                <td>{{ order.seller_earning }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="muted-text mb-0">No orders yet.</p>
             {% endif %}
         </div>
     </div>

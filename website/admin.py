@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import ContactMessage, Product, Order
 
+
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'company', 'service_interest', 'created_at')
@@ -17,6 +18,16 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'product', 'quantity', 'currency', 'total_amount', 'created_at')
+    list_display = (
+        'customer_name',
+        'product',
+        'quantity',
+        'currency',
+        'unit_price',
+        'total_amount',
+        'platform_fee_amount',
+        'seller_earning',
+        'created_at',
+    )
     search_fields = ('customer_name', 'email', 'phone', 'address')
     list_filter = ('currency', 'created_at')
