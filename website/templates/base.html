@@ -11,136 +11,89 @@
 
     <style>
         body {
-            background-color: #f5f7fb;
+            background-color: #f3f3f3;
             font-family: Arial, sans-serif;
-            color: #1f2937;
         }
 
         .navbar {
-            background-color: #0f172a;
-            padding-top: 14px;
-            padding-bottom: 14px;
+            background-color: #131921;
+            padding: 14px 0;
         }
 
         .navbar-brand {
-            font-size: 2rem;
-            font-weight: 700;
             color: white !important;
+            font-size: 1.8rem;
+            font-weight: bold;
         }
 
         .navbar a {
             color: white !important;
             text-decoration: none;
-            font-weight: 500;
+            margin-right: 15px;
+        }
+
+        .navbar a:hover {
+            color: #ff9900 !important;
+        }
+
+        .search-btn {
+            background-color: #ff9900;
+            border: none;
+            color: black;
+            font-weight: 600;
+        }
+
+        .search-btn:hover {
+            background-color: #e68a00;
         }
 
         .hero {
-            background: linear-gradient(135deg, #1e293b, #334155);
+            background: linear-gradient(to right, #232f3e, #37475a);
             color: white;
-            padding: 90px 20px;
+            padding: 80px 20px;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-weight: bold;
         }
 
-        .hero p {
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            color: #e2e8f0;
-        }
-
-        .btn-primary-custom {
-            background-color: #2563eb;
-            color: white;
+        .btn-amazon {
+            background-color: #ff9900;
+            color: black;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
             font-weight: 600;
         }
 
-        .btn-primary-custom:hover {
-            background-color: #1d4ed8;
-            color: white;
-        }
-
-        .btn-accent {
-            background-color: #f59e0b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .btn-accent:hover {
-            background-color: #d97706;
-            color: white;
+        .btn-amazon:hover {
+            background-color: #e68a00;
         }
 
         .card {
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-            background: white;
+            border-radius: 10px;
+            border: none;
         }
 
         .product-card img {
-            height: 220px;
+            height: 200px;
             object-fit: cover;
-            border-top-left-radius: 14px;
-            border-top-right-radius: 14px;
         }
 
         .section-title {
-            font-weight: 700;
-            margin-bottom: 22px;
-            color: #111827;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         .section-padding {
-            padding: 70px 0;
-        }
-
-        .category-card {
-            padding: 30px 20px;
-            text-align: center;
-            transition: 0.3s ease;
-            min-height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .category-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 60px 0;
         }
 
         .footer {
-            background-color: #0f172a;
+            background-color: #131921;
             color: white;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 60px;
-        }
-
-        .search-box {
-            max-width: 700px;
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .nav-link-simple {
-            color: white !important;
-            font-size: 1.1rem;
+            padding: 20px;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -148,31 +101,33 @@
 
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
+
         <a class="navbar-brand" href="/">Yusuf</a>
 
-        <form class="d-flex search-box w-50" action="/products/">
+        <form class="d-flex w-50" action="/products/">
             <input class="form-control me-2" type="search" name="q" placeholder="Search products...">
-            <button class="btn btn-accent" type="submit">Search</button>
+            <button class="btn search-btn">Search</button>
         </form>
 
-        <div class="nav-actions">
-            <a href="/cart/" class="nav-link-simple">Cart</a>
+        <div class="d-flex align-items-center">
+            <a href="/">Home</a>
+            <a href="/products/">Products</a>
+            <a href="/cart/">Cart</a>
 
             {% if user.is_authenticated %}
-                <a href="/seller/dashboard/" class="btn btn-primary-custom btn-sm">Dashboard</a>
+                <a href="/seller/dashboard/" class="btn btn-amazon btn-sm">Dashboard</a>
             {% else %}
-                <a href="/register/" class="btn btn-primary-custom btn-sm">Seller Register</a>
+                <a href="/register/" class="btn btn-amazon btn-sm">Seller Register</a>
             {% endif %}
         </div>
+
     </div>
 </nav>
 
 {% block content %}{% endblock %}
 
 <div class="footer">
-    <div class="container">
-        <p class="mb-0">© 2026 Yusuf Business Solutions. All rights reserved.</p>
-    </div>
+    <p>© 2026 Yusuf Business Solutions</p>
 </div>
 
 </body>
