@@ -53,7 +53,7 @@
                             {% if user.is_authenticated %}
                             <form method="POST" action="{% url 'add_to_cart' product.id %}" class="d-inline">
                                 {% csrf_token %}
-                                <input type="hidden" name="currency" value="USD">
+                                <input type="hidden" name="currency" value="SLE">
                                 <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
                             </form>
                             {% else %}
