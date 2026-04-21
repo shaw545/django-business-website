@@ -1,62 +1,73 @@
 {% extends 'base.html' %}
 
+{% block title %}Yusuf Business Solutions{% endblock %}
+
 {% block content %}
 
-<!-- HERO -->
 <div class="hero">
     <h1>Welcome to Yusuf Marketplace</h1>
-    <p>Buy & Sell Across Sierra Leone and Beyond</p>
-    <a href="/products/" class="btn btn-warning mt-3">Shop Now</a>
+    <p>Buy and sell quality products across Sierra Leone and beyond.</p>
+    <a href="/products/" class="btn btn-accent mt-2 me-2">Shop Now</a>
+    <a href="/register/" class="btn btn-primary-custom mt-2">Become a Seller</a>
 </div>
 
-<div class="container mt-5">
+<div class="container section-padding">
 
-    <!-- CATEGORIES -->
     <h3 class="section-title">Shop by Category</h3>
     <div class="row">
-
         {% for category in categories %}
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3 mb-4">
             <a href="/products/?category={{ category.id }}" class="text-decoration-none">
-                <div class="card p-4 text-center">
-                    <h5>{{ category.name }}</h5>
+                <div class="card category-card">
+                    <h5 class="mb-0 text-dark">{{ category.name }}</h5>
                 </div>
             </a>
         </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No categories available.</p>
+        </div>
         {% endfor %}
-
     </div>
 
-    <!-- FEATURED PRODUCTS -->
     <h3 class="section-title mt-5">Featured Products</h3>
-
     <div class="row">
-
         {% for product in products %}
         <div class="col-md-3 mb-4">
-            <div class="card product-card">
-
+            <div class="card product-card h-100">
                 {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                <div class="p-5 text-center">
+                    <p class="text-muted">No image available</p>
+                </div>
                 {% endif %}
 
                 <div class="card-body">
-                    <h6>{{ product.name }}</h6>
-                    <p class="fw-bold text-success">SLE {{ product.price_sle }}</p>
+                    <h6 class="fw-bold">{{ product.name }}</h6>
 
-                    <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-primary">View</a>
+                    {% if product.category %}
+                    <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                    {% endif %}
+
+                    <p class="fw-bold text-primary mb-1">SLE {{ product.price_sle }}</p>
+                    <p class="text-success small">USD ${{ product.price_usd }}</p>
+
+                    <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-primary me-1">View</a>
 
                     <form method="POST" action="/products/{{ product.id }}/add-to-cart/" class="d-inline">
                         {% csrf_token %}
                         <input type="hidden" name="currency" value="SLE">
-                        <button class="btn btn-sm btn-warning">Add to Cart</button>
+                        <button class="btn btn-sm btn-accent">Add to Cart</button>
                     </form>
                 </div>
-
             </div>
         </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No featured products available.</p>
+        </div>
         {% endfor %}
-
     </div>
 
 </div>

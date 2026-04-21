@@ -1,69 +1,179 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Yusuf Business Solutions{% endblock %}</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body {
-            background-color: #f3f3f3;
+            background-color: #f5f7fb;
+            font-family: Arial, sans-serif;
+            color: #1f2937;
         }
 
         .navbar {
-            background-color: #131921;
+            background-color: #0f172a;
+            padding-top: 14px;
+            padding-bottom: 14px;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white !important;
         }
 
         .navbar a {
             color: white !important;
+            text-decoration: none;
+            font-weight: 500;
         }
 
         .hero {
-            background: linear-gradient(to right, #232f3e, #37475a);
+            background: linear-gradient(135deg, #1e293b, #334155);
             color: white;
-            padding: 60px 20px;
+            padding: 90px 20px;
             text-align: center;
         }
 
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #e2e8f0;
+        }
+
+        .btn-primary-custom {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #1d4ed8;
+            color: white;
+        }
+
+        .btn-accent {
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-accent:hover {
+            background-color: #d97706;
+            color: white;
+        }
+
         .card {
-            border-radius: 10px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            background: white;
         }
 
         .product-card img {
-            height: 200px;
+            height: 220px;
             object-fit: cover;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
         }
 
         .section-title {
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            color: #111827;
+        }
+
+        .section-padding {
+            padding: 70px 0;
+        }
+
+        .category-card {
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .footer {
+            background-color: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+
+        .search-box {
+            max-width: 700px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-link-simple {
+            color: white !important;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/">Yusuf</a>
+        <a class="navbar-brand" href="/">Yusuf</a>
 
-        <form class="d-flex w-50" action="/products/">
+        <form class="d-flex search-box w-50" action="/products/">
             <input class="form-control me-2" type="search" name="q" placeholder="Search products...">
-            <button class="btn btn-warning">Search</button>
+            <button class="btn btn-accent" type="submit">Search</button>
         </form>
 
-        <div>
-            <a href="/cart/" class="me-3">Cart</a>
-            <a href="/seller/dashboard/">Dashboard</a>
+        <div class="nav-actions">
+            <a href="/cart/" class="nav-link-simple">Cart</a>
+
+            {% if user.is_authenticated %}
+                <a href="/seller/dashboard/" class="btn btn-primary-custom btn-sm">Dashboard</a>
+            {% else %}
+                <a href="/register/" class="btn btn-primary-custom btn-sm">Seller Register</a>
+            {% endif %}
         </div>
     </div>
 </nav>
 
 {% block content %}{% endblock %}
+
+<div class="footer">
+    <div class="container">
+        <p class="mb-0">© 2026 Yusuf Business Solutions. All rights reserved.</p>
+    </div>
+</div>
 
 </body>
 </html>
