@@ -9,10 +9,16 @@ from django.db.models import Sum
 from .models import ContactMessage, Category, Product, CartItem, Order, PayoutRequest
 from .forms import SellerRegistrationForm, ProductForm
 
+from .models import Product, Category
 
 def home(request):
-    return render(request, 'home.html')
+    products = Product.objects.filter(available=True)[:8]
+    categories = Category.objects.all()
 
+    return render(request, 'home.html', {
+        'products': products,
+        'categories': categories
+    })
 
 def about(request):
     return render(request, 'about.html')

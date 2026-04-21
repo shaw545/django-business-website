@@ -1,81 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - Yusuf Business Solutions{% endblock %}
-
 {% block content %}
-<div class="hero-section">
-    <div class="container">
-        <h1 class="display-3">Accounting, Data Analytics & E-Commerce Solutions</h1>
-        <p class="lead mt-3">
-            Helping businesses improve financial management, gain data-driven insights,
-            and connect buyers and sellers through practical digital solutions.
-        </p>
-        <div class="mt-4">
-            <a href="/services/" class="btn btn-light btn-lg me-2">Explore Services</a>
-            <a href="/products/" class="btn btn-outline-light btn-lg me-2">Shop Marketplace</a>
-            <a href="/contact/" class="btn btn-outline-light btn-lg">Contact Us</a>
-        </div>
-    </div>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Welcome to Yusuf Marketplace</h1>
+    <p>Buy & Sell Across Sierra Leone and Beyond</p>
+    <a href="/products/" class="btn btn-warning mt-3">Shop Now</a>
 </div>
 
-<div class="container section-padding">
-    <div class="text-center mb-5">
-        <h2 class="section-title">What We Do</h2>
-        <p class="muted-text">
-            We support businesses with accounting, analytics, and digital marketplace solutions.
-        </p>
+<div class="container mt-5">
+
+    <!-- CATEGORIES -->
+    <h3 class="section-title">Shop by Category</h3>
+    <div class="row">
+
+        {% for category in categories %}
+        <div class="col-md-3 mb-3">
+            <a href="/products/?category={{ category.id }}" class="text-decoration-none">
+                <div class="card p-4 text-center">
+                    <h5>{{ category.name }}</h5>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card shadow-soft h-100">
-                <div class="card-body p-4">
-                    <h5>Accounting Services</h5>
-                    <p class="muted-text">
-                        Accurate recordkeeping, reconciliations, and financial reporting
-                        to support business growth and compliance.
-                    </p>
-                </div>
-            </div>
-        </div>
+    <!-- FEATURED PRODUCTS -->
+    <h3 class="section-title mt-5">Featured Products</h3>
 
-        <div class="col-md-4">
-            <div class="card shadow-soft h-100">
-                <div class="card-body p-4">
-                    <h5>Data Analytics</h5>
-                    <p class="muted-text">
-                        Reporting, dashboards, and data insights that help businesses
-                        understand performance and make better decisions.
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="row">
 
-        <div class="col-md-4">
-            <div class="card shadow-soft h-100">
-                <div class="card-body p-4">
-                    <h5>E-Commerce Marketplace</h5>
-                    <p class="muted-text">
-                        A growing online marketplace connecting buyers and sellers,
-                        with product listings and checkout in SLE and USD.
-                    </p>
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card product-card">
+
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body">
+                    <h6>{{ product.name }}</h6>
+                    <p class="fw-bold text-success">SLE {{ product.price_sle }}</p>
+
+                    <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-primary">View</a>
+
+                    <form method="POST" action="/products/{{ product.id }}/add-to-cart/" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="currency" value="SLE">
+                        <button class="btn btn-sm btn-warning">Add to Cart</button>
+                    </form>
                 </div>
+
             </div>
         </div>
+        {% endfor %}
+
     </div>
+
 </div>
 
-<div class="container section-padding">
-    <div class="card shadow-soft">
-        <div class="card-body p-5 text-center">
-            <h2 class="section-title">Why Choose Yusuf Business Solutions?</h2>
-            <p class="muted-text mb-4">
-                We combine business understanding, financial support, analytics thinking,
-                and digital solutions to help organizations operate more effectively.
-            </p>
-            <a href="/about/" class="btn btn-primary me-2">Learn More About Us</a>
-            <a href="/portfolio/" class="btn btn-outline-primary">View Portfolio</a>
-        </div>
-    </div>
-</div>
 {% endblock %}
