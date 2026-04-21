@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class ContactMessage(models.Model):
     SERVICE_CHOICES = [
@@ -20,6 +22,13 @@ class ContactMessage(models.Model):
 
 
 class Product(models.Model):
+    seller = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='products',
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=200)
     price_usd = models.DecimalField(max_digits=10, decimal_places=2)
     price_sle = models.DecimalField(max_digits=10, decimal_places=2)

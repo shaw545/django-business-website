@@ -10,7 +10,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price_usd', 'price_sle', 'available', 'created_at')
+    list_display = ('name', 'seller', 'price_usd', 'price_sle', 'available', 'created_at')
     search_fields = ('name', 'description')
     list_filter = ('available', 'created_at')
 

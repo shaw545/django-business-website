@@ -1,7 +1,10 @@
 from decimal import Decimal
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from .models import ContactMessage, Product, Order
+from .forms import SellerRegistrationForm, ProductForm
 
 def home(request):
     return render(request, 'home.html')
@@ -111,3 +114,42 @@ Message:
         success = True
 
     return render(request, 'contact.html', {'success': success})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = SellerRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('seller_dashboard')
+    else:
+        form = SellerRegistrationForm()
+
+    return render(request, 'register.html', {'form': form})
+
+
+@login_required
+def seller_dashboard(request):
+    seller_products = Product.objects.filter(seller=request.user).order_by('-created_at')
+    return render(request, 'seller_dashboard.html', {'seller_products': seller_products})
+
+
+@login_required
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.seller = request.user
+            product.save()
+            return redirect('seller_dashboard')
+    else:
+        form = ProductForm()
+
+    return render(request, 'add_product.html', {'form': form})
+
+
+def seller_logout(request):
+    logout(request)
+    return redirect('home')
