@@ -95,3 +95,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'info@yusufbusinesssolutions.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/seller/dashboard/'
+LOGOUT_REDIRECT_URL = '/'
+
+PLATFORM_FEE_PERCENT = 10
+
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')

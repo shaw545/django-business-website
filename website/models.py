@@ -58,10 +58,30 @@ class Product(models.Model):
         return self.name
 
 
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    currency = models.CharField(max_length=3, choices=[('USD', 'US Dollar'), ('SLE', 'Sierra Leone Leone')], default='USD')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product', 'currency')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"
+
+
 class Order(models.Model):
     CURRENCY_CHOICES = [
         ('USD', 'US Dollar'),
         ('SLE', 'Sierra Leone Leone'),
+    ]
+
+    PAYMENT_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Paid', 'Paid'),
+        ('Failed', 'Failed'),
     ]
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -76,6 +96,8 @@ class Order(models.Model):
     platform_fee_percent = models.DecimalField(max_digits=5, decimal_places=2, default=10)
     platform_fee_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     seller_earning = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    payment_reference = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
