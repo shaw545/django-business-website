@@ -1,15 +1,11 @@
-import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECURITY
 SECRET_KEY = 'django-insecure-change-this-key'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-# APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -17,12 +13,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'website',
 ]
 
-
-# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -33,16 +26,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# URL CONFIG
 ROOT_URLCONF = 'business_site.urls'
 
-
-# TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],   # using app templates (website/templates)
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -54,8 +43,8 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'business_site.wsgi.application'
 
-# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -63,30 +52,22 @@ DATABASES = {
     }
 }
 
-
-# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = []
 
-
-# LANGUAGE
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
-# 🔥 STATIC FILES (THIS FIXES YOUR IMAGE)
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',   # this points to your static folder
+    BASE_DIR / 'static',
 ]
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 🔥 MEDIA FILES (for uploads later)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# DEFAULT ID
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
