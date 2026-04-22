@@ -9,7 +9,7 @@
 
     <form method="GET" class="mb-4 d-flex">
         <input type="text" name="q" placeholder="Search products..." class="form-control me-2" value="{{ query }}">
-        <button class="btn btn-primary">Search</button>
+        <button class="btn btn-main">Search</button>
     </form>
 
     <div class="row">
@@ -34,31 +34,25 @@
                     <div class="card shadow-soft h-100">
 
                         {% if product.image %}
-                        <img src="{{ product.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 240px; object-fit: cover;">
                         {% else %}
-                        <div class="p-4 text-center">
-                            <p class="muted-text">No image available</p>
-                        </div>
+                            <div class="p-5 text-center">
+                                <p class="text-muted">No image available</p>
+                            </div>
                         {% endif %}
 
                         <div class="card-body">
                             <h6>{{ product.name }}</h6>
 
                             {% if product.category %}
-                            <p class="muted-text small mb-2">{{ product.category.name }}</p>
+                            <p class="text-muted small mb-2">{{ product.category.name }}</p>
                             {% endif %}
 
                             <p class="text-primary fw-bold mb-1">SLE {{ product.price_sle }}</p>
                             <p class="text-success">${{ product.price_usd }}</p>
 
-                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary">View</a>
-                            <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-success">Buy Now</a>
-
-                            <form method="POST" action="{% url 'add_to_cart' product.id %}" class="d-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="currency" value="SLE">
-                                <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
-                            </form>
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-dark">View</a>
+                            <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-main">Buy Now</a>
                         </div>
 
                     </div>
@@ -66,7 +60,6 @@
                 {% empty %}
                 <div class="col-12">
                     <p>No products found.</p>
-                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
                 </div>
                 {% endfor %}
 

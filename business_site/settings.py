@@ -13,6 +13,11 @@ ALLOWED_HOSTS = [
     "www.yusufbusinesssolutions.com",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+    "https://www.yusufbusinesssolutions.com",
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -81,6 +86,6 @@ LOGIN_REDIRECT_URL = "/seller/dashboard/"
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
-PLATFORM_FEE_PERCENT = 3
+PLATFORM_FEE_PERCENT = 10
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

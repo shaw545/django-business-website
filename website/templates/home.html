@@ -52,13 +52,12 @@
         {% for product in products %}
         <div class="col-md-3 mb-4">
             <div class="card product-card h-100">
-
                 {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% else %}
-                <div class="p-5 text-center">
-                    <p class="text-muted">No image available</p>
-                </div>
+                    <div class="p-5 text-center">
+                        <p class="text-muted">No image available</p>
+                    </div>
                 {% endif %}
 
                 <div class="card-body">
@@ -72,12 +71,7 @@
                     <p class="text-success small">USD ${{ product.price_usd }}</p>
 
                     <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-dark me-1">View</a>
-
-                    <form method="POST" action="/products/{{ product.id }}/add-to-cart/" class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="currency" value="SLE">
-                        <button class="btn btn-sm btn-main">Add to Cart</button>
-                    </form>
+                    <a href="/checkout/{{ product.id }}/" class="btn btn-sm btn-main">Buy Now</a>
                 </div>
 
             </div>
