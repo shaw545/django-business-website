@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}Yusuf Business Solutions{% endblock %}
+
 {% block content %}
 
 <div class="hero">
     <h1>Welcome to Yusuf Marketplace</h1>
     <p>Buy and sell products easily across Sierra Leone and beyond.</p>
 
-    <a href="/products/" class="btn btn-amazon me-2">Shop Now</a>
-    <a href="/register/" class="btn btn-light">Become a Seller</a>
+    <a href="/products/" class="btn btn-main me-2">Shop Now</a>
+    <a href="/register/" class="btn btn-light-custom">Become a Seller</a>
 </div>
 
 <div class="container section-padding">
@@ -17,8 +19,8 @@
         {% for category in categories %}
         <div class="col-md-3 mb-4">
             <a href="/products/?category={{ category.id }}" class="text-decoration-none">
-                <div class="card p-4 text-center">
-                    <h5>{{ category.name }}</h5>
+                <div class="card category-card">
+                    <h5 class="mb-0 text-dark">{{ category.name }}</h5>
                 </div>
             </a>
         </div>
@@ -29,14 +31,14 @@
     <div class="row">
         {% for product in products %}
         <div class="col-md-3 mb-4">
-            <div class="card product-card">
+            <div class="card product-card h-100">
+
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top">
                 {% endif %}
 
                 <div class="card-body">
-                    <h6>{{ product.name }}</h6>
-
+                    <h6 class="fw-bold">{{ product.name }}</h6>
                     <p class="fw-bold">SLE {{ product.price_sle }}</p>
 
                     <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-dark">View</a>
@@ -44,9 +46,10 @@
                     <form method="POST" action="/products/{{ product.id }}/add-to-cart/" class="d-inline">
                         {% csrf_token %}
                         <input type="hidden" name="currency" value="SLE">
-                        <button class="btn btn-sm btn-amazon">Add to Cart</button>
+                        <button class="btn btn-sm btn-main">Add</button>
                     </form>
                 </div>
+
             </div>
         </div>
         {% endfor %}

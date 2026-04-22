@@ -11,31 +11,35 @@
 
     <style>
         body {
-            background-color: #f3f3f3;
+            background-color: #ffffff;
             font-family: Arial, sans-serif;
+            color: #1f2937;
         }
 
+        /* NAVBAR */
         .navbar {
-            background-color: #131921;
+            background-color: #87cefa;
             padding: 14px 0;
         }
 
         .navbar-brand {
-            color: white !important;
+            color: #0f172a !important;
             font-size: 1.8rem;
             font-weight: bold;
         }
 
         .navbar a {
-            color: white !important;
+            color: #0f172a !important;
             text-decoration: none;
             margin-right: 15px;
+            font-weight: 500;
         }
 
         .navbar a:hover {
             color: #ff9900 !important;
         }
 
+        /* ORANGE BUTTONS */
         .search-btn {
             background-color: #ff9900;
             border: none;
@@ -45,33 +49,61 @@
 
         .search-btn:hover {
             background-color: #e68a00;
+            color: black;
         }
 
-        .hero {
-            background: linear-gradient(to right, #232f3e, #37475a);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-weight: bold;
-        }
-
-        .btn-amazon {
+        .btn-main {
             background-color: #ff9900;
             color: black;
             border: none;
             font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 8px;
         }
 
-        .btn-amazon:hover {
+        .btn-main:hover {
             background-color: #e68a00;
+            color: black;
         }
 
+        /* HERO */
+        .hero {
+            background-color: #87cefa;
+            color: #0f172a;
+            padding: 90px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-weight: 700;
+            font-size: 3.2rem;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+
+        .btn-light-custom {
+            background-color: #ffffff;
+            color: #0f172a;
+            border: 1px solid #d1d5db;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 8px;
+        }
+
+        .btn-light-custom:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* CARDS */
         .card {
             border-radius: 10px;
-            border: none;
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
         }
 
         .product-card img {
@@ -89,11 +121,26 @@
         }
 
         .footer {
-            background-color: #131921;
-            color: white;
+            background-color: #87cefa;
+            color: #0f172a;
             text-align: center;
             padding: 20px;
             margin-top: 50px;
+        }
+
+        .category-card {
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2);
         }
     </style>
 </head>
@@ -106,7 +153,7 @@
 
         <form class="d-flex w-50" action="/products/">
             <input class="form-control me-2" type="search" name="q" placeholder="Search products...">
-            <button class="btn search-btn">Search</button>
+            <button class="btn search-btn" type="submit">Search</button>
         </form>
 
         <div class="d-flex align-items-center">
@@ -115,9 +162,9 @@
             <a href="/cart/">Cart</a>
 
             {% if user.is_authenticated %}
-                <a href="/seller/dashboard/" class="btn btn-amazon btn-sm">Dashboard</a>
+                <a href="/seller/dashboard/" class="btn btn-main btn-sm">Dashboard</a>
             {% else %}
-                <a href="/register/" class="btn btn-amazon btn-sm">Seller Register</a>
+                <a href="/register/" class="btn btn-main btn-sm">Seller Register</a>
             {% endif %}
         </div>
 
@@ -127,7 +174,7 @@
 {% block content %}{% endblock %}
 
 <div class="footer">
-    <p>© 2026 Yusuf Business Solutions</p>
+    <p class="mb-0">© 2026 Yusuf Business Solutions</p>
 </div>
 
 </body>

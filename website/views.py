@@ -408,3 +408,5 @@ def request_withdrawal(request):
 def seller_logout(request):
     logout(request)
     return redirect('home')
+def services_page(request):
+    return render(request, 'services.html')

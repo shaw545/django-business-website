@@ -24,3 +24,5 @@ urlpatterns = [
     path('seller/add-product/', views.add_product, name='add_product'),
     path('seller/withdraw/', views.request_withdrawal, name='request_withdrawal'),
 ]
+
+path('services/', views.services_page, name='services'),
