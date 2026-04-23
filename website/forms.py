@@ -1,42 +1,32 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from .models import Product
 
 
 class SellerRegistrationForm(UserCreationForm):
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
-    )
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
 
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
-            'name',
-            'description',
-            'price_usd',
-            'price_sle',
-            'category',
-            'image',
-            'available'
+            "category",
+            "name",
+            "description",
+            "price_sle",
+            "price_usd",
+            "image",
+            "available",
         ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'price_usd': forms.NumberInput(attrs={'class': 'form-control'}),
-            'price_sle': forms.NumberInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-select'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            "description": forms.Textarea(attrs={"rows": 4}),
         }

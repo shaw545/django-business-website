@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Product{% endblock %}
+{% block title %}Edit Product{% endblock %}
 
 {% block content %}
 <div class="container section-padding">
@@ -14,6 +14,13 @@
                         {% for message in messages %}
                             <div class="alert alert-success">{{ message }}</div>
                         {% endfor %}
+                    {% endif %}
+
+                    {% if product.image %}
+                    <div class="mb-4">
+                        <p class="mb-2"><strong>Current Image</strong></p>
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 220px; border-radius: 10px;">
+                    </div>
                     {% endif %}
 
                     <form method="POST" enctype="multipart/form-data">
@@ -45,7 +52,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Image</label>
+                            <label class="form-label">Replace Image</label>
                             {{ form.image }}
                         </div>
 
@@ -54,7 +61,7 @@
                             {{ form.available }}
                         </div>
 
-                        <button type="submit" class="btn btn-main">Save Product</button>
+                        <button type="submit" class="btn btn-main">Update Product</button>
                         <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">Back</a>
                     </form>
                 </div>
