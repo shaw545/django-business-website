@@ -10,9 +10,28 @@ class SellerRegistrationForm(UserCreationForm):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
 
+    agree_terms = forms.BooleanField(
+        required=True,
+        label="I agree to the Terms and Conditions"
+    )
+
+    agree_privacy = forms.BooleanField(
+        required=True,
+        label="I agree to the Privacy Policy"
+    )
+
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+            "agree_terms",
+            "agree_privacy",
+        ]
 
 
 class MultipleFileInput(forms.ClearableFileInput):
