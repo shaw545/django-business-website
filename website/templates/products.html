@@ -32,8 +32,9 @@
                 {% for product in products %}
                 <div class="col-md-4">
                     <div class="card h-100">
+
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height:240px;object-fit:cover;">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height:240px; object-fit:cover;">
                         {% else %}
                             <div class="p-5 text-center">
                                 <p class="text-muted">No image available</p>
@@ -53,6 +54,7 @@
                             <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-dark">View</a>
                             <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-main">Buy Now</a>
                         </div>
+
                     </div>
                 </div>
                 {% empty %}
