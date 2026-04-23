@@ -1,5 +1,17 @@
 from django.contrib import admin
-from .models import ContactMessage, Category, Product, CartItem, Order, PayoutRequest
+from .models import (
+    ContactMessage,
+    Category,
+    Product,
+    ProductImage,
+    Order,
+    PayoutRequest,
+)
+
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
 
 
 @admin.register(ContactMessage)
@@ -16,11 +28,12 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'seller', 'category', 'price_usd', 'price_sle', 'available', 'created_at')
     list_filter = ('available', 'category', 'created_at')
+    inlines = [ProductImageInline]
 
 
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'quantity', 'currency', 'created_at')
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'created_at')
 
 
 @admin.register(Order)
@@ -32,8 +45,6 @@ class OrderAdmin(admin.ModelAdmin):
         'currency',
         'total_amount',
         'payment_status',
-        'platform_fee_amount',
-        'seller_earning',
         'created_at',
     )
     list_filter = ('currency', 'payment_status', 'created_at')

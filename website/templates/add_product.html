@@ -45,13 +45,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Image</label>
+                            <label class="form-label">Main Image</label>
                             {{ form.image }}
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Available</label>
+                            <label class="form-label">Extra Gallery Images</label>
+                            {{ form.extra_images }}
+                            <small class="text-muted d-block mt-1">You can select multiple images.</small>
+                        </div>
+
+                        <div class="mb-3 form-check">
                             {{ form.available }}
+                            <label class="form-check-label">Available</label>
                         </div>
 
                         <button type="submit" class="btn btn-main">Save Product</button>

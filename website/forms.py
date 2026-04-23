@@ -15,7 +15,23 @@ class SellerRegistrationForm(UserCreationForm):
         fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    widget = MultipleFileInput
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            return [single_file_clean(d, initial) for d in data]
+        return single_file_clean(data, initial)
+
+
 class ProductForm(forms.ModelForm):
+    extra_images = MultipleFileField(required=False)
+
     class Meta:
         model = Product
         fields = [
@@ -28,5 +44,11 @@ class ProductForm(forms.ModelForm):
             "available",
         ]
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4}),
+            "description": forms.Textarea(attrs={"rows": 4, "class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-select"}),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "price_sle": forms.NumberInput(attrs={"class": "form-control"}),
+            "price_usd": forms.NumberInput(attrs={"class": "form-control"}),
+            "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "available": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }

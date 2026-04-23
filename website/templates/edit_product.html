@@ -18,8 +18,22 @@
 
                     {% if product.image %}
                     <div class="mb-4">
-                        <p class="mb-2"><strong>Current Image</strong></p>
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 220px; border-radius: 10px;">
+                        <p class="mb-2"><strong>Current Main Image</strong></p>
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 240px; border-radius: 12px;">
+                    </div>
+                    {% endif %}
+
+                    {% if gallery_images %}
+                    <div class="mb-4">
+                        <p class="mb-2"><strong>Gallery Images</strong></p>
+                        <div class="d-flex flex-wrap gap-3">
+                            {% for gallery in gallery_images %}
+                            <div>
+                                <img src="{{ gallery.image.url }}" alt="{{ product.name }}" class="thumb-image d-block mb-2">
+                                <a href="{% url 'delete_gallery_image' gallery.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                     {% endif %}
 
@@ -52,13 +66,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Replace Image</label>
+                            <label class="form-label">Replace Main Image</label>
                             {{ form.image }}
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Available</label>
+                            <label class="form-label">Add More Gallery Images</label>
+                            {{ form.extra_images }}
+                            <small class="text-muted d-block mt-1">You can add multiple new images.</small>
+                        </div>
+
+                        <div class="mb-3 form-check">
                             {{ form.available }}
+                            <label class="form-check-label">Available</label>
                         </div>
 
                         <button type="submit" class="btn btn-main">Update Product</button>

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
 
-from .models import ContactMessage, Category, Product, Order, PayoutRequest
+from .models import ContactMessage, Category, Product, ProductImage, Order, PayoutRequest
 from .forms import SellerRegistrationForm, ProductForm
 
 
@@ -50,7 +50,7 @@ def _build_cart_rows(request):
 
 
 def home(request):
-    products = Product.objects.filter(available=True)[:8]
+    products = Product.objects.filter(available=True).order_by("-created_at")[:8]
     categories = Category.objects.all()
 
     return render(request, "home.html", {
@@ -95,7 +95,11 @@ def products(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id, available=True)
-    return render(request, "product_detail.html", {"product": product})
+    gallery_images = product.gallery_images.all()
+    return render(request, "product_detail.html", {
+        "product": product,
+        "gallery_images": gallery_images,
+    })
 
 
 def add_to_cart(request, product_id):
@@ -360,10 +364,16 @@ def seller_dashboard(request):
 def add_product(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
+        extra_files = request.FILES.getlist("extra_images")
+
         if form.is_valid():
             product = form.save(commit=False)
             product.seller = request.user
             product.save()
+
+            for image_file in extra_files:
+                ProductImage.objects.create(product=product, image=image_file)
+
             messages.success(request, "Product added successfully.")
             return redirect("seller_dashboard")
     else:
@@ -378,8 +388,14 @@ def edit_product(request, product_id):
 
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
+        extra_files = request.FILES.getlist("extra_images")
+
         if form.is_valid():
             form.save()
+
+            for image_file in extra_files:
+                ProductImage.objects.create(product=product, image=image_file)
+
             messages.success(request, "Product updated successfully.")
             return redirect("seller_dashboard")
     else:
@@ -388,6 +404,7 @@ def edit_product(request, product_id):
     return render(request, "edit_product.html", {
         "form": form,
         "product": product,
+        "gallery_images": product.gallery_images.all(),
         "page_title": "Edit Product",
     })
 
@@ -402,6 +419,15 @@ def delete_product(request, product_id):
         return redirect("seller_dashboard")
 
     return render(request, "delete_product.html", {"product": product})
+
+
+@login_required
+def delete_gallery_image(request, image_id):
+    gallery_image = get_object_or_404(ProductImage, id=image_id, product__seller=request.user)
+    product_id = gallery_image.product.id
+    gallery_image.delete()
+    messages.success(request, "Gallery image deleted.")
+    return redirect("edit_product", product_id=product_id)
 
 
 @login_required

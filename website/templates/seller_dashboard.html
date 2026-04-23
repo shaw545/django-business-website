@@ -14,7 +14,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="mb-1">Seller Dashboard</h1>
-            <p class="text-muted mb-0">Manage your products and sales</p>
+            <p class="text-muted mb-0">Manage your store professionally</p>
         </div>
         <div>
             <a href="{% url 'add_product' %}" class="btn btn-main">Add Product</a>
@@ -54,10 +54,10 @@
     <div class="row">
         {% for product in seller_products %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 product-card">
 
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 300px; object-fit: cover;">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% else %}
                     <div class="p-5 text-center">
                         <p class="text-muted">No image available</p>
@@ -76,6 +76,14 @@
 
                     <p>{{ product.description|truncatewords:12 }}</p>
 
+                    {% if product.gallery_images.all %}
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        {% for gallery in product.gallery_images.all|slice:":4" %}
+                            <img src="{{ gallery.image.url }}" class="thumb-image" alt="{{ product.name }}">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
                     <div class="mt-3">
                         <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-primary">Edit</a>
                         <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger ms-2">Delete</a>
@@ -89,53 +97,6 @@
             <p>You have not added any products yet.</p>
         </div>
         {% endfor %}
-    </div>
-
-    <hr class="my-5">
-
-    <h2 class="mb-3">Request Withdrawal</h2>
-    <form method="POST" action="{% url 'request_withdrawal' %}" class="row g-3 mb-5">
-        {% csrf_token %}
-        <div class="col-md-4">
-            <input type="number" step="0.01" name="amount" class="form-control" placeholder="Enter amount" required>
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-main">Request Withdrawal</button>
-        </div>
-    </form>
-
-    <h2 class="mb-3">Recent Orders</h2>
-    <div class="card p-3">
-        {% if seller_orders %}
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Customer</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for order in seller_orders %}
-                        <tr>
-                            <td>{{ order.product.name }}</td>
-                            <td>{{ order.customer_name }}</td>
-                            <td>{{ order.quantity }}</td>
-                            <td>{{ order.total_amount }}</td>
-                            <td>{{ order.payment_status }}</td>
-                            <td>{{ order.created_at }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <p class="mb-0">No orders yet.</p>
-        {% endif %}
     </div>
 
 </div>

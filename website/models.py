@@ -58,18 +58,17 @@ class Product(models.Model):
         return self.name
 
 
-class CartItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    currency = models.CharField(max_length=3, choices=[('USD', 'US Dollar'), ('SLE', 'Sierra Leone Leone')], default='USD')
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='gallery_images'
+    )
+    image = models.ImageField(upload_to='products/gallery/')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('user', 'product', 'currency')
-
     def __str__(self):
-        return f"{self.user.username} - {self.product.name}"
+        return f"Gallery image for {self.product.name}"
 
 
 class Order(models.Model):
@@ -90,7 +89,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=50)
     address = models.TextField()
     quantity = models.PositiveIntegerField(default=1)
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='SLE')
     unit_price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     platform_fee_percent = models.DecimalField(max_digits=5, decimal_places=2, default=10)
