@@ -112,13 +112,12 @@ def product_detail(request, product_id):
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id, available=True)
-    currency = request.POST.get("currency", "SLE")
 
     cart = _get_cart(request)
 
     found = False
     for item in cart:
-        if item["product_id"] == product.id and item["currency"] == currency:
+        if item["product_id"] == product.id and item["currency"] == "SLE":
             item["quantity"] += 1
             found = True
             break
@@ -127,7 +126,7 @@ def add_to_cart(request, product_id):
         cart.append({
             "product_id": product.id,
             "quantity": 1,
-            "currency": currency,
+            "currency": "SLE",
         })
 
     _save_cart(request, cart)
@@ -180,10 +179,9 @@ def checkout(request, product_id):
         phone = request.POST.get("phone")
         address = request.POST.get("address")
         quantity = int(request.POST.get("quantity", 1))
-        currency = request.POST.get("currency", "SLE")
+        currency = "SLE"
 
-        unit_price = product.price_sle if currency == "SLE" else product.price_usd
-        unit_price = Decimal(unit_price)
+        unit_price = Decimal(product.price_sle)
         total_amount = unit_price * Decimal(quantity)
         platform_fee_amount = (platform_fee_percent / Decimal("100")) * total_amount
         seller_earning = total_amount - platform_fee_amount
@@ -248,9 +246,9 @@ def cart_checkout(request):
         for item in cart_items:
             product = item["product"]
             quantity = item["quantity"]
-            currency = item["currency"]
-            unit_price = item["unit_price"]
-            total_amount = item["row_total"]
+            currency = "SLE"
+            unit_price = Decimal(product.price_sle)
+            total_amount = unit_price * quantity
 
             platform_fee_amount = (platform_fee_percent / Decimal("100")) * total_amount
             seller_earning = total_amount - platform_fee_amount
