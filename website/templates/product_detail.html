@@ -3,47 +3,79 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
+
 <div class="container section-padding">
-    <div class="row">
+    <div class="row align-items-start">
+
         <div class="col-md-6">
             {% if product.image %}
-                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm mb-3" alt="{{ product.name }}" style="width:100%; max-height:520px; object-fit:cover;">
+                <img src="{{ product.image.url }}"
+                     alt="{{ product.name }}"
+                     class="img-fluid rounded shadow main-product-image">
             {% else %}
-                <div class="p-5 text-center border rounded mb-3">
-                    <p class="text-muted">No image available</p>
+                <div class="no-image-detail">
+                    No image available
                 </div>
             {% endif %}
 
             {% if gallery_images %}
-            <div class="d-flex flex-wrap gap-2">
-                {% for image in gallery_images %}
-                    <img src="{{ image.image.url }}" alt="{{ product.name }}" class="thumb-image">
-                {% endfor %}
-            </div>
+                <div class="row mt-3 g-2">
+                    {% for img in gallery_images %}
+                        <div class="col-4">
+                            <img src="{{ img.image.url }}"
+                                 alt="{{ product.name }}"
+                                 class="img-fluid rounded gallery-image">
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
 
         <div class="col-md-6">
-            <h1 class="fw-bold mb-3">{{ product.name }}</h1>
+            <h1>{{ product.name }}</h1>
 
             {% if product.category %}
-            <p class="text-muted">{{ product.category.name }}</p>
+                <p class="text-muted">{{ product.category.name }}</p>
             {% endif %}
 
-            <p class="text-primary fs-2 fw-bold mb-2">USD ${{ product.price_usd }}</p>
-            <p class="text-success fs-2 fw-bold mb-3">SLE {{ product.price_sle }}</p>
+            <h3 class="text-primary">SLE {{ product.price_sle }}</h3>
 
-            <p class="mb-4">{{ product.description }}</p>
+            {% if product.price_usd %}
+                <h5 class="text-success">USD ${{ product.price_usd }}</h5>
+            {% endif %}
 
-            <form method="POST" action="{% url 'add_to_cart' product.id %}" class="d-inline">
-                {% csrf_token %}
-                <input type="hidden" name="currency" value="SLE">
-                <button type="submit" class="btn btn-main me-2">Add to Cart</button>
-            </form>
+            <p class="mt-4">{{ product.description }}</p>
 
-            <a href="{% url 'checkout' product.id %}" class="btn btn-main me-2">Checkout</a>
-            <a href="{% url 'products' %}" class="btn btn-outline-secondary">Back to Products</a>
+            <a href="{% url 'checkout' product.id %}" class="btn btn-main">Buy Now</a>
+            <a href="{% url 'products' %}" class="btn btn-outline-secondary ms-2">Back to Products</a>
         </div>
+
     </div>
 </div>
+
+<style>
+    .main-product-image {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+    }
+
+    .gallery-image {
+        height: 120px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .no-image-detail {
+        height: 400px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+        font-weight: bold;
+        border-radius: 12px;
+    }
+</style>
+
 {% endblock %}
