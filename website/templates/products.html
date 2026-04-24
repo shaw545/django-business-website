@@ -1,328 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %}Marketplace{% endblock %}
+{% block title %}Add Product{% endblock %}
 
 {% block content %}
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<div class="marketplace-layout">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
 
-    <!-- EXTREME LEFT CATEGORY SIDEBAR -->
-    <aside class="category-sidebar">
-        <div class="category-card">
-            <h3>Categories</h3>
+                    <h2 class="mb-4">Add Product</h2>
 
-            <form method="GET" action="{% url 'products' %}">
-                {% if query %}
-                    <input type="hidden" name="q" value="{{ query }}">
-                {% endif %}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                <select name="category" class="category-dropdown" onchange="this.form.submit()">
-                    <option value="">All Categories</option>
+                        {{ form.as_p }}
 
-                    {% for category in categories %}
-                        <option value="{{ category.id }}"
-                            {% if selected_category == category.id|stringformat:'s' %}selected{% endif %}>
-                            {{ category.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        </div>
-    </aside>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Extra Product Images
+                            </label>
+                            <input type="file"
+                                   name="extra_images"
+                                   class="form-control"
+                                   accept="image/*"
+                                   multiple>
 
-    <!-- MAIN PRODUCTS AREA -->
-    <main class="products-main">
-
-        <div class="marketplace-header">
-            <h1>Marketplace</h1>
-            <p>Browse quality products from trusted sellers.</p>
-        </div>
-
-        <!-- SEARCH -->
-        <form method="GET" action="{% url 'products' %}" class="product-search">
-            {% if selected_category %}
-                <input type="hidden" name="category" value="{{ selected_category }}">
-            {% endif %}
-
-            <input type="text"
-                   name="q"
-                   placeholder="Search products..."
-                   value="{{ query }}">
-
-            <button type="submit">Search</button>
-        </form>
-
-        <!-- PRODUCTS GRID -->
-        <div class="products-grid">
-
-            {% for product in products %}
-                <div class="product-card">
-
-                    <div class="product-image-box">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                        {% else %}
-                            <div class="no-image">No image available</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="product-info">
-                        <h4>{{ product.name }}</h4>
-
-                        {% if product.category %}
-                            <p class="category-name">{{ product.category.name }}</p>
-                        {% endif %}
-
-                        <p class="price-sle">SLE {{ product.price_sle }}</p>
-
-                        {% if product.price_usd %}
-                            <p class="price-usd">USD ${{ product.price_usd }}</p>
-                        {% endif %}
-
-                        <div class="product-buttons">
-                            <a href="{% url 'product_detail' product.id %}" class="btn-view">View</a>
-                            <a href="{% url 'checkout' product.id %}" class="btn-buy">Buy Now</a>
-                            <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-cart">Add to Cart</button>
-                            </form>
+                            <small class="text-muted">
+                                Upload front, back, side, and close-up images.
+                            </small>
                         </div>
-                    </div>
+
+                        <button type="submit" class="btn btn-main">
+                            Save Product
+                        </button>
+
+                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
+                            Back to Dashboard
+                        </a>
+                    </form>
 
                 </div>
-            {% empty %}
-                <div class="empty-message">
-                    <h3>No products found.</h3>
-                    <p>Please add products or choose another category.</p>
-                </div>
-            {% endfor %}
+            </div>
 
         </div>
-
-    </main>
-
+    </div>
 </div>
-
-<style>
-    .marketplace-layout {
-        display: flex;
-        width: 100%;
-        min-height: 100vh;
-        background: #f5f7fb;
-    }
-
-    .category-sidebar {
-        width: 260px;
-        min-width: 260px;
-        background: #ffffff;
-        border-right: 1px solid #e5e7eb;
-        padding: 24px 16px;
-    }
-
-    .category-card {
-        position: sticky;
-        top: 20px;
-    }
-
-    .category-card h3 {
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 16px;
-        color: #111827;
-    }
-
-    .category-dropdown {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        font-size: 15px;
-        background: #ffffff;
-        cursor: pointer;
-    }
-
-    .products-main {
-        flex: 1;
-        padding: 32px;
-    }
-
-    .marketplace-header {
-        text-align: center;
-        margin-bottom: 24px;
-    }
-
-    .marketplace-header h1 {
-        font-size: 40px;
-        font-weight: 800;
-        color: #111827;
-        margin-bottom: 6px;
-    }
-
-    .marketplace-header p {
-        color: #6b7280;
-        font-size: 17px;
-    }
-
-    .product-search {
-        display: flex;
-        gap: 12px;
-        margin: 0 auto 32px auto;
-        max-width: 900px;
-    }
-
-    .product-search input {
-        flex: 1;
-        padding: 14px 16px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        font-size: 16px;
-    }
-
-    .product-search button {
-        padding: 14px 28px;
-        border: none;
-        border-radius: 10px;
-        background: #ff9800;
-        color: #000;
-        font-weight: 700;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-        gap: 28px;
-    }
-
-    .product-card {
-        background: #ffffff;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        border: 1px solid #eef0f3;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .product-image-box {
-        height: 240px;
-        width: 100%;
-        background: #f3f4f6;
-    }
-
-    .product-image-box img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .no-image {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6b7280;
-        font-weight: 600;
-    }
-
-    .product-info {
-        padding: 18px;
-    }
-
-    .product-info h4 {
-        font-size: 21px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: #111827;
-    }
-
-    .category-name {
-        color: #6b7280;
-        margin-bottom: 10px;
-    }
-
-    .price-sle {
-        color: #0d6efd;
-        font-size: 20px;
-        font-weight: 800;
-        margin-bottom: 4px;
-    }
-
-    .price-usd {
-        color: #07843f;
-        font-size: 17px;
-        margin-bottom: 16px;
-    }
-
-    .product-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .product-buttons a,
-    .product-buttons button {
-        text-decoration: none;
-        border: none;
-        border-radius: 8px;
-        padding: 9px 12px;
-        font-weight: 700;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .btn-view {
-        background: #ffffff;
-        color: #111827;
-        border: 1px solid #111827 !important;
-    }
-
-    .btn-buy {
-        background: #ff9800;
-        color: #000;
-    }
-
-    .btn-cart {
-        background: #0d6efd;
-        color: #ffffff;
-    }
-
-    .empty-message {
-        grid-column: 1 / -1;
-        background: #ffffff;
-        padding: 40px;
-        border-radius: 16px;
-        text-align: center;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    }
-
-    @media (max-width: 768px) {
-        .marketplace-layout {
-            flex-direction: column;
-        }
-
-        .category-sidebar {
-            width: 100%;
-            min-width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .products-main {
-            padding: 20px;
-        }
-
-        .product-search {
-            flex-direction: column;
-        }
-    }
-</style>
-
 {% endblock %}

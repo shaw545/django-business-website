@@ -6,65 +6,44 @@
 <div class="container section-padding">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="mb-4">{{ page_title }}</h2>
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
+                    <h2 class="mb-4">Add Product</h2>
 
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label class="form-label">Category</label>
-                            {{ form.category }}
-                        </div>
+                        {{ form.as_p }}
 
                         <div class="mb-3">
-                            <label class="form-label">Product Name</label>
-                            {{ form.name }}
+                            <label class="form-label fw-bold">
+                                Extra Product Images
+                            </label>
+                            <input type="file"
+                                   name="extra_images"
+                                   class="form-control"
+                                   accept="image/*"
+                                   multiple>
+
+                            <small class="text-muted">
+                                Upload front, back, side, and close-up images.
+                            </small>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            {{ form.description }}
-                        </div>
+                        <button type="submit" class="btn btn-main">
+                            Save Product
+                        </button>
 
-                        <div class="mb-3">
-                            <label class="form-label">Price in SLE</label>
-                            {{ form.price_sle }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Price in USD</label>
-                            {{ form.price_usd }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Main Image</label>
-                            {{ form.image }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Extra Gallery Images</label>
-                            {{ form.extra_images }}
-                            <small class="text-muted d-block mt-1">You can select multiple images.</small>
-                        </div>
-
-                        <div class="mb-3 form-check">
-                            {{ form.available }}
-                            <label class="form-check-label">Available</label>
-                        </div>
-
-                        <button type="submit" class="btn btn-main">Save Product</button>
-                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">Back</a>
+                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
+                            Back to Dashboard
+                        </a>
                     </form>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

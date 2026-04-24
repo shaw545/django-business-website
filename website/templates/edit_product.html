@@ -5,87 +5,71 @@
 {% block content %}
 <div class="container section-padding">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
+
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="mb-4">{{ page_title }}</h2>
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-
-                    {% if product.image %}
-                    <div class="mb-4">
-                        <p class="mb-2"><strong>Current Main Image</strong></p>
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 240px; border-radius: 12px;">
-                    </div>
-                    {% endif %}
-
-                    {% if gallery_images %}
-                    <div class="mb-4">
-                        <p class="mb-2"><strong>Gallery Images</strong></p>
-                        <div class="d-flex flex-wrap gap-3">
-                            {% for gallery in gallery_images %}
-                            <div>
-                                <img src="{{ gallery.image.url }}" alt="{{ product.name }}" class="thumb-image d-block mb-2">
-                                <a href="{% url 'delete_gallery_image' gallery.id %}" class="btn btn-sm btn-danger">Delete</a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
+                    <h2 class="mb-4">Edit Product</h2>
 
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label class="form-label">Category</label>
-                            {{ form.category }}
+                        {{ form.as_p }}
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Add More Product Images
+                            </label>
+                            <input type="file"
+                                   name="extra_images"
+                                   class="form-control"
+                                   accept="image/*"
+                                   multiple>
+
+                            <small class="text-muted">
+                                Add more angles like front, back, side, box, or close-up.
+                            </small>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Product Name</label>
-                            {{ form.name }}
-                        </div>
+                        <button type="submit" class="btn btn-main">
+                            Update Product
+                        </button>
 
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            {{ form.description }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Price in SLE</label>
-                            {{ form.price_sle }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Price in USD</label>
-                            {{ form.price_usd }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Replace Main Image</label>
-                            {{ form.image }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Add More Gallery Images</label>
-                            {{ form.extra_images }}
-                            <small class="text-muted d-block mt-1">You can add multiple new images.</small>
-                        </div>
-
-                        <div class="mb-3 form-check">
-                            {{ form.available }}
-                            <label class="form-check-label">Available</label>
-                        </div>
-
-                        <button type="submit" class="btn btn-main">Update Product</button>
-                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">Back</a>
+                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
+                            Back to Dashboard
+                        </a>
                     </form>
+
+                    {% if gallery_images %}
+                        <hr class="my-4">
+
+                        <h4>Gallery Images</h4>
+
+                        <div class="row g-3 mt-2">
+                            {% for img in gallery_images %}
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="{{ img.image.url }}"
+                                             class="card-img-top"
+                                             style="height: 180px; object-fit: cover;"
+                                             alt="{{ product.name }}">
+
+                                        <div class="card-body text-center">
+                                            <a href="{% url 'delete_gallery_image' img.id %}"
+                                               class="btn btn-sm btn-danger">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
