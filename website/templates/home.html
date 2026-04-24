@@ -1,90 +1,90 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Yusuf Business Solutions{% endblock %}
-
 {% block content %}
 
-<section class="hero">
+<!-- HERO -->
+<section class="hero mb-4">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6 text-start">
+
+            <div class="col-md-6">
                 <h1>Welcome to Yusuf Marketplace</h1>
                 <p>Discover quality products and trusted services in one place.</p>
 
-                <a href="{% url 'products' %}" class="btn btn-main me-2">Shop Now</a>
-                <a href="{% url 'register' %}" class="btn btn-light-custom">Become a Seller</a>
+                <a href="{% url 'products' %}" class="btn btn-warning me-2">Shop Now</a>
+                <a href="{% url 'register' %}" class="btn btn-light">Become a Seller</a>
             </div>
 
             <div class="col-md-6 text-center">
-                <img src="{% static 'Images/hero.jpg' %}" alt="Marketplace Hero" class="img-fluid rounded shadow" style="max-height: 360px; object-fit: cover;">
+                <img src="{% static 'Images/hero.jpg' %}"
+                     class="img-fluid rounded"
+                     style="max-height: 300px;">
             </div>
+
         </div>
     </div>
 </section>
 
-<div class="container section-padding">
+<!-- FULL WIDTH LAYOUT -->
+<div class="container-fluid">
 
     <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="card p-3">
-                <h4 class="mb-3 text-center">Shop by Category</h4>
 
-                <form method="GET" action="{% url 'products' %}">
-                    <select name="category" class="form-select mb-3" onchange="this.form.submit()">
-                        <option value="">All Categories</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
+        <!-- EXTREME LEFT SIDEBAR -->
+        <div class="col-md-2 bg-light p-3" style="min-height: 100vh;">
 
-                <div class="list-group">
-                    <a href="{% url 'products' %}" class="list-group-item list-group-item-action active">All</a>
+            <h5><strong>Categories</strong></h5>
+
+            <div class="mb-3">
+                <select class="form-select" onchange="location = this.value;">
+                    <option value="#">Select Category</option>
 
                     {% for category in categories %}
-                        <a href="{% url 'products' %}?category={{ category.id }}" class="list-group-item list-group-item-action">
+                        <option value="{% url 'products' %}?category={{ category.id }}">
                             {{ category.name }}
-                        </a>
-                    {% empty %}
-                        <p class="text-muted mb-0">No categories available.</p>
+                        </option>
                     {% endfor %}
-                </div>
+
+                </select>
             </div>
+
         </div>
 
-        <div class="col-md-9">
-            <h2 class="section-title mb-4">Featured Products</h2>
+        <!-- PRODUCTS AREA -->
+        <div class="col-md-10">
 
-            <div class="row g-4">
+            <h2 class="mb-4">Featured Products</h2>
+
+            <div class="row">
                 {% for product in products %}
-                <div class="col-md-4">
-                    <div class="card product-card h-100">
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
 
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                        {% else %}
-                            <div class="p-5 text-center">
-                                <p class="text-muted">No image available</p>
-                            </div>
+                            <img src="{{ product.image.url }}"
+                                 class="card-img-top"
+                                 style="height:250px; object-fit:cover;">
                         {% endif %}
 
                         <div class="card-body">
-                            <h5 class="fw-bold">{{ product.name }}</h5>
-                            <p class="text-primary fw-bold mb-1">SLE {{ product.price_sle }}</p>
-                            <p class="text-success">USD ${{ product.price_usd }}</p>
+                            <h5>{{ product.name }}</h5>
 
-                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-dark">View</a>
-                            <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-main">Buy Now</a>
+                            <p><strong>SLE {{ product.price_sle }}</strong></p>
+
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-dark">View</a>
+                            <a href="{% url 'checkout' product.id %}" class="btn btn-sm btn-warning">Buy</a>
                         </div>
 
                     </div>
                 </div>
-                {% empty %}
-                    <p>No featured products available.</p>
+
                 {% endfor %}
             </div>
+
         </div>
+
     </div>
 
 </div>
