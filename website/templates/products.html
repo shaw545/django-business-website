@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="container section-padding">
+
     <h2 class="section-title text-center mb-4">Marketplace</h2>
 
     <form method="GET" class="mb-4 d-flex justify-content-center">
@@ -13,10 +14,20 @@
 
     <div class="row align-items-start">
 
-        <!-- LEFT CATEGORY SIDEBAR -->
         <div class="col-md-3 mb-4">
             <div class="card shadow-sm p-3">
                 <h4 class="mb-3 text-center">Shop by Category</h4>
+
+                <form method="GET" action="{% url 'products' %}">
+                    <select name="category" class="form-select mb-3" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:'s' %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
 
                 <div class="list-group">
                     <a href="{% url 'products' %}"
@@ -29,12 +40,13 @@
                        class="list-group-item list-group-item-action {% if selected_category == category.id|stringformat:'s' %}active{% endif %}">
                         {{ category.name }}
                     </a>
+                    {% empty %}
+                        <p class="text-muted mb-0">No categories available.</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PRODUCT AREA -->
         <div class="col-md-9">
             <div class="row g-4 justify-content-center">
                 {% for product in products %}
