@@ -59,7 +59,7 @@
             border-radius: 8px;
         }
 
-        /* HERO SECTION */
+        /* HERO */
         .hero {
             display: flex;
             justify-content: space-between;
@@ -73,7 +73,7 @@
         }
 
         .hero-left h1 {
-            font-size: 50px;
+            font-size: 48px;
             margin-bottom: 15px;
         }
 
@@ -103,11 +103,11 @@
         }
 
         .hero-right img {
-            width: 500px;
+            width: 450px;
             border-radius: 10px;
         }
 
-        /* MAIN CONTENT */
+        /* MAIN */
         .main {
             display: flex;
             padding: 30px;
@@ -115,7 +115,7 @@
 
         /* SIDEBAR */
         .sidebar {
-            width: 250px;
+            width: 220px;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -136,28 +136,50 @@
             margin-bottom: 20px;
         }
 
+        /* GRID (eBay style) */
         .product-grid {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 20px;
         }
 
+        /* CARD */
         .product-card {
             background: #fff;
-            width: 250px;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            padding-bottom: 10px;
+            transition: 0.3s;
+            cursor: pointer;
         }
 
-        .product-card img {
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* IMAGE BOX */
+        .product-image {
             width: 100%;
             height: 180px;
-            object-fit: cover;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* INFO */
         .product-info {
-            padding: 15px;
+            padding: 10px;
+        }
+
+        .product-info h3 {
+            font-size: 15px;
+            margin: 5px 0;
         }
 
         .price {
@@ -186,7 +208,7 @@
     </div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <div class="hero">
     <div class="hero-left">
         <h1>Welcome to Yusuf Marketplace</h1>
@@ -203,7 +225,7 @@
     </div>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main">
 
     <!-- SIDEBAR -->
@@ -228,11 +250,13 @@
             {% for product in products %}
                 <div class="product-card">
 
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" alt="No Image">
-                    {% endif %}
+                    <div class="product-image">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.png' %}" alt="No Image">
+                        {% endif %}
+                    </div>
 
                     <div class="product-info">
                         <h3>{{ product.name }}</h3>
