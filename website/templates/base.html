@@ -3,172 +3,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Yusuf Business Solutions{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="icon" type="image/x-icon" href="{% static 'Images/hero.jpg' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% block title %}Yusuf Marketplace{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f7f9fc;
-            font-family: Arial, sans-serif;
-            color: #1f2937;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        a {
+            text-decoration: none;
         }
 
         .navbar {
-            background-color: #87cefa;
-            padding: 14px 0;
+            background: #7cc6f2;
+            padding: 14px 55px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
-        .navbar-brand {
-            color: #0f172a !important;
-            font-size: 1.8rem;
-            font-weight: bold;
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            color: #111827;
         }
 
-        .navbar a {
-            color: #0f172a !important;
-            text-decoration: none;
-            margin-right: 15px;
-            font-weight: 500;
+        .search-bar {
+            display: flex;
+            width: 42%;
         }
 
-        .navbar a:hover {
-            color: #ff9900 !important;
-        }
-
-        .search-btn,
-        .btn-main {
-            background-color: #ff9900;
-            border: none;
-            color: black;
-            font-weight: 600;
-            border-radius: 10px;
-        }
-
-        .search-btn:hover,
-        .btn-main:hover {
-            background-color: #e68a00;
-            color: black;
-        }
-
-        .hero {
-            background: linear-gradient(to right, #87cefa, #c8ecff);
-            color: #0f172a;
-            padding: 90px 20px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-weight: 700;
-            font-size: 3.1rem;
-            margin-bottom: 12px;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            margin-bottom: 24px;
-        }
-
-        .btn-light-custom {
-            background-color: #ffffff;
-            color: #0f172a;
-            border: 1px solid #d1d5db;
-            font-weight: 600;
-            padding: 10px 22px;
-            border-radius: 10px;
-        }
-
-        .btn-light-custom:hover {
-            background-color: #f3f4f6;
-        }
-
-        .card {
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            background-color: white;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
-            overflow: hidden;
-        }
-
-        .product-card img {
-            height: 260px;
+        .search-bar input {
             width: 100%;
-            object-fit: cover;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 9px 0 0 9px;
+            font-size: 15px;
         }
 
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 20px;
+        .search-bar button {
+            border: none;
+            padding: 12px 22px;
+            background: #ff9800;
+            color: #111827;
+            font-weight: 800;
+            border-radius: 0 9px 9px 0;
+            cursor: pointer;
         }
 
-        .section-padding {
-            padding: 60px 0;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .mini-cart {
+            position: relative;
+            background: #ffffff;
+            padding: 8px 13px;
+            border-radius: 50px;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            background: #ff9800;
+            color: #111827;
+            padding: 3px 7px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .dashboard-btn {
+            background: #ff9800;
+            padding: 10px 16px;
+            border-radius: 9px;
+            color: #111827 !important;
+            font-weight: 800;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .btn-orange {
+            background: #ff9800;
+            color: #111827;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid #111827;
+            color: #111827;
+            padding: 9px 14px;
+            border-radius: 9px;
+            font-weight: 700;
+            background: #ffffff;
         }
 
         .footer {
-            background-color: #87cefa;
-            color: #0f172a;
+            margin-top: 60px;
+            padding: 25px;
+            background: #7cc6f2;
             text-align: center;
-            padding: 20px;
-            margin-top: 50px;
+            color: #111827;
+            font-weight: 600;
         }
 
-        .category-card {
-            padding: 30px 20px;
-            text-align: center;
-            transition: 0.3s ease;
-            min-height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .footer a {
+            color: #111827;
+            margin: 0 8px;
         }
 
-        .category-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2);
-        }
+        @media (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                gap: 14px;
+                padding: 18px;
+            }
 
-        .thumb-image {
-            width: 95px;
-            height: 95px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid #ddd;
+            .search-bar {
+                width: 100%;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
+
+    {% block extra_css %}{% endblock %}
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-        <a class="navbar-brand" href="/">Yusuf</a>
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="logo">Yusuf</a>
 
-        <form class="d-flex w-50" action="/products/">
-            <input class="form-control me-2" type="search" name="q" placeholder="Search products...">
-            <button class="btn search-btn" type="submit">Search</button>
-        </form>
+    <form class="search-bar" method="GET" action="{% url 'products' %}">
+        <input type="text" name="q" placeholder="Search products...">
+        <button type="submit">Search</button>
+    </form>
 
-        <div class="d-flex align-items-center">
-            <a href="/">Home</a>
-            <a href="/products/">Products</a>
-            <a href="/cart/">Cart</a>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'products' %}">Products</a>
 
-            {% if user.is_authenticated %}
-                <a href="/seller/dashboard/" class="btn btn-main btn-sm">Dashboard</a>
-            {% else %}
-                <a href="/register/" class="btn btn-main btn-sm">Seller Register</a>
-            {% endif %}
-        </div>
+        <a href="{% url 'cart' %}" class="mini-cart">
+            🛒
+            <span class="cart-count">{{ request.session.cart|length|default:0 }}</span>
+        </a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="dashboard-btn">Seller Register</a>
+        {% endif %}
     </div>
 </nav>
 
 {% block content %}{% endblock %}
 
-<div class="footer">
-    <p class="mb-0">© 2026 Yusuf Business Solutions</p>
-</div>
+<footer class="footer">
+    <p>
+        <a href="{% url 'terms' %}">Seller Terms</a> |
+        <a href="{% url 'privacy' %}">Privacy Policy</a>
+    </p>
+    <p>© 2026 Yusuf Marketplace. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
