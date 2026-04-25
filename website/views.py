@@ -1,61 +1,70 @@
 from decimal import Decimal
+
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.mail import send_mail
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.core.mail import send_mail
 from django.db.models import Sum
+from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import ContactMessage, Category, Product, ProductImage, Order, PayoutRequest
 from .forms import SellerRegistrationForm, ProductForm
-
-
-def _get_cart(request):
-    return request.session.get("cart", [])
-
-
-def _save_cart(request, cart):
-    request.session["cart"] = cart
-    request.session.modified = True
-
-
-def _build_cart_rows(request):
-    cart = _get_cart(request)
-    cart_rows = []
-    grand_total = Decimal("0.00")
-
-    for item in cart:
-        product = Product.objects.filter(id=item["product_id"], available=True).first()
-        if not product:
-            continue
-
-        quantity = int(item.get("quantity", 1))
-        currency = item.get("currency", "SLE")
-
-        unit_price = product.price_sle if currency == "SLE" else product.price_usd
-        unit_price = Decimal(unit_price)
-        row_total = unit_price * quantity
-        grand_total += row_total
-
-        cart_rows.append({
-            "product": product,
-            "quantity": quantity,
-            "currency": currency,
-            "unit_price": unit_price,
-            "row_total": row_total,
-        })
-
-    return cart_rows, grand_total
+from .models import (
+    Category,
+    Product,
+    ProductImage,
+    Order,
+    ContactMessage,
+    PayoutRequest,
+)
 
 
 def home(request):
     products = Product.objects.filter(available=True).order_by("-created_at")[:8]
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by("name")
 
     return render(request, "home.html", {
         "products": products,
         "categories": categories,
+    })
+
+
+def products(request):
+    query = request.GET.get("q", "").strip()
+    category_id = request.GET.get("category", "").strip()
+
+    products_qs = Product.objects.filter(available=True).order_by("-created_at")
+
+    if category_id:
+        products_qs = products_qs.filter(category_id=category_id)
+
+    if query:
+        products_qs = products_qs.filter(name__icontains=query)
+
+    categories = Category.objects.all().order_by("name")
+
+    selected_category_name = ""
+    if category_id:
+        selected_category = Category.objects.filter(id=category_id).first()
+        if selected_category:
+            selected_category_name = selected_category.name
+
+    return render(request, "products.html", {
+        "products": products_qs,
+        "categories": categories,
+        "query": query,
+        "selected_category": category_id,
+        "selected_category_name": selected_category_name,
+    })
+
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id, available=True)
+    gallery_images = product.gallery_images.all().order_by("-created_at")
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "gallery_images": gallery_images,
     })
 
 
@@ -79,46 +88,55 @@ def privacy_view(request):
     return render(request, "privacy.html")
 
 
-def products(request):
-    query = request.GET.get("q")
-    category_id = request.GET.get("category")
-
-    products_qs = Product.objects.filter(available=True).order_by("-created_at")
-
-    if query:
-        products_qs = products_qs.filter(name__icontains=query)
-
-    if category_id:
-        products_qs = products_qs.filter(category_id=category_id)
-
-    categories = Category.objects.all()
-
-    return render(request, "products.html", {
-        "products": products_qs,
-        "categories": categories,
-        "query": query or "",
-        "selected_category": category_id or "",
-    })
+def _get_cart(request):
+    return request.session.get("cart", [])
 
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id, available=True)
-    gallery_images = product.gallery_images.all()
-    return render(request, "product_detail.html", {
-        "product": product,
-        "gallery_images": gallery_images,
-    })
+def _save_cart(request, cart):
+    request.session["cart"] = cart
+    request.session.modified = True
+
+
+def _build_cart_rows(request):
+    cart = _get_cart(request)
+    cart_rows = []
+    grand_total = Decimal("0.00")
+
+    for item in cart:
+        product = Product.objects.filter(
+            id=item.get("product_id"),
+            available=True
+        ).first()
+
+        if not product:
+            continue
+
+        quantity = int(item.get("quantity", 1))
+        currency = "SLE"
+        unit_price = Decimal(product.price_sle)
+        row_total = unit_price * Decimal(quantity)
+        grand_total += row_total
+
+        cart_rows.append({
+            "product": product,
+            "quantity": quantity,
+            "currency": currency,
+            "unit_price": unit_price,
+            "row_total": row_total,
+        })
+
+    return cart_rows, grand_total
 
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id, available=True)
 
     cart = _get_cart(request)
-
     found = False
+
     for item in cart:
-        if item["product_id"] == product.id and item["currency"] == "SLE":
-            item["quantity"] += 1
+        if item.get("product_id") == product.id:
+            item["quantity"] = int(item.get("quantity", 1)) + 1
             found = True
             break
 
@@ -148,10 +166,12 @@ def update_cart_item(request, index):
 
     if request.method == "POST" and 0 <= index < len(cart):
         quantity = int(request.POST.get("quantity", 1))
+
         if quantity <= 0:
             cart.pop(index)
         else:
             cart[index]["quantity"] = quantity
+
         _save_cart(request, cart)
 
     return redirect("cart")
@@ -179,8 +199,8 @@ def checkout(request, product_id):
         phone = request.POST.get("phone")
         address = request.POST.get("address")
         quantity = int(request.POST.get("quantity", 1))
-        currency = "SLE"
 
+        currency = "SLE"
         unit_price = Decimal(product.price_sle)
         total_amount = unit_price * Decimal(quantity)
         platform_fee_amount = (platform_fee_percent / Decimal("100")) * total_amount
@@ -248,7 +268,7 @@ def cart_checkout(request):
             quantity = item["quantity"]
             currency = "SLE"
             unit_price = Decimal(product.price_sle)
-            total_amount = unit_price * quantity
+            total_amount = unit_price * Decimal(quantity)
 
             platform_fee_amount = (platform_fee_percent / Decimal("100")) * total_amount
             seller_earning = total_amount - platform_fee_amount
@@ -321,42 +341,64 @@ Message:
 
         success = True
 
-    return render(request, "contact.html", {"success": success})
+    return render(request, "contact.html", {
+        "success": success,
+    })
 
 
 def register(request):
     if request.method == "POST":
         form = SellerRegistrationForm(request.POST)
+
         if form.is_valid():
             user = form.save(commit=False)
             user.email = form.cleaned_data["email"]
             user.first_name = form.cleaned_data.get("first_name", "")
             user.last_name = form.cleaned_data.get("last_name", "")
             user.save()
+
             login(request, user)
             messages.success(request, "Seller registration successful.")
             return redirect("seller_dashboard")
+
+        messages.error(request, "Registration failed. Please check the form.")
     else:
         form = SellerRegistrationForm()
 
-    return render(request, "register.html", {"form": form})
+    return render(request, "register.html", {
+        "form": form,
+    })
 
 
 @login_required
 def seller_dashboard(request):
-    seller_products = Product.objects.filter(seller=request.user).order_by("-created_at")
-    seller_orders = Order.objects.filter(product__seller=request.user).order_by("-created_at")
+    seller_products = Product.objects.filter(
+        seller=request.user
+    ).order_by("-created_at")
+
+    seller_orders = Order.objects.filter(
+        product__seller=request.user
+    ).order_by("-created_at")
 
     total_products = seller_products.count()
     total_orders = seller_orders.count()
 
     paid_orders = seller_orders.filter(payment_status="Paid")
-    seller_total_earnings = paid_orders.aggregate(total=Sum("seller_earning"))["total"] or Decimal("0.00")
 
-    seller_payouts = PayoutRequest.objects.filter(seller=request.user).order_by("-request_date")
-    total_requested = seller_payouts.exclude(status="Rejected").aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
+    seller_total_earnings = paid_orders.aggregate(
+        total=Sum("seller_earning")
+    )["total"] or Decimal("0.00")
+
+    seller_payouts = PayoutRequest.objects.filter(
+        seller=request.user
+    ).order_by("-request_date")
+
+    total_requested = seller_payouts.exclude(
+        status="Rejected"
+    ).aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
 
     available_balance = seller_total_earnings - total_requested
+
     if available_balance < 0:
         available_balance = Decimal("0.00")
 
@@ -383,61 +425,95 @@ def add_product(request):
             product.save()
 
             for image_file in extra_files:
-                ProductImage.objects.create(product=product, image=image_file)
+                ProductImage.objects.create(
+                    product=product,
+                    image=image_file
+                )
 
             messages.success(request, "Product added successfully.")
             return redirect("seller_dashboard")
+
+        messages.error(request, "Product was not saved. Please check the form and try again.")
     else:
         form = ProductForm()
 
-    return render(request, "add_product.html", {"form": form, "page_title": "Add Product"})
+    return render(request, "add_product.html", {
+        "form": form,
+        "page_title": "Add Product",
+    })
 
 
 @login_required
 def edit_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    product = get_object_or_404(
+        Product,
+        id=product_id,
+        seller=request.user
+    )
 
     if request.method == "POST":
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = ProductForm(
+            request.POST,
+            request.FILES,
+            instance=product
+        )
+
         extra_files = request.FILES.getlist("extra_images")
 
         if form.is_valid():
-            form.save()
+            product = form.save()
 
             for image_file in extra_files:
-                ProductImage.objects.create(product=product, image=image_file)
+                ProductImage.objects.create(
+                    product=product,
+                    image=image_file
+                )
 
             messages.success(request, "Product updated successfully.")
             return redirect("seller_dashboard")
+
+        messages.error(request, "Product update failed. Please check the form and try again.")
     else:
         form = ProductForm(instance=product)
 
     return render(request, "edit_product.html", {
         "form": form,
         "product": product,
-        "gallery_images": product.gallery_images.all(),
+        "gallery_images": product.gallery_images.all().order_by("-created_at"),
         "page_title": "Edit Product",
     })
 
 
 @login_required
 def delete_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    product = get_object_or_404(
+        Product,
+        id=product_id,
+        seller=request.user
+    )
 
     if request.method == "POST":
         product.delete()
         messages.success(request, "Product deleted successfully.")
         return redirect("seller_dashboard")
 
-    return render(request, "delete_product.html", {"product": product})
+    return render(request, "delete_product.html", {
+        "product": product,
+    })
 
 
 @login_required
 def delete_gallery_image(request, image_id):
-    gallery_image = get_object_or_404(ProductImage, id=image_id, product__seller=request.user)
+    gallery_image = get_object_or_404(
+        ProductImage,
+        id=image_id,
+        product__seller=request.user
+    )
+
     product_id = gallery_image.product.id
     gallery_image.delete()
-    messages.success(request, "Gallery image deleted.")
+
+    messages.success(request, "Gallery image deleted successfully.")
     return redirect("edit_product", product_id=product_id)
 
 
@@ -452,11 +528,22 @@ def request_withdrawal(request):
             messages.error(request, "Enter a valid amount.")
             return redirect("seller_dashboard")
 
-        paid_orders = Order.objects.filter(product__seller=request.user, payment_status="Paid")
-        seller_total_earnings = paid_orders.aggregate(total=Sum("seller_earning"))["total"] or Decimal("0.00")
+        paid_orders = Order.objects.filter(
+            product__seller=request.user,
+            payment_status="Paid"
+        )
 
-        seller_payouts = PayoutRequest.objects.filter(seller=request.user)
-        total_requested = seller_payouts.exclude(status="Rejected").aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
+        seller_total_earnings = paid_orders.aggregate(
+            total=Sum("seller_earning")
+        )["total"] or Decimal("0.00")
+
+        seller_payouts = PayoutRequest.objects.filter(
+            seller=request.user
+        )
+
+        total_requested = seller_payouts.exclude(
+            status="Rejected"
+        ).aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
 
         available_balance = seller_total_earnings - total_requested
 
