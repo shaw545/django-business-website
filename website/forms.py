@@ -56,12 +56,29 @@ class SellerRegistrationForm(UserCreationForm):
         return user
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput(attrs={"multiple": True}))
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        if not data:
+            return []
+
+        if isinstance(data, (list, tuple)):
+            return [super(MultipleFileField, self).clean(file, initial) for file in data]
+
+        return [super().clean(data, initial)]
+
+
 class ProductForm(forms.ModelForm):
-    extra_images = forms.FileField(
+    extra_images = MultipleFileField(
         required=False,
-        widget=forms.ClearableFileInput(attrs={
-            "multiple": True,
-        })
+        label="Extra Product Images"
     )
 
     class Meta:
