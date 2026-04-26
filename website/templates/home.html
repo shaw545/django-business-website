@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<div class="hero-text">
+<div class="hero">
     <h1>Everything You Need, One Place</h1>
-    <p>Browse millions of products across electronics, fashion, and more.</p>
+    <p>Browse millions of products across electronics, fashion,home and Furnitures and more.</p>
 
     <div class="hero-buttons">
         <a href="{% url 'products' %}" class="btn-orange">Shop Now</a>
         <a href="{% url 'register' %}" class="btn-outline">Become a Seller</a>
     </div>
-</div>
-{% block extra_css %}
+</div>{% block extra_css %}
 <style>
     .hero {
         background: linear-gradient(to right, #7cc6f2, #d9f3ff);
