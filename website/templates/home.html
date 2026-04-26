@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Yusuf Marketplace{% endblock %}
+<div class="hero-text">
+    <h1>Everything You Need, One Place</h1>
+    <p>Browse millions of products across electronics, fashion, and more.</p>
 
+    <div class="hero-buttons">
+        <a href="{% url 'products' %}" class="btn-orange">Shop Now</a>
+        <a href="{% url 'register' %}" class="btn-outline">Become a Seller</a>
+    </div>
+</div>
 {% block extra_css %}
 <style>
     .hero {
