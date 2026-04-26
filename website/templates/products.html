@@ -1,238 +1,131 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yusuf Marketplace</title>
 
-{% block title %}Marketplace{% endblock %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-{% block extra_css %}
-<style>
-    .marketplace {
-        padding: 35px 0;
-    }
-
-    .marketplace-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 22px;
-    }
-
-    .marketplace-header h1 {
-        font-size: 42px;
-        margin: 0;
-    }
-
-    .marketplace-header p {
-        color: #6b7280;
-        margin-top: 6px;
-    }
-
-    .category-filter {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .category-filter label {
-        font-weight: 800;
-    }
-
-    .category-filter select {
-        padding: 12px 15px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        min-width: 240px;
-        background: #ffffff;
-    }
-
-    .search-form {
-        display: flex;
-        max-width: 700px;
-        margin-bottom: 28px;
-    }
-
-    .search-form input {
-        flex: 1;
-        padding: 13px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px 0 0 10px;
-    }
-
-    .search-form button {
-        border: none;
-        padding: 13px 24px;
-        background: #ff9800;
-        font-weight: 800;
-        border-radius: 0 10px 10px 0;
-    }
-
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-        gap: 24px;
-    }
-
-    .product-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        overflow: hidden;
-        transition: .25s;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    }
-
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 30px rgba(0,0,0,0.12);
-    }
-
-    .product-image {
-        height: 175px;
-        background: #f1f3f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .product-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        padding: 10px;
-    }
-
-    .product-info {
-        padding: 14px;
-    }
-
-    .product-info h3 {
-        font-size: 16px;
-        margin: 5px 0 8px;
-    }
-
-    .product-category {
-        color: #6b7280;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .price {
-        color: #000;
-        font-weight: 800;
-        font-size: 17px;
-        margin-bottom: 12px;
-    }
-
-    .view-product-btn {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: #ff9800;
-        color: #111827;
-        padding: 10px 12px;
-        border-radius: 9px;
-        font-weight: 800;
-    }
-
-    .empty-products {
-        background: #ffffff;
-        padding: 35px;
-        border-radius: 14px;
-        text-align: center;
-        grid-column: 1 / -1;
-    }
-
-    @media (max-width: 900px) {
-        .marketplace-header {
-            flex-direction: column;
-            align-items: flex-start;
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
         }
 
-        .category-filter {
-            flex-direction: column;
-            align-items: flex-start;
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        /* PRODUCT GRID */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        /* PRODUCT CARD */
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* IMAGE */
+        .product-card img {
             width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
         }
 
-        .category-filter select {
-            width: 100%;
+        /* NAME */
+        .product-name {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 8px;
         }
-    }
-</style>
-{% endblock %}
 
-{% block content %}
+        /* CATEGORY */
+        .product-category {
+            font-size: 12px;
+            color: gray;
+        }
 
-<section class="container marketplace">
+        /* ✅ SMALL PRICE */
+        .product-price {
+            font-size: 13px;
+            color: black;
+            font-weight: bold;
+            margin-top: 5px;
+        }
 
-    <div class="marketplace-header">
-        <div>
-            <h1>Marketplace</h1>
-            {% if selected_category_name %}
-                <p>Showing products in: <strong>{{ selected_category_name }}</strong></p>
-            {% else %}
-                <p>Browse all available products.</p>
-            {% endif %}
-        </div>
+        /* ✅ SMALL BUTTON */
+        .view-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background: orange;
+            color: black;
+            border-radius: 6px;
+            text-decoration: none;
+        }
 
-        <form method="GET" action="{% url 'products' %}" class="category-filter">
-            {% if query %}
-                <input type="hidden" name="q" value="{{ query }}">
-            {% endif %}
+        .view-btn:hover {
+            background: #e68a00;
+        }
 
-            <label for="category">Category</label>
-            <select id="category" name="category" onchange="this.form.submit()">
-                <option value="">All Categories</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:'s' %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-    </div>
+    </style>
+</head>
 
-    <form method="GET" action="{% url 'products' %}" class="search-form">
-        {% if selected_category %}
-            <input type="hidden" name="category" value="{{ selected_category }}">
-        {% endif %}
-        <input type="text" name="q" placeholder="Search products..." value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
+<body>
+
+<div class="container">
+
+    <h2>Featured Products</h2>
 
     <div class="product-grid">
+
         {% for product in products %}
-            <div class="product-card">
-                <div class="product-image">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" alt="No Image">
-                    {% endif %}
-                </div>
+        <div class="product-card">
 
-                <div class="product-info">
-                    <h3>{{ product.name }}</h3>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
 
-                    {% if product.category %}
-                        <div class="product-category">{{ product.category.name }}</div>
-                    {% endif %}
-
-                    <div class="price">SLE {{ product.price_sle }}</div>
-
-                    <a href="{% url 'product_detail' product.id %}" class="view-product-btn">
-                        View Product
-                    </a>
-                </div>
+            <div class="product-name">
+                {{ product.name }}
             </div>
-        {% empty %}
-            <div class="empty-products">
-                <h3>No products found.</h3>
-                <p>Try another category or search term.</p>
+
+            <div class="product-category">
+                {{ product.category.name }}
             </div>
+
+            <div class="product-price">
+                SLE {{ product.price_sle }}
+            </div>
+
+            <a href="{% url 'product_detail' product.id %}" class="view-btn">
+                View Product
+            </a>
+
+        </div>
         {% endfor %}
+
     </div>
 
-</section>
+</div>
 
-{% endblock %}
+</body>
+</html>
