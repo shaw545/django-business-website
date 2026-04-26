@@ -68,10 +68,7 @@ class MultipleFileInput(forms.FileInput):
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault(
-            "widget",
-            MultipleFileInput(attrs={"multiple": True})
-        )
+        kwargs.setdefault("widget", MultipleFileInput(attrs={"multiple": True}))
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
@@ -79,7 +76,10 @@ class MultipleFileField(forms.FileField):
             return []
 
         if isinstance(data, (list, tuple)):
-            return [super(MultipleFileField, self).clean(file, initial) for file in data]
+            cleaned_files = []
+            for single_file in data:
+                cleaned_files.append(super(MultipleFileField, self).clean(single_file, initial))
+            return cleaned_files
 
         return [super().clean(data, initial)]
 
