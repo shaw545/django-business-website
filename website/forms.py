@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 
-from .models import Product, ProductReview
+from .models import Product
 
 
 class SellerRegistrationForm(UserCreationForm):
@@ -62,13 +62,16 @@ class SellerRegistrationForm(UserCreationForm):
         return user
 
 
-class MultipleFileInput(forms.ClearableFileInput):
+class MultipleFileInput(forms.FileInput):
     allow_multiple_selected = True
 
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput(attrs={"multiple": True}))
+        kwargs.setdefault(
+            "widget",
+            MultipleFileInput(attrs={"multiple": True})
+        )
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
@@ -90,31 +93,3 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         exclude = ["seller"]
-
-
-class ProductReviewForm(forms.ModelForm):
-    class Meta:
-        model = ProductReview
-        fields = ["name", "rating", "comment"]
-
-        widgets = {
-            "name": forms.TextInput(attrs={
-                "placeholder": "Your name",
-                "class": "review-input"
-            }),
-            "rating": forms.Select(
-                choices=[
-                    (1, "⭐ 1"),
-                    (2, "⭐⭐ 2"),
-                    (3, "⭐⭐⭐ 3"),
-                    (4, "⭐⭐⭐⭐ 4"),
-                    (5, "⭐⭐⭐⭐⭐ 5"),
-                ],
-                attrs={"class": "review-input"}
-            ),
-            "comment": forms.Textarea(attrs={
-                "placeholder": "Write your review...",
-                "class": "review-textarea",
-                "rows": 4
-            }),
-        }
