@@ -1,114 +1,243 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-detail-page {
+        padding: 35px 0;
+    }
+
+    .product-detail-layout {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 45px;
+        align-items: start;
+    }
+
+    .image-box {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .main-image-wrap {
+        width: 100%;
+        height: 560px;
+        background: #f1f3f5;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .main-image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .gallery-row {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .gallery-thumb {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        border: 2px solid #e5e7eb;
+        background: #f1f3f5;
+        cursor: pointer;
+        object-fit: contain;
+        padding: 4px;
+    }
+
+    .gallery-thumb:hover {
+        border-color: #0d6efd;
+    }
+
+    .details-box {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .details-box h1 {
+        font-size: 30px;
+        margin: 0 0 12px;
+        color: #111827;
+    }
+
+    .category {
+        font-size: 16px;
+        color: #6b7280;
+        margin-bottom: 15px;
+    }
+
+    .price {
+        font-size: 24px;
+        font-weight: 800;
+        color: #000000;
+        margin: 18px 0;
+    }
+
+    .description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #374151;
+        margin-bottom: 28px;
+    }
+
+    .action-buttons {
+        display: grid;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .buy-now-btn {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 11px;
+        border-radius: 50px;
+        border: none;
+        background: #0d6efd;
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .add-cart-btn {
+        width: 100%;
+        padding: 11px;
+        border-radius: 50px;
+        border: 2px solid #0d6efd;
+        background: white;
+        color: #0d6efd;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .info-box {
+        margin-top: 25px;
+        background: #f9fafb;
+        border-radius: 14px;
+        padding: 18px;
+        color: #374151;
+        font-size: 15px;
+    }
+
+    .info-box p {
+        margin: 8px 0;
+    }
+
+    @media (max-width: 900px) {
+        .product-detail-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .main-image-wrap {
+            height: 380px;
+        }
+
+        .details-box h1 {
+            font-size: 26px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<style>
-.container {
-    width: 90%;
-    margin: auto;
-    display: flex;
-    gap: 40px;
-    margin-top: 30px;
-}
+<section class="container product-detail-page">
 
-.image-section {
-    width: 50%;
-}
+    <div class="product-detail-layout">
 
-.main-image {
-    width: 100%;
-    height: 450px;
-    object-fit: contain;
-    background: #f2f2f2;
-    border-radius: 10px;
-}
+        <div class="image-box">
 
-.gallery {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.gallery img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
-.details {
-    width: 50%;
-}
-
-.price {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.btn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 30px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.buy {
-    background: blue;
-    color: white;
-    border: none;
-}
-
-.cart {
-    background: white;
-    border: 2px solid blue;
-    color: blue;
-}
-</style>
-
-<div class="container">
-
-    <!-- LEFT SIDE -->
-    <div class="image-section">
-
-        <!-- MAIN IMAGE -->
-        {% if product.image %}
-            <img src="{{ product.image.url }}" class="main-image">
-        {% endif %}
-
-        <!-- EXTRA IMAGES -->
-        <div class="gallery">
-            {% for img in gallery_images %}
-                {% if img.image %}
-                    <img src="{{ img.image.url }}">
+            <div class="main-image-wrap">
+                {% if product.image %}
+                    <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img id="mainProductImage" src="{% static 'images/default.png' %}" alt="No Image">
                 {% endif %}
-            {% endfor %}
+            </div>
+
+            <div class="gallery-row">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}"
+                         class="gallery-thumb"
+                         onclick="changeMainImage('{{ product.image.url }}')">
+                {% endif %}
+
+                {% for img in gallery_images %}
+                    {% if img.image %}
+                        <img src="{{ img.image.url }}"
+                             alt="{{ product.name }}"
+                             class="gallery-thumb"
+                             onclick="changeMainImage('{{ img.image.url }}')">
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="details-box">
+            <h1>{{ product.name }}</h1>
+
+            {% if product.category %}
+                <div class="category">{{ product.category.name }}</div>
+            {% endif %}
+
+            <div class="price">SLE {{ product.price_sle }}</div>
+
+            {% if product.description %}
+                <div class="description">
+                    {{ product.description }}
+                </div>
+            {% endif %}
+
+            <div class="action-buttons">
+
+                <a href="{% url 'checkout' product.id %}" class="buy-now-btn">
+                    Buy It Now
+                </a>
+
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="add-cart-btn">
+                        Add to Cart
+                    </button>
+                </form>
+
+            </div>
+
+            <div class="info-box">
+                <p><strong>Shipping:</strong> Seller will receive the customer shipping details after checkout.</p>
+                <p><strong>Payment:</strong> Order will be recorded as pending until payment is confirmed.</p>
+                <p><strong>Returns:</strong> Contact seller for return terms.</p>
+            </div>
         </div>
 
     </div>
 
-    <!-- RIGHT SIDE -->
-    <div class="details">
+</section>
 
-        <h2>{{ product.name }}</h2>
-
-        <p>{{ product.category.name }}</p>
-
-        <div class="price">
-            SLE {{ product.price_sle }}
-        </div>
-
-        <p>{{ product.description }}</p>
-
-        <!-- BUTTONS -->
-        <button class="btn buy">Buy It Now</button>
-        <button class="btn cart">Add to Cart</button>
-
-    </div>
-
-</div>
+<script>
+    function changeMainImage(imageUrl) {
+        document.getElementById("mainProductImage").src = imageUrl;
+    }
+</script>
 
 {% endblock %}
