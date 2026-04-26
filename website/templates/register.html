@@ -1,107 +1,165 @@
 {% extends 'base.html' %}
 
-{% block title %}Seller Register{% endblock %}
+{% block title %}Seller Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+.register-page {
+    padding: 35px 0;
+}
+
+.register-box {
+    max-width: 650px;
+    margin: auto;
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.register-box h1 {
+    margin-top: 0;
+    font-size: 30px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+.seller-type-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.seller-option {
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 15px;
+    background: #f9fafb;
+}
+
+.seller-option input {
+    margin-right: 8px;
+}
+
+.seller-option strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.help-text {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.submit-btn {
+    width: 100%;
+    background: orange;
+    border: none;
+    padding: 13px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.errorlist {
+    color: red;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .seller-type-box {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container section-padding">
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="card shadow-sm">
-                <div class="card-body p-4">
-                    <h2 class="mb-4">Seller Registration</h2>
 
-                    {% if form.errors %}
-                        <div class="alert alert-danger">
-                            Please correct the errors below.
-                        </div>
-                    {% endif %}
+<div class="container register-page">
 
-                    <form method="POST">
-                        {% csrf_token %}
+    <div class="register-box">
+        <h1>Become a Seller</h1>
+        <p class="help-text">Choose whether you are registering as a personal seller or a business seller.</p>
 
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <div class="text-danger small">{{ form.username.errors }}</div>
-                            {% endif %}
-                        </div>
+        <form method="POST">
+            {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label class="form-label">First Name</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="text-danger small">{{ form.first_name.errors }}</div>
-                            {% endif %}
-                        </div>
+            {{ form.non_field_errors }}
 
-                        <div class="mb-3">
-                            <label class="form-label">Last Name</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="text-danger small">{{ form.last_name.errors }}</div>
-                            {% endif %}
-                        </div>
+            <label><strong>Seller Type</strong></label>
 
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="text-danger small">{{ form.email.errors }}</div>
-                            {% endif %}
-                        </div>
+            <div class="seller-type-box">
+                <label class="seller-option">
+                    <input type="radio" name="seller_type" value="personal" required>
+                    <strong>Personal Seller</strong>
+                    <span class="help-text">Sell personal items, small products, or individual listings.</span>
+                </label>
 
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            {{ form.password1 }}
-                            {% if form.password1.errors %}
-                                <div class="text-danger small">{{ form.password1.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Confirm Password</label>
-                            {{ form.password2 }}
-                            {% if form.password2.errors %}
-                                <div class="text-danger small">{{ form.password2.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-check mb-3">
-                            {{ form.agree_terms }}
-                            <label class="form-check-label" for="{{ form.agree_terms.id_for_label }}">
-                                I agree to the
-                                <a href="{% url 'terms' %}" target="_blank">Terms and Conditions</a>
-                            </label>
-                            {% if form.agree_terms.errors %}
-                                <div class="text-danger small mt-1">{{ form.agree_terms.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-check mb-4">
-                            {{ form.agree_privacy }}
-                            <label class="form-check-label" for="{{ form.agree_privacy.id_for_label }}">
-                                I agree to the
-                                <a href="{% url 'privacy' %}" target="_blank">Privacy Policy</a>
-                            </label>
-                            {% if form.agree_privacy.errors %}
-                                <div class="text-danger small mt-1">{{ form.agree_privacy.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <button type="submit" class="btn btn-main">Register as Seller</button>
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">Back Home</a>
-                    </form>
-
-                    <div class="mt-4">
-                        <small class="text-muted">
-                            Already have an account?
-                            <a href="{% url 'login' %}">Login here</a>
-                        </small>
-                    </div>
-                </div>
+                <label class="seller-option">
+                    <input type="radio" name="seller_type" value="business" required>
+                    <strong>Business Seller</strong>
+                    <span class="help-text">Register as a shop, company, or professional seller.</span>
+                </label>
             </div>
-        </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>First Name</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            <button type="submit" class="submit-btn">Create Seller Account</button>
+        </form>
     </div>
+
 </div>
+
 {% endblock %}

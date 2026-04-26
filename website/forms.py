@@ -1,14 +1,26 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from .models import Product
 
 
 class SellerRegistrationForm(UserCreationForm):
+    SELLER_TYPE_CHOICES = [
+        ("personal", "Personal Seller"),
+        ("business", "Business Seller"),
+    ]
+
+    seller_type = forms.ChoiceField(
+        choices=SELLER_TYPE_CHOICES,
+        widget=forms.RadioSelect,
+        required=True,
+        label="Seller Type"
+    )
+
+    first_name = forms.CharField(max_length=100, required=True)
+    last_name = forms.CharField(max_length=100, required=True)
     email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=100, required=False)
-    last_name = forms.CharField(max_length=100, required=False)
 
     class Meta:
         model = User
@@ -17,30 +29,41 @@ class SellerRegistrationForm(UserCreationForm):
             "first_name",
             "last_name",
             "email",
+            "seller_type",
             "password1",
             "password2",
         ]
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        user.email = self.cleaned_data["email"]
+
+        if commit:
+            user.save()
+
+            seller_type = self.cleaned_data.get("seller_type")
+
+            if seller_type == "business":
+                group, created = Group.objects.get_or_create(name="Business Sellers")
+            else:
+                group, created = Group.objects.get_or_create(name="Personal Sellers")
+
+            user.groups.add(group)
+
+        return user
+
 
 class ProductForm(forms.ModelForm):
+    extra_images = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            "multiple": True,
+        })
+    )
+
     class Meta:
         model = Product
-        fields = [
-            "category",
-            "name",
-            "description",
-            "price_usd",
-            "price_sle",
-            "image",
-            "available",
-        ]
-
-        widgets = {
-            "category": forms.Select(attrs={"class": "form-control"}),
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
-            "price_usd": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
-            "price_sle": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
-            "image": forms.FileInput(attrs={"class": "form-control"}),
-            "available": forms.CheckboxInput(attrs={"class": "form-check-input"}),
-        }
+        exclude = ["seller"]
