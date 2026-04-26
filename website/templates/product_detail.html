@@ -1,216 +1,114 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ product.name }}{% endblock %}
-
-{% block extra_css %}
-<style>
-    .product-detail-page {
-        padding: 40px 0;
-    }
-
-    .product-detail-layout {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 45px;
-        align-items: start;
-    }
-
-    .image-box {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-    }
-
-    .product-main-image {
-        width: 100%;
-        height: 560px;
-        object-fit: contain;
-        border-radius: 14px;
-        background: #f1f3f5;
-    }
-
-    .extra-images {
-        margin-top: 18px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-        gap: 12px;
-    }
-
-    .extra-image-box {
-        height: 95px;
-        background: #f1f3f5;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-    }
-
-    .extra-image-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        padding: 5px;
-    }
-
-    .details-box {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-    }
-
-    .details-box h1 {
-        font-size: 32px;
-        margin: 0 0 12px;
-        color: #111827;
-    }
-
-    .category {
-        font-size: 16px;
-        color: #6b7280;
-        margin-bottom: 15px;
-    }
-
-    .price {
-        font-size: 26px;
-        font-weight: 800;
-        color: #000000;
-        margin: 20px 0;
-    }
-
-    .description {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #374151;
-        margin-bottom: 28px;
-    }
-
-    .action-buttons {
-        display: grid;
-        gap: 12px;
-        margin-top: 25px;
-    }
-
-    .buy-now-btn {
-        width: 100%;
-        display: block;
-        text-align: center;
-        padding: 11px;
-        border-radius: 50px;
-        border: none;
-        background: #0d6efd;
-        color: white;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-    }
-
-    .add-cart-btn {
-        width: 100%;
-        padding: 11px;
-        border-radius: 50px;
-        border: 2px solid #0d6efd;
-        background: white;
-        color: #0d6efd;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .info-box {
-        margin-top: 25px;
-        background: #f9fafb;
-        border-radius: 14px;
-        padding: 18px;
-        color: #374151;
-        font-size: 15px;
-    }
-
-    .info-box p {
-        margin: 8px 0;
-    }
-
-    @media (max-width: 900px) {
-        .product-detail-layout {
-            grid-template-columns: 1fr;
-        }
-
-        .product-main-image {
-            height: 380px;
-        }
-
-        .details-box h1 {
-            font-size: 26px;
-        }
-    }
-</style>
-{% endblock %}
-
 {% block content %}
 
-<section class="container product-detail-page">
+<style>
+.container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+}
 
-    <div class="product-detail-layout">
+.image-section {
+    width: 50%;
+}
 
-        <div class="image-box">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-main-image">
-            {% else %}
-                <img src="{% static 'images/default.png' %}" alt="No Image" class="product-main-image">
-            {% endif %}
+.main-image {
+    width: 100%;
+    height: 450px;
+    object-fit: contain;
+    background: #f2f2f2;
+    border-radius: 10px;
+}
 
-            {% if gallery_images %}
-                <div class="extra-images">
-                    {% for img in gallery_images %}
-                        <div class="extra-image-box">
-                            <img src="{{ img.image.url }}" alt="{{ product.name }}">
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+.gallery {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
 
-        <div class="details-box">
-            <h1>{{ product.name }}</h1>
+.gallery img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
 
-            {% if product.category %}
-                <div class="category">{{ product.category.name }}</div>
-            {% endif %}
+.details {
+    width: 50%;
+}
 
-            <div class="price">SLE {{ product.price_sle }}</div>
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px 0;
+}
 
-            {% if product.description %}
-                <div class="description">
-                    {{ product.description }}
-                </div>
-            {% endif %}
+.btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+}
 
-            <div class="action-buttons">
+.buy {
+    background: blue;
+    color: white;
+    border: none;
+}
 
-                <a href="{% url 'checkout' product.id %}" class="buy-now-btn">
-                    Buy It Now
-                </a>
+.cart {
+    background: white;
+    border: 2px solid blue;
+    color: blue;
+}
+</style>
 
-                <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="add-cart-btn">
-                        Add to Cart
-                    </button>
-                </form>
+<div class="container">
 
-            </div>
+    <!-- LEFT SIDE -->
+    <div class="image-section">
 
-            <div class="info-box">
-                <p><strong>Shipping:</strong> Seller will receive the customer shipping details after checkout.</p>
-                <p><strong>Payment:</strong> Order will be recorded as pending until payment is confirmed.</p>
-                <p><strong>Returns:</strong> Contact seller for return terms.</p>
-            </div>
+        <!-- MAIN IMAGE -->
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="main-image">
+        {% endif %}
+
+        <!-- EXTRA IMAGES -->
+        <div class="gallery">
+            {% for img in gallery_images %}
+                {% if img.image %}
+                    <img src="{{ img.image.url }}">
+                {% endif %}
+            {% endfor %}
         </div>
 
     </div>
 
-</section>
+    <!-- RIGHT SIDE -->
+    <div class="details">
+
+        <h2>{{ product.name }}</h2>
+
+        <p>{{ product.category.name }}</p>
+
+        <div class="price">
+            SLE {{ product.price_sle }}
+        </div>
+
+        <p>{{ product.description }}</p>
+
+        <!-- BUTTONS -->
+        <button class="btn buy">Buy It Now</button>
+        <button class="btn cart">Add to Cart</button>
+
+    </div>
+
+</div>
 
 {% endblock %}
