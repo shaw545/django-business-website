@@ -95,6 +95,16 @@
             font-weight: 800;
         }
 
+        .cart-count.bump {
+            animation: bump 0.35s ease;
+        }
+
+        @keyframes bump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.45); }
+            100% { transform: scale(1); }
+        }
+
         .dashboard-btn {
             background: #ff9800;
             padding: 10px 16px;
@@ -126,6 +136,20 @@
             border-radius: 9px;
             font-weight: 700;
             background: #ffffff;
+        }
+
+        .cart-toast {
+            position: fixed;
+            top: 90px;
+            right: 25px;
+            background: #111827;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            display: none;
+            z-index: 3000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.20);
         }
 
         .footer {
@@ -179,7 +203,7 @@
 
         <a href="{% url 'cart' %}" class="mini-cart">
             🛒
-            <span class="cart-count">{{ request.session.cart|length|default:0 }}</span>
+            <span id="cartCount" class="cart-count">{{ request.session.cart|length|default:0 }}</span>
         </a>
 
         {% if user.is_authenticated %}
@@ -190,6 +214,8 @@
     </div>
 </nav>
 
+<div id="cartToast" class="cart-toast">Added to cart</div>
+
 {% block content %}{% endblock %}
 
 <footer class="footer">
@@ -199,6 +225,84 @@
     </p>
     <p>© 2026 Yusuf Marketplace. All rights reserved.</p>
 </footer>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+    function showCartToast(message) {
+        const toast = document.getElementById("cartToast");
+        if (!toast) return;
+
+        toast.innerText = message || "Added to cart";
+        toast.style.display = "block";
+
+        setTimeout(function () {
+            toast.style.display = "none";
+        }, 1800);
+    }
+
+    function updateCartCount(count) {
+        const cartCount = document.getElementById("cartCount");
+        if (!cartCount) return;
+
+        cartCount.innerText = count;
+        cartCount.classList.remove("bump");
+        void cartCount.offsetWidth;
+        cartCount.classList.add("bump");
+    }
+
+    document.addEventListener("submit", function (event) {
+        const form = event.target;
+
+        if (!form.classList.contains("ajax-add-cart-form")) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const url = form.getAttribute("action");
+        const csrfToken = getCookie("csrftoken");
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateCartCount(data.cart_count);
+                showCartToast(data.message);
+            } else {
+                showCartToast("Could not add item.");
+            }
+        })
+        .catch(() => {
+            showCartToast("Network error. Try again.");
+        });
+    });
+</script>
+
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import SellerRegistrationForm, ProductForm
@@ -16,6 +17,20 @@ from .models import (
     ContactMessage,
     PayoutRequest,
 )
+
+
+def _get_cart(request):
+    return request.session.get("cart", [])
+
+
+def _save_cart(request, cart):
+    request.session["cart"] = cart
+    request.session.modified = True
+
+
+def _cart_count(request):
+    cart = _get_cart(request)
+    return sum(int(item.get("quantity", 1)) for item in cart)
 
 
 def home(request):
@@ -108,15 +123,6 @@ def contact(request):
     })
 
 
-def _get_cart(request):
-    return request.session.get("cart", [])
-
-
-def _save_cart(request, cart):
-    request.session["cart"] = cart
-    request.session.modified = True
-
-
 def _build_cart_rows(request):
     cart = _get_cart(request)
     cart_rows = []
@@ -165,6 +171,14 @@ def add_to_cart(request, product_id):
         })
 
     _save_cart(request, cart)
+
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return JsonResponse({
+            "success": True,
+            "cart_count": _cart_count(request),
+            "message": f"{product.name} added to cart.",
+        })
+
     messages.success(request, "Product added to cart.")
     return redirect("cart")
 
@@ -175,6 +189,7 @@ def cart_view(request):
     return render(request, "cart.html", {
         "cart_items": cart_items,
         "grand_total": grand_total,
+        "cart_count": _cart_count(request),
     })
 
 
