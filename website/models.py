@@ -59,7 +59,10 @@ class Order(models.Model):
     platform_fee_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     seller_earning = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
-    payment_status = models.CharField(max_length=30, default="Pending")
+    payment_status = models.CharField(max_length=30, default="Pending Verification")
+    payment_method = models.CharField(max_length=100, blank=True, default="Manual Payment")
+    payment_reference = models.CharField(max_length=200, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -96,3 +99,17 @@ class PayoutRequest(models.Model):
 
     def __str__(self):
         return f"{self.seller.username} - {self.amount}"
+
+
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
+    name = models.CharField(max_length=100)
+    rating = models.IntegerField(default=5)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.product.name} - {self.rating} stars"
