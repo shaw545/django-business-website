@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Yusuf Marketplace{% endblock %}</title>
+    <title>{% block title %}Marketplace{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -95,16 +95,6 @@
             font-weight: 800;
         }
 
-        .cart-count.bump {
-            animation: bump 0.35s ease;
-        }
-
-        @keyframes bump {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.45); }
-            100% { transform: scale(1); }
-        }
-
         .dashboard-btn {
             background: #ff9800;
             padding: 10px 16px;
@@ -190,7 +180,7 @@
 <body>
 
 <nav class="navbar">
-    <a href="{% url 'home' %}" class="logo">Yusuf</a>
+    <a href="{% url 'home' %}" class="logo">MarketHub</a>
 
     <form class="search-bar" method="GET" action="{% url 'products' %}">
         <input type="text" name="q" placeholder="Search products...">
@@ -223,7 +213,7 @@
         <a href="{% url 'terms' %}">Seller Terms</a> |
         <a href="{% url 'privacy' %}">Privacy Policy</a>
     </p>
-    <p>© 2026 Yusuf Marketplace. All rights reserved.</p>
+    <p>© 2026 MarketHub. All rights reserved.</p>
 </footer>
 
 <script>
@@ -263,9 +253,6 @@
         if (!cartCount) return;
 
         cartCount.innerText = count;
-        cartCount.classList.remove("bump");
-        void cartCount.offsetWidth;
-        cartCount.classList.add("bump");
     }
 
     document.addEventListener("submit", function (event) {
