@@ -5,16 +5,18 @@
 
 {% block extra_css %}
 <style>
+
+/* 🔥 HERO (COMPACT NOW) */
 .hero {
     background: linear-gradient(135deg, #7cc6f2, #d9f3ff);
-    padding: 22px 0;
+    padding: 30px 0; /* reduced from 65px */
 }
 
 .hero-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 28px;
+    gap: 30px;
 }
 
 .hero-text {
@@ -22,21 +24,17 @@
 }
 
 .hero-text h1 {
-    font-size: 34px;
-    line-height: 1.15;
+    font-size: 36px; /* smaller */
     margin: 0;
 }
 
 .hero-text p {
     font-size: 15px;
-    margin-top: 8px;
-    margin-bottom: 12px;
+    margin-top: 6px;
 }
 
 .hero-buttons {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 .hero-image {
@@ -46,12 +44,11 @@
 
 .hero-image img {
     width: 100%;
-    max-width: 360px;
-    max-height: 220px;
-    object-fit: cover;
-    border-radius: 12px;
+    max-width: 360px; /* smaller image */
+    border-radius: 10px;
 }
 
+/* 🔥 CATEGORY BAR */
 .category-bar {
     background: white;
     padding: 8px 0;
@@ -72,20 +69,15 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
-    color: black;
 }
 
 .category-item:hover {
     background: orange;
 }
 
+/* 🔥 PRODUCTS (MOVE UP FAST) */
 .products-section {
     margin-top: 10px;
-}
-
-.products-section h3 {
-    margin: 12px 0;
-    font-size: 24px;
 }
 
 .product-grid {
@@ -97,105 +89,43 @@
 .product-card {
     background: white;
     padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 8px;
 }
 
 .product-card img {
     width: 100%;
     height: 150px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 6px;
-    background: #f1f3f5;
-}
-
-.product-name {
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 6px;
-}
-
-.product-category {
-    font-size: 11px;
-    color: gray;
-}
-
-.product-price {
-    font-size: 13px;
-    font-weight: bold;
-    color: black;
 }
 
 .btn-small {
     display: block;
     width: 100%;
     margin-top: 5px;
-    padding: 6px;
+    padding: 5px;
     font-size: 11px;
     border-radius: 6px;
     text-align: center;
-    cursor: pointer;
 }
 
 .view-btn {
     background: orange;
-    color: black;
 }
 
 .cart-btn {
     border: 1px solid blue;
     color: blue;
-    background: white;
-}
-
-@media (max-width: 768px) {
-    .hero {
-        padding: 18px 0;
-    }
-
-    .hero-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: 16px;
-    }
-
-    .hero-text h1 {
-        font-size: 26px;
-    }
-
-    .hero-text p {
-        font-size: 14px;
-    }
-
-    .hero-buttons {
-        justify-content: center;
-    }
-
-    .hero-image {
-        text-align: center;
-    }
-
-    .hero-image img {
-        max-width: 100%;
-        max-height: 180px;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    .product-card img {
-        height: 125px;
-    }
 }
 </style>
 {% endblock %}
 
 {% block content %}
 
+<!-- 🔥 CATEGORY BAR -->
 <div class="category-bar">
     <div class="category-scroll">
+
         <a href="{% url 'products' %}" class="category-item">All</a>
 
         {% for category in categories %}
@@ -203,9 +133,11 @@
                 {{ category.name }}
             </a>
         {% endfor %}
+
     </div>
 </div>
 
+<!-- 🔥 HERO (NOW VERY TOP + COMPACT) -->
 <section class="hero">
     <div class="container hero-inner">
 
@@ -215,55 +147,49 @@
 
             <div class="hero-buttons">
                 <a href="{% url 'products' %}" class="btn-orange">Shop Now</a>
-                <a href="{% url 'register' %}" class="btn-outline">Become a Seller</a>
             </div>
         </div>
 
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df" alt="Marketplace shopping">
+            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
         </div>
 
     </div>
 </section>
 
+<!-- 🔥 PRODUCTS (VISIBLE FAST) -->
 <div class="container products-section">
 
-    <h3>Featured Products</h3>
+<h3>Featured Products</h3>
 
-    <div class="product-grid">
-        {% for product in products %}
-            <div class="product-card">
+<div class="product-grid">
 
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <img src="{% static 'images/default.png' %}" alt="No Image">
-                {% endif %}
+{% for product in products %}
+<div class="product-card">
 
-                <div class="product-name">{{ product.name }}</div>
+    {% if product.image %}
+        <img src="{{ product.image.url }}">
+    {% endif %}
 
-                {% if product.category %}
-                    <div class="product-category">{{ product.category.name }}</div>
-                {% endif %}
+    <div>{{ product.name }}</div>
+    <div style="font-size:11px;">{{ product.category.name }}</div>
+    <div><b>SLE {{ product.price_sle }}</b></div>
 
-                <div class="product-price">SLE {{ product.price_sle }}</div>
+    <a href="{% url 'product_detail' product.id %}" class="btn-small view-btn">
+        View
+    </a>
 
-                <a href="{% url 'product_detail' product.id %}" class="btn-small view-btn">
-                    View
-                </a>
+    <form method="POST" action="{% url 'add_to_cart' product.id %}" class="ajax-add-cart-form">
+        {% csrf_token %}
+        <button type="submit" class="btn-small cart-btn">
+            Add
+        </button>
+    </form>
 
-                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="ajax-add-cart-form">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-small cart-btn">
-                        Add
-                    </button>
-                </form>
+</div>
+{% endfor %}
 
-            </div>
-        {% empty %}
-            <p>No featured products available.</p>
-        {% endfor %}
-    </div>
+</div>
 
 </div>
 
