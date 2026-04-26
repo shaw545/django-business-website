@@ -53,15 +53,16 @@ class SellerRegistrationForm(UserCreationForm):
             seller_type = self.cleaned_data.get("seller_type")
 
             if seller_type == "business":
-                group, created = Group.objects.get_or_create(name="Business Sellers")
+                group, _ = Group.objects.get_or_create(name="Business Sellers")
             else:
-                group, created = Group.objects.get_or_create(name="Personal Sellers")
+                group, _ = Group.objects.get_or_create(name="Personal Sellers")
 
             user.groups.add(group)
 
         return user
 
 
+# ✅ FIXED MULTIPLE FILE UPLOAD (NO ClearableFileInput)
 class MultipleFileInput(forms.FileInput):
     allow_multiple_selected = True
 
@@ -76,19 +77,13 @@ class MultipleFileField(forms.FileField):
             return []
 
         if isinstance(data, (list, tuple)):
-            cleaned_files = []
-            for single_file in data:
-                cleaned_files.append(super(MultipleFileField, self).clean(single_file, initial))
-            return cleaned_files
+            return [super(MultipleFileField, self).clean(f, initial) for f in data]
 
         return [super().clean(data, initial)]
 
 
 class ProductForm(forms.ModelForm):
-    extra_images = MultipleFileField(
-        required=False,
-        label="Extra Product Images"
-    )
+    extra_images = MultipleFileField(required=False)
 
     class Meta:
         model = Product
