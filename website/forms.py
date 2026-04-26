@@ -22,6 +22,11 @@ class SellerRegistrationForm(UserCreationForm):
     last_name = forms.CharField(max_length=100, required=True)
     email = forms.EmailField(required=True)
 
+    accept_terms = forms.BooleanField(
+        required=True,
+        label="I agree to the Seller Terms and Privacy Policy"
+    )
+
     class Meta:
         model = User
         fields = [
@@ -32,6 +37,7 @@ class SellerRegistrationForm(UserCreationForm):
             "seller_type",
             "password1",
             "password2",
+            "accept_terms",
         ]
 
     def save(self, commit=True):
