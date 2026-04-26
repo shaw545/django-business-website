@@ -31,6 +31,28 @@
         background: #f1f3f5;
     }
 
+    .extra-images {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+        gap: 12px;
+    }
+
+    .extra-image-box {
+        height: 95px;
+        background: #f1f3f5;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+
+    .extra-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 5px;
+    }
+
     .details-box {
         background: #ffffff;
         border-radius: 16px;
@@ -137,6 +159,16 @@
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-main-image">
             {% else %}
                 <img src="{% static 'images/default.png' %}" alt="No Image" class="product-main-image">
+            {% endif %}
+
+            {% if gallery_images %}
+                <div class="extra-images">
+                    {% for img in gallery_images %}
+                        <div class="extra-image-box">
+                            <img src="{{ img.image.url }}" alt="{{ product.name }}">
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
 
