@@ -1,112 +1,233 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ product.name }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .product-detail-page {
+        padding: 35px 0;
+    }
+
+    .product-detail-layout {
+        display: grid;
+        grid-template-columns: 1.2fr 0.9fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    .image-panel {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .main-product-image-box {
+        width: 100%;
+        height: 520px;
+        background: #f1f3f5;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .main-product-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 15px;
+    }
+
+    .gallery-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .gallery-thumb {
+        height: 90px;
+        background: #f1f3f5;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .gallery-thumb:hover {
+        border-color: #0d6efd;
+    }
+
+    .gallery-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 6px;
+    }
+
+    .info-panel {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 26px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .product-title {
+        font-size: 34px;
+        line-height: 1.15;
+        margin: 0 0 10px;
+    }
+
+    .product-category {
+        color: #6b7280;
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    .product-price {
+        color: #000000;
+        font-size: 30px;
+        font-weight: 900;
+        margin: 18px 0;
+    }
+
+    .product-description {
+        color: #374151;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    .action-buttons {
+        display: grid;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .buy-now-btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 50px;
+        border: none;
+        background: #0d6efd;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 900;
+        cursor: pointer;
+        text-align: center;
+        display: block;
+    }
+
+    .cart-btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 50px;
+        border: 2px solid #0d6efd;
+        background: #ffffff;
+        color: #0d6efd;
+        font-size: 18px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+    .trust-box {
+        margin-top: 24px;
+        background: #f9fafb;
+        border-radius: 16px;
+        padding: 18px;
+        color: #374151;
+    }
+
+    .trust-box p {
+        margin: 8px 0;
+    }
+
+    @media (max-width: 900px) {
+        .product-detail-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .main-product-image-box {
+            height: 380px;
+        }
+
+        .product-title {
+            font-size: 28px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container section-padding">
 
-    <div class="row align-items-start">
+<section class="container product-detail-page">
 
-        <div class="col-md-6">
+    <div class="product-detail-layout">
 
-            {% if product.image %}
-                <img id="mainProductImage"
-                     src="{{ product.image.url }}"
-                     alt="{{ product.name }}"
-                     class="img-fluid rounded shadow main-product-image">
-            {% else %}
-                <div class="no-image-detail">
-                    No image available
-                </div>
-            {% endif %}
-
-            <div class="row mt-3 g-2">
-
+        <div class="image-panel">
+            <div class="main-product-image-box">
                 {% if product.image %}
-                    <div class="col-3">
-                        <img src="{{ product.image.url }}"
-                             class="img-fluid rounded gallery-thumb active-thumb"
-                             onclick="changeMainImage(this.src)"
-                             alt="{{ product.name }}">
+                    <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img id="mainProductImage" src="{% static 'images/default.png' %}" alt="No Image">
+                {% endif %}
+            </div>
+
+            <div class="gallery-row">
+                {% if product.image %}
+                    <div class="gallery-thumb" onclick="changeMainImage('{{ product.image.url }}')">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     </div>
                 {% endif %}
 
                 {% for img in gallery_images %}
-                    <div class="col-3">
-                        <img src="{{ img.image.url }}"
-                             class="img-fluid rounded gallery-thumb"
-                             onclick="changeMainImage(this.src)"
-                             alt="{{ product.name }}">
+                    <div class="gallery-thumb" onclick="changeMainImage('{{ img.image.url }}')">
+                        <img src="{{ img.image.url }}" alt="{{ product.name }}">
                     </div>
                 {% endfor %}
-
             </div>
-
         </div>
 
-        <div class="col-md-6">
-            <h1>{{ product.name }}</h1>
+        <div class="info-panel">
+            <h1 class="product-title">{{ product.name }}</h1>
 
             {% if product.category %}
-                <p class="text-muted">{{ product.category.name }}</p>
+                <div class="product-category">{{ product.category.name }}</div>
             {% endif %}
 
-            <h3 class="text-primary">SLE {{ product.price_sle }}</h3>
+            <div class="product-price">SLE {{ product.price_sle }}</div>
 
-            {% if product.price_usd %}
-                <h5 class="text-success">USD ${{ product.price_usd }}</h5>
+            {% if product.description %}
+                <div class="product-description">
+                    {{ product.description }}
+                </div>
             {% endif %}
 
-            <p class="mt-4">{{ product.description }}</p>
+            <div class="action-buttons">
+                <a href="{% url 'checkout' product.id %}" class="buy-now-btn">
+                    Buy It Now
+                </a>
 
-            <a href="{% url 'checkout' product.id %}" class="btn btn-main">
-                Buy Now
-            </a>
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="cart-btn">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
 
-            <a href="{% url 'products' %}" class="btn btn-outline-secondary ms-2">
-                Back to Products
-            </a>
+            <div class="trust-box">
+                <p><strong>Shipping:</strong> Seller will use the customer shipping details entered at checkout.</p>
+                <p><strong>Returns:</strong> Contact seller for product return terms.</p>
+                <p><strong>Payment:</strong> Order will be recorded as pending until confirmed.</p>
+            </div>
         </div>
 
     </div>
-</div>
 
-<style>
-    .main-product-image {
-        width: 100%;
-        height: 500px;
-        object-fit: cover;
-    }
-
-    .gallery-thumb {
-        width: 100%;
-        height: 100px;
-        object-fit: cover;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: 0.2s;
-    }
-
-    .gallery-thumb:hover {
-        border: 2px solid #ff9800;
-        transform: scale(1.03);
-    }
-
-    .active-thumb {
-        border: 2px solid #ff9800;
-    }
-
-    .no-image-detail {
-        height: 400px;
-        background: #f3f4f6;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #777;
-        font-weight: bold;
-        border-radius: 12px;
-    }
-</style>
+</section>
 
 <script>
     function changeMainImage(imageUrl) {
@@ -116,4 +237,5 @@
         }
     }
 </script>
+
 {% endblock %}

@@ -140,20 +140,15 @@
         margin-bottom: 12px;
     }
 
-    .product-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .cart-btn {
-        background: #0d6efd;
-        color: #ffffff;
-        border: none;
-        padding: 9px 12px;
+    .view-product-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #ff9800;
+        color: #111827;
+        padding: 10px 12px;
         border-radius: 9px;
         font-weight: 800;
-        cursor: pointer;
     }
 
     @media (max-width: 900px) {
@@ -227,17 +222,11 @@
                         <div class="product-category">{{ product.category.name }}</div>
                     {% endif %}
 
-                    <div class="price">sle {{ product.price_sle }}</div>
+                    <div class="price">SLE {{ product.price_sle }}</div>
 
-                    <div class="product-actions">
-                        <a href="{% url 'product_detail' product.id %}" class="btn-outline">View</a>
-                        <a href="{% url 'checkout' product.id %}" class="btn-orange">Buy Now</a>
-
-                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                            {% csrf_token %}
-                            <button class="cart-btn" type="submit">Add to Cart</button>
-                        </form>
-                    </div>
+                    <a href="{% url 'product_detail' product.id %}" class="view-product-btn">
+                        View Product
+                    </a>
                 </div>
             </div>
         {% empty %}
