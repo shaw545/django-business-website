@@ -214,7 +214,7 @@
                     Buy It Now
                 </a>
 
-                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="ajax-add-cart-form">
                     {% csrf_token %}
                     <button type="submit" class="add-cart-btn">
                         Add to Cart
