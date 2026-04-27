@@ -62,10 +62,6 @@ def checkout(request):
     return render(request, "checkout.html")
 
 
-def checkout_view(request):
-    return render(request, "checkout.html")
-
-
 def about(request):
     return render(request, "about.html")
 
@@ -81,9 +77,6 @@ def contact(request):
 def terms_view(request):
     return render(request, "terms.html")
 
-
-def privacy(request):
-    return render(request, "privacy.html")
 
 
 def privacy_view(request):
@@ -123,3 +116,5 @@ def delete_product(request, product_id):
     return render(request, "delete_product.html", {
         "product": product,
     })
+def seller_dashboard(request):
+    return render(request, "seller_dashboard.html")
