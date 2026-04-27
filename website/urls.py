@@ -2,21 +2,20 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # HOME
+    # Home
     path("", views.home, name="home"),
+    path("products/", views.products_view, name="products"),
 
-    # PRODUCTS
-    path("products/", views.products, name="products"),
+    # Product
     path("product/<int:product_id>/", views.product_detail, name="product_detail"),
 
-    # CART / CHECKOUT
+    # Cart & Checkout
     path("add-to-cart/<int:product_id>/", views.add_to_cart, name="add_to_cart"),
     path("buy-now/<int:product_id>/", views.buy_now, name="buy_now"),
     path("cart/", views.cart_view, name="cart"),
-    path("cart-checkout/", views.cart_checkout, name="cart_checkout"),
     path("checkout/", views.checkout_view, name="checkout"),
 
-    # STATIC PAGES
+    # Pages
     path("about/", views.about, name="about"),
     path("services/", views.services, name="services"),
     path("contact/", views.contact, name="contact"),
@@ -24,15 +23,10 @@ urlpatterns = [
     path("privacy/", views.privacy_view, name="privacy"),
     path("portfolio/", views.portfolio, name="portfolio"),
 
-    # AUTH
+    # Auth
     path("login/", views.login_view, name="login"),
     path("register/", views.register, name="register"),
 
-    # SELLER
-    path("seller-dashboard/", views.seller_dashboard, name="seller_dashboard"),
-
-    # PRODUCT MANAGEMENT
-    path("add-product/", views.add_product, name="add_product"),
-    path("edit-product/<int:product_id>/", views.edit_product, name="edit_product"),
-    path("delete-product/<int:product_id>/", views.delete_product, name="delete_product"),
+    # Dashboard (fix error)
+    path("dashboard/", views.seller_dashboard, name="seller_dashboard"),
 ]
