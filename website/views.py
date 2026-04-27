@@ -81,3 +81,33 @@ def checkout_view(request):
         "products": products,
         "total": total,
     })
+def about(request):
+    return render(request, "about.html")
+
+
+def services(request):
+    return render(request, "services.html")
+
+
+def contact(request):
+    return render(request, "contact.html")
+
+
+def terms_view(request):
+    return render(request, "terms.html")
+
+
+def privacy_view(request):
+    return render(request, "privacy.html")
+
+
+def login_view(request):
+    return render(request, "login.html")
+
+
+def register(request):
+    return render(request, "register.html")
+
+
+def seller_dashboard(request):
+    return render(request, "dashboard.html")
