@@ -5,7 +5,6 @@ from .models import Product, Category
 def home(request):
     products = Product.objects.all()
     categories = Category.objects.all()
-
     return render(request, "home.html", {
         "products": products,
         "categories": categories,
@@ -32,19 +31,18 @@ def product_list(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-
     return render(request, "product_detail.html", {
         "product": product,
     })
 
 
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    get_object_or_404(Product, id=product_id)
     return redirect("cart")
 
 
 def buy_now(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    get_object_or_404(Product, id=product_id)
     return redirect("checkout")
 
 
@@ -78,3 +76,26 @@ def login_view(request):
 
 def register(request):
     return render(request, "register.html")
+
+
+def add_product(request):
+    return render(request, "add_product.html")
+
+
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, "edit_product.html", {
+        "product": product,
+    })
+
+
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == "POST":
+        product.delete()
+        return redirect("products")
+
+    return render(request, "delete_product.html", {
+        "product": product,
+    })
