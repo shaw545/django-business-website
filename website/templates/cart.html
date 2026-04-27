@@ -24,13 +24,24 @@
 
                 <div class="cart-details">
                     <h3>{{ product.name }}</h3>
-                    <p class="category">{{ product.category.name }}</p>
-                    <p class="price">SLE {{ product.price }}</p>
+
+                    {% if product.category %}
+                        <p class="category">{{ product.category }}</p>
+                    {% endif %}
+
+                    <!-- ✅ USE AMOUNT -->
+                    <p>Price: <strong>SLE {{ product.amount }}</strong></p>
+
+                    <p>Quantity: {{ product.quantity }}</p>
+
+                    <!-- ✅ SUBTOTAL -->
+                    <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
                 </div>
 
             </div>
             {% endfor %}
 
+            <!-- ✅ TOTAL -->
             <div class="cart-summary">
                 <h2>Total: SLE {{ total }}</h2>
 
@@ -45,7 +56,7 @@
 
         <div class="empty-cart">
             <h2>Your cart is empty</h2>
-            <p>Add products before checkout.</p>
+            <p>Please add products before checkout.</p>
 
             <a href="{% url 'products' %}" class="start-shopping-btn">
                 Start Shopping
@@ -60,17 +71,17 @@
 
 /* PAGE */
 .cart-page {
-    padding: 40px;
+    padding: 35px 40px;
     background: #f5f7fa;
 }
 
 /* TITLE */
 .cart-title {
-    font-size: 32px;
+    font-size: 26px;
     margin-bottom: 20px;
 }
 
-/* CART BOX */
+/* CONTAINER */
 .cart-container {
     background: white;
     padding: 25px;
@@ -88,25 +99,27 @@
 
 /* IMAGE */
 .cart-image img {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     object-fit: contain;
     border-radius: 10px;
+    background: #f1f1f1;
 }
 
 /* DETAILS */
 .cart-details h3 {
     margin: 0;
+    font-size: 18px;
 }
 
 .category {
-    color: gray;
-    font-size: 14px;
+    color: #777;
+    font-size: 13px;
 }
 
-.price {
-    font-weight: bold;
-    margin-top: 5px;
+.cart-details p {
+    margin: 4px 0;
+    font-size: 14px;
 }
 
 /* SUMMARY */
@@ -115,19 +128,23 @@
     text-align: right;
 }
 
+.cart-summary h2 {
+    font-size: 20px;
+}
+
 /* BUTTON */
 .checkout-btn {
     display: inline-block;
     margin-top: 10px;
     background: orange;
-    padding: 12px 25px;
+    color: black;
+    padding: 12px 24px;
     border-radius: 8px;
     text-decoration: none;
-    color: black;
     font-weight: bold;
 }
 
-/* EMPTY CART */
+/* EMPTY */
 .empty-cart {
     background: white;
     padding: 40px;
@@ -139,10 +156,10 @@
     display: inline-block;
     margin-top: 20px;
     background: orange;
-    padding: 12px 30px;
+    color: black;
+    padding: 12px 28px;
     border-radius: 8px;
     text-decoration: none;
-    color: black;
     font-weight: bold;
 }
 

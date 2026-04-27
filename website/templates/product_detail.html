@@ -3,86 +3,130 @@
 
 {% block content %}
 
-<div class="product-detail-container">
+<div class="product-detail-page">
 
-    <!-- LEFT: IMAGE -->
-    <div class="product-image-section">
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        {% else %}
-            <img src="{% static 'images/default.png' %}" alt="No Image">
-        {% endif %}
-    </div>
+    <div class="product-detail-container">
 
-    <!-- RIGHT: DETAILS -->
-    <div class="product-info-section">
+        <!-- LEFT: IMAGE SECTION -->
+        <div class="product-images">
 
-        <h1>{{ product.name }}</h1>
+            <!-- MAIN IMAGE -->
+            <div class="main-image">
+                {% if product.image %}
+                    <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img id="mainProductImage" src="{% static 'images/default.png' %}">
+                {% endif %}
+            </div>
 
-        {% if product.category %}
-            <p class="category">{{ product.category.name }}</p>
-        {% endif %}
-
-        <h2 class="price">SLE {{ product.price }}</h2>
-
-        {% if product.description %}
-            <p class="description">
-                {{ product.description }}
-            </p>
-        {% endif %}
-
-        <!-- BUTTONS -->
-        <div class="action-buttons">
-
-            <!-- FIXED BUY NOW -->
-            <a href="{% url 'buy_now' product.id %}" class="buy-btn">
-                Buy It Now
-            </a>
-
-            <!-- ADD TO CART -->
-            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
-                Add to cart
-            </a>
+            <!-- MULTIPLE IMAGES (OPTIONAL) -->
+            <div class="thumbnail-images">
+                {% for img in extra_images %}
+                    <img src="{{ img.image.url }}" onclick="changeImage(this)">
+                {% endfor %}
+            </div>
 
         </div>
 
-        <a href="{% url 'products' %}" class="back-btn">
-            ← Back to Products
-        </a>
+        <!-- RIGHT: DETAILS -->
+        <div class="product-info">
+
+            <h1>{{ product.name }}</h1>
+
+            {% if product.category %}
+                <p class="category">{{ product.category }}</p>
+            {% endif %}
+
+            <!-- ✅ USE AMOUNT -->
+            <h2 class="price">SLE {{ product.amount }}</h2>
+
+            {% if product.description %}
+                <p class="description">{{ product.description }}</p>
+            {% endif %}
+
+            <!-- ACTION BUTTONS -->
+            <div class="product-actions">
+
+                <a href="{% url 'buy_now' product.id %}" class="buy-btn">
+                    Buy It Now
+                </a>
+
+                <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
+                    Add to Cart
+                </a>
+
+            </div>
+
+            <a href="{% url 'products' %}" class="back-link">
+                ← Back to Products
+            </a>
+
+        </div>
 
     </div>
 
 </div>
 
+<!-- STYLE -->
 <style>
+
+.product-detail-page {
+    padding: 30px;
+    background: #f5f7fa;
+}
 
 .product-detail-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    padding: 40px;
+    gap: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
 }
 
 /* IMAGE */
-.product-image-section img {
+.main-image img {
     width: 100%;
-    max-height: 500px;
+    height: 400px;
     object-fit: contain;
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* THUMBNAILS */
+.thumbnail-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.thumbnail-images img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 2px solid transparent;
+}
+
+.thumbnail-images img:hover {
+    border: 2px solid orange;
 }
 
 /* INFO */
-.product-info-section h1 {
-    font-size: 32px;
+.product-info h1 {
+    font-size: 26px;
 }
 
 .category {
-    color: gray;
+    color: #777;
+    font-size: 14px;
 }
 
 .price {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .description {
@@ -90,35 +134,30 @@
 }
 
 /* BUTTONS */
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.product-actions a {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .buy-btn {
-    background: #0057ff;
-    color: white;
-    padding: 15px;
-    border-radius: 25px;
-    text-align: center;
-    text-decoration: none;
+    background: orange;
+    color: black;
 }
 
 .cart-btn {
-    border: 1px solid #0057ff;
-    color: #0057ff;
-    padding: 15px;
-    border-radius: 25px;
-    text-align: center;
-    text-decoration: none;
+    border: 1px solid orange;
+    color: orange;
 }
 
 /* BACK */
-.back-btn {
+.back-link {
     display: inline-block;
-    margin-top: 20px;
-    text-decoration: none;
+    margin-top: 15px;
 }
 
 /* MOBILE */
@@ -129,5 +168,12 @@
 }
 
 </style>
+
+<!-- SCRIPT -->
+<script>
+function changeImage(element) {
+    document.getElementById("mainProductImage").src = element.src;
+}
+</script>
 
 {% endblock %}

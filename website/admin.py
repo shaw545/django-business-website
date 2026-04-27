@@ -1,85 +1,30 @@
 from django.contrib import admin
-from .models import (
-    Category,
-    Product,
-    ProductImage,
-    Order,
-    ContactMessage,
-    PayoutRequest,
-)
+from .models import Category, Product, ProductImage
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
-    search_fields = ("name",)
-
-
+# ======================
+# INLINE FOR MULTIPLE IMAGES
+# ======================
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1
+    extra = 3   # number of empty image fields to show
 
 
-@admin.register(Product)
+# ======================
+# PRODUCT ADMIN
+# ======================
 class ProductAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name",
-        "seller",
-        "category",
-        "price_usd",
-        "price_sle",
-        "available",
-        "created_at",
-    )
-    list_filter = ("available", "category", "created_at")
-    search_fields = ("name", "description")
+    list_display = ("name", "category", "price")
+    search_fields = ("name",)
+    list_filter = ("category",)
+
+    # This allows adding multiple images inside product
     inlines = [ProductImageInline]
 
 
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "product", "created_at")
-    search_fields = ("product__name",)
-
-
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "customer_name",
-        "product",
-        "quantity",
-        "currency",
-        "total_amount",
-        "payment_status",
-        "created_at",
-    )
-    list_filter = ("currency", "payment_status", "created_at")
-    search_fields = ("customer_name", "email", "phone", "product__name")
-
-
-@admin.register(ContactMessage)
-class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name",
-        "email",
-        "company",
-        "service_interest",
-        "created_at",
-    )
-    search_fields = ("name", "email", "company", "service_interest")
-
-
-@admin.register(PayoutRequest)
-class PayoutAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "seller",
-        "amount",
-        "status",
-        "request_date",
-    )
-    list_filter = ("status", "request_date")
-    search_fields = ("seller__username",)
+# ======================
+# REGISTER MODELS
+# ======================
+admin.site.register(Category)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(ProductImage)

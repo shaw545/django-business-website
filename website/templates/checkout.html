@@ -1,164 +1,211 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Checkout{% endblock %}
+{% block content %}
 
-{% block extra_css %}
+<div class="checkout-page">
+    <h1 class="checkout-title">Checkout</h1>
+
+    {% if products %}
+        <div class="checkout-container">
+
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+
+                {% for product in products %}
+                    <div class="checkout-item">
+                        <div class="checkout-image">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% endif %}
+                        </div>
+
+                        <div class="checkout-details">
+                            <h3>{{ product.name }}</h3>
+                            <p>Price: SLE {{ product.amount }}</p>
+                            <p>Quantity: {{ product.quantity }}</p>
+                            <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="checkout-total">
+                    <h2>Total: SLE {{ total }}</h2>
+                </div>
+            </div>
+
+            <form method="POST" class="checkout-form">
+                {% csrf_token %}
+
+                <h2>Buyer Information</h2>
+
+                <label>Full Name</label>
+                <input type="text" name="full_name" required>
+
+                <label>Email</label>
+                <input type="email" name="email" required>
+
+                <label>Phone Number</label>
+                <input type="text" name="phone" required>
+
+                <label>Delivery Address</label>
+                <textarea name="address" rows="4" required></textarea>
+
+                <label>Payment Method</label>
+                <select name="payment_method" required>
+                    <option value="manual">Manual Payment</option>
+                    <option value="cash">Cash on Delivery</option>
+                    <option value="mobile_money">Mobile Money</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                </select>
+
+                <button type="submit" class="place-order-btn">
+                    Place Order
+                </button>
+            </form>
+
+        </div>
+    {% else %}
+        <div class="empty-checkout">
+            <h2>No items in checkout</h2>
+            <p>Please add products before checkout.</p>
+
+            <a href="{% url 'products' %}" class="start-shopping-btn">
+                Start Shopping
+            </a>
+        </div>
+    {% endif %}
+</div>
+
 <style>
 .checkout-page {
-    padding: 25px 0;
+    padding: 35px 40px;
+    background: #f5f7fa;
+    min-height: 70vh;
+    font-size: 14px;
 }
 
-.checkout-layout {
+.checkout-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.checkout-container {
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: 1.3fr 1fr;
     gap: 25px;
 }
 
-.checkout-box,
-.product-summary {
+.order-summary,
+.checkout-form,
+.empty-checkout {
     background: white;
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.form-group {
-    margin-bottom: 14px;
+.order-summary h2,
+.checkout-form h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
+.checkout-item {
+    display: flex;
+    gap: 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
 }
 
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 9px;
-}
-
-.form-group textarea {
-    min-height: 95px;
-}
-
-.product-img {
-    width: 100%;
-    height: 180px;
+.checkout-image img {
+    width: 110px;
+    height: 110px;
     object-fit: contain;
-    background: #f1f3f5;
-    border-radius: 12px;
+    border-radius: 10px;
+    background: #f1f1f1;
 }
 
-.place-btn {
+.checkout-details h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.checkout-details p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.checkout-total {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.checkout-total h2 {
+    font-size: 22px;
+}
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-form label {
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+.checkout-form input,
+.checkout-form textarea,
+.checkout-form select {
     width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.place-order-btn {
+    margin-top: 20px;
     background: orange;
     color: black;
     border: none;
     padding: 14px;
     border-radius: 10px;
     font-weight: bold;
-    font-size: 16px;
     cursor: pointer;
 }
 
-.success-box {
-    background: white;
-    padding: 35px;
-    border-radius: 16px;
+.empty-checkout {
     text-align: center;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.start-shopping-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: orange;
+    color: black;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
-    .checkout-layout {
+    .checkout-container {
         grid-template-columns: 1fr;
     }
 
-    .product-summary {
-        order: -1;
+    .checkout-item {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .checkout-box,
-    .product-summary {
-        padding: 15px;
-        border-radius: 12px;
+    .checkout-total {
+        text-align: center;
     }
 }
 </style>
-{% endblock %}
-
-{% block content %}
-
-<div class="container checkout-page">
-
-    {% if success %}
-        <div class="success-box">
-            <h1>Order Submitted Successfully</h1>
-            <p>Your order has been received. The seller will receive your shipping details.</p>
-            <a href="{% url 'products' %}" class="btn-orange">Continue Shopping</a>
-        </div>
-    {% else %}
-
-        <div class="checkout-layout">
-
-            <div class="checkout-box">
-                <h1>Shipping Information</h1>
-
-                <form method="POST">
-                    {% csrf_token %}
-
-                    <input type="hidden" name="quantity" value="1">
-
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="customer_name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" name="phone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Shipping Address</label>
-                        <textarea name="address" required></textarea>
-                    </div>
-
-                    <button type="submit" class="place-btn">
-                        Place Order
-                    </button>
-                </form>
-            </div>
-
-            <div class="product-summary">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
-                {% else %}
-                    <img src="{% static 'images/default.png' %}" class="product-img" alt="No Image">
-                {% endif %}
-
-                <h2>{{ product.name }}</h2>
-
-                {% if product.category %}
-                    <p>{{ product.category.name }}</p>
-                {% endif %}
-
-                <h3>SLE {{ product.price_sle }}</h3>
-            </div>
-
-        </div>
-
-    {% endif %}
-
-</div>
 
 {% endblock %}
