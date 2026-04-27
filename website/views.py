@@ -46,9 +46,8 @@ def buy_now(request, product_id):
     return redirect("checkout")
 
 
-def cart(request):
+def cart_view(request):
     return render(request, "cart.html")
-
 
 def cart_checkout(request):
     return render(request, "cart_checkout.html")
