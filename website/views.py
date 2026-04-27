@@ -46,14 +46,23 @@ def buy_now(request, product_id):
     return redirect("checkout")
 
 
+def cart(request):
+    return render(request, "cart.html")
+
+
 def cart_view(request):
     return render(request, "cart.html")
+
 
 def cart_checkout(request):
     return render(request, "cart_checkout.html")
 
 
 def checkout(request):
+    return render(request, "checkout.html")
+
+
+def checkout_view(request):
     return render(request, "checkout.html")
 
 
@@ -68,12 +77,18 @@ def services(request):
 def contact(request):
     return render(request, "contact.html")
 
+
 def terms_view(request):
     return render(request, "terms.html")
 
 
+def privacy(request):
+    return render(request, "privacy.html")
+
+
 def privacy_view(request):
     return render(request, "privacy.html")
+
 
 def portfolio(request):
     return render(request, "portfolio.html")
