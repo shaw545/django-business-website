@@ -50,12 +50,20 @@ def cart(request):
     return render(request, "cart.html")
 
 
+def cart_checkout(request):
+    return render(request, "cart_checkout.html")
+
+
 def checkout(request):
     return render(request, "checkout.html")
 
 
 def about(request):
     return render(request, "about.html")
+
+
+def services(request):
+    return render(request, "services.html")
 
 
 def contact(request):
