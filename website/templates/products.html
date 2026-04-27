@@ -4,17 +4,16 @@
 {% block content %}
 
 <div class="products-page">
+    <h1 class="page-title">All Products</h1>
 
-    <h2 class="section-title">All Products</h2>
-
-    <div class="product-container">
+    <div class="product-grid">
         {% for product in products %}
         <div class="product-card">
 
             {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
             {% else %}
-                <img src="{% static 'images/default.png' %}" alt="No Image" class="product-image">
+                <img src="{% static 'images/default.png' %}" alt="No image" class="product-img">
             {% endif %}
 
             <h3>{{ product.name }}</h3>
@@ -23,99 +22,105 @@
                 <p class="category">{{ product.category.name }}</p>
             {% endif %}
 
-            <p class="price">SLE {{ product.price }}</p>
+            <p class="price">SLE {{ product.amount }}</p>
 
-            <!-- ONLY VIEW BUTTON -->
             <a href="{% url 'product_detail' product.id %}" class="view-btn">
                 View
             </a>
 
+            <a href="{% url 'add_to_cart' product.id %}" class="add-btn">
+                Add
+            </a>
+
         </div>
         {% empty %}
-            <p>No products available.</p>
+        <p>No products available.</p>
         {% endfor %}
     </div>
-
 </div>
 
 <style>
-
 .products-page {
-    padding: 30px;
+    padding: 30px 40px;
+    background: #f5f7fa;
 }
 
-.section-title {
-    font-size: 28px;
-    margin-bottom: 20px;
+.page-title {
+    font-size: 32px;
+    margin-bottom: 25px;
 }
 
-/* GRID */
-.product-container {
+.product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 30px;
 }
 
-/* CARD */
 .product-card {
-    background: #f5f5f5;
-    padding: 15px;
-    border-radius: 12px;
+    background: white;
+    padding: 18px;
+    border-radius: 15px;
     text-align: center;
-    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-/* IMAGE */
-.product-image {
+.product-img {
     width: 100%;
-    height: 200px;
+    height: 260px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
-/* TEXT */
-.category {
-    color: #777;
-    font-size: 14px;
-}
-
-.price {
-    font-weight: bold;
+.product-card h3 {
+    font-size: 22px;
     margin: 10px 0;
 }
 
-/* BUTTON */
+.category {
+    color: #666;
+    font-size: 16px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
 .view-btn {
     display: block;
     background: orange;
     color: black;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.add-btn {
+    display: block;
+    background: white;
+    color: blue;
+    padding: 12px;
+    border: 1px solid blue;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
 }
 
-.view-btn:hover {
-    background: #ff8800;
-}
-
-/* MOBILE */
 @media (max-width: 900px) {
-    .product-container {
+    .product-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 500px) {
-    .product-container {
+@media (max-width: 600px) {
+    .product-grid {
         grid-template-columns: 1fr;
     }
 }
-
 </style>
 
 {% endblock %}
