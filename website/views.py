@@ -69,10 +69,12 @@ def services(request):
 def contact(request):
     return render(request, "contact.html")
 
+def terms_view(request):
+    return render(request, "terms.html")
 
-def privacy(request):
+
+def privacy_view(request):
     return render(request, "privacy.html")
-
 
 def portfolio(request):
     return render(request, "portfolio.html")
