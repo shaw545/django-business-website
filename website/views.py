@@ -2,15 +2,18 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
 
 
+# ---------------- HOME ----------------
 def home(request):
     products = Product.objects.all()
     categories = Category.objects.all()
+
     return render(request, "home.html", {
         "products": products,
         "categories": categories,
     })
 
 
+# ---------------- PRODUCTS ----------------
 def products(request):
     products = Product.objects.all()
     categories = Category.objects.all()
@@ -31,11 +34,13 @@ def product_list(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+
     return render(request, "product_detail.html", {
         "product": product,
     })
 
 
+# ---------------- CART / BUY ----------------
 def add_to_cart(request, product_id):
     get_object_or_404(Product, id=product_id)
     return redirect("cart")
@@ -46,10 +51,6 @@ def buy_now(request, product_id):
     return redirect("checkout")
 
 
-def cart(request):
-    return render(request, "cart.html")
-
-
 def cart_view(request):
     return render(request, "cart.html")
 
@@ -58,14 +59,11 @@ def cart_checkout(request):
     return render(request, "cart_checkout.html")
 
 
-def checkout(request):
-    return render(request, "checkout.html")
-
-
 def checkout_view(request):
     return render(request, "checkout.html")
 
 
+# ---------------- STATIC PAGES ----------------
 def about(request):
     return render(request, "about.html")
 
@@ -82,10 +80,6 @@ def terms_view(request):
     return render(request, "terms.html")
 
 
-def privacy(request):
-    return render(request, "privacy.html")
-
-
 def privacy_view(request):
     return render(request, "privacy.html")
 
@@ -94,6 +88,7 @@ def portfolio(request):
     return render(request, "portfolio.html")
 
 
+# ---------------- AUTH ----------------
 def login_view(request):
     return render(request, "login.html")
 
@@ -102,12 +97,19 @@ def register(request):
     return render(request, "register.html")
 
 
+# ---------------- SELLER ----------------
+def seller_dashboard(request):
+    return render(request, "seller_dashboard.html")
+
+
+# ---------------- PRODUCT MANAGEMENT ----------------
 def add_product(request):
     return render(request, "add_product.html")
 
 
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+
     return render(request, "edit_product.html", {
         "product": product,
     })
