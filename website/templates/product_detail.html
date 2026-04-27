@@ -5,134 +5,129 @@
 
 <div class="product-detail-container">
 
-    <div class="product-detail-image">
+    <!-- LEFT: IMAGE -->
+    <div class="product-image-section">
         {% if product.image %}
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="{% static 'images/default.png' %}" alt="No Image">
         {% endif %}
     </div>
 
-    <div class="product-detail-info">
+    <!-- RIGHT: DETAILS -->
+    <div class="product-info-section">
+
         <h1>{{ product.name }}</h1>
 
         {% if product.category %}
-            <p class="product-category">{{ product.category.name }}</p>
+            <p class="category">{{ product.category.name }}</p>
         {% endif %}
 
-        <h2 class="product-price">SLE {{ product.price }}</h2>
+        <h2 class="price">SLE {{ product.price }}</h2>
 
         {% if product.description %}
-            <p class="product-description">
+            <p class="description">
                 {{ product.description }}
             </p>
         {% endif %}
 
-        <div class="product-actions">
-            <a href="{% url 'buy_now' product.id %}" class="buy-now-btn">
+        <!-- BUTTONS -->
+        <div class="action-buttons">
+
+            <!-- FIXED BUY NOW -->
+            <a href="{% url 'buy_now' product.id %}" class="buy-btn">
                 Buy It Now
             </a>
 
-            <a href="{% url 'add_to_cart' product.id %}" class="add-cart-btn">
+            <!-- ADD TO CART -->
+            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
                 Add to cart
             </a>
+
         </div>
 
-        <a href="{% url 'products' %}" class="back-link">
+        <a href="{% url 'products' %}" class="back-btn">
             ← Back to Products
         </a>
+
     </div>
 
 </div>
 
 <style>
+
 .product-detail-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     padding: 40px;
-    background: #f5f7fa;
 }
 
-.product-detail-image {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.product-detail-image img {
+/* IMAGE */
+.product-image-section img {
     width: 100%;
     max-height: 500px;
     object-fit: contain;
 }
 
-.product-detail-info {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-}
-
-.product-detail-info h1 {
+/* INFO */
+.product-info-section h1 {
     font-size: 32px;
-    margin-bottom: 10px;
 }
 
-.product-category {
-    color: #777;
-    font-size: 16px;
+.category {
+    color: gray;
 }
 
-.product-price {
+.price {
     font-size: 28px;
     font-weight: bold;
     margin: 20px 0;
 }
 
-.product-description {
-    line-height: 1.6;
-    margin-bottom: 25px;
+.description {
+    margin-bottom: 20px;
 }
 
-.product-actions {
+/* BUTTONS */
+.action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
-.buy-now-btn {
+.buy-btn {
     background: #0057ff;
     color: white;
     padding: 15px;
-    border-radius: 30px;
+    border-radius: 25px;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
 }
 
-.add-cart-btn {
-    background: white;
+.cart-btn {
+    border: 1px solid #0057ff;
     color: #0057ff;
     padding: 15px;
-    border-radius: 30px;
-    border: 1px solid #0057ff;
+    border-radius: 25px;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
 }
 
-.back-link {
+/* BACK */
+.back-btn {
     display: inline-block;
-    margin-top: 25px;
+    margin-top: 20px;
     text-decoration: none;
-    color: black;
-    font-weight: bold;
 }
 
-@media screen and (max-width: 768px) {
+/* MOBILE */
+@media (max-width: 768px) {
     .product-detail-container {
         grid-template-columns: 1fr;
-        padding: 20px;
     }
 }
+
 </style>
 
 {% endblock %}

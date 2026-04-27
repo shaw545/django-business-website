@@ -3,7 +3,7 @@ from .models import Product
 
 
 # ======================
-# HOME / PRODUCTS
+# HOME & PRODUCTS
 # ======================
 def home(request):
     products = Product.objects.all()
@@ -24,30 +24,49 @@ def product_detail(request, product_id):
 
 
 # ======================
-# CART & BUY
+# CART SYSTEM (FIXED)
 # ======================
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-
     cart = request.session.get("cart", [])
-    cart.append(product.id)
+
+    product_id = str(product_id)
+
+    if product_id not in cart:
+        cart.append(product_id)
+
     request.session["cart"] = cart
+    request.session.modified = True
 
     return redirect("cart")
-
-
-def buy_now(request, product_id):
-    return redirect("checkout")
 
 
 def cart_view(request):
     cart = request.session.get("cart", [])
     products = Product.objects.filter(id__in=cart)
-    return render(request, "cart.html", {"products": products})
+
+    total = sum(product.price for product in products)
+
+    return render(request, "cart.html", {
+        "products": products,
+        "total": total
+    })
 
 
 def checkout_view(request):
-    return render(request, "checkout.html")
+    cart = request.session.get("cart", [])
+    products = Product.objects.filter(id__in=cart)
+
+    total = sum(product.price for product in products)
+
+    return render(request, "checkout.html", {
+        "products": products,
+        "total": total
+    })
+
+
+def buy_now(request, product_id):
+    request.session["cart"] = [str(product_id)]
+    return redirect("checkout")
 
 
 # ======================
@@ -85,6 +104,5 @@ def register(request):
     return render(request, "register.html")
 
 
-# OPTIONAL (fix dashboard error)
 def seller_dashboard(request):
     return render(request, "dashboard.html")
