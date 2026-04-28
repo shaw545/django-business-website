@@ -92,3 +92,5 @@ def checkout_view(request):
 def clear_cart(request):
     request.session['cart'] = {}
     return redirect('cart')
+def about(request):
+    return render(request, "about.html")
