@@ -2,18 +2,38 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 
 
+def get_product_value(product):
+    if hasattr(product, "amount") and product.amount is not None:
+        return product.amount
+
+    if hasattr(product, "price") and product.price is not None:
+        return product.price
+
+    return 0
+
+
 def home(request):
     products = Product.objects.all()
+
+    for product in products:
+        product.display_price = get_product_value(product)
+
     return render(request, "home.html", {"products": products})
 
 
 def products_view(request):
     products = Product.objects.all()
+
+    for product in products:
+        product.display_price = get_product_value(product)
+
     return render(request, "products.html", {"products": products})
 
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    product.display_price = get_product_value(product)
+
     return render(request, "product_detail.html", {"product": product})
 
 
@@ -28,12 +48,14 @@ def add_to_cart(request, product_id):
 
     request.session["cart"] = cart
     request.session.modified = True
+
     return redirect("cart")
 
 
 def buy_now(request, product_id):
     request.session["cart"] = {str(product_id): 1}
     request.session.modified = True
+
     return redirect("checkout")
 
 
@@ -44,9 +66,13 @@ def cart_view(request):
 
     for product_id, quantity in cart.items():
         product = get_object_or_404(Product, id=product_id)
+
+        value = get_product_value(product)
+
         product.quantity = quantity
-        product.display_amount = product.price
-        product.subtotal = product.price * quantity
+        product.display_price = value
+        product.subtotal = value * quantity
+
         total += product.subtotal
         products.append(product)
 
@@ -63,9 +89,13 @@ def checkout_view(request):
 
     for product_id, quantity in cart.items():
         product = get_object_or_404(Product, id=product_id)
+
+        value = get_product_value(product)
+
         product.quantity = quantity
-        product.display_amount = product.price
-        product.subtotal = product.price * quantity
+        product.display_price = value
+        product.subtotal = value * quantity
+
         total += product.subtotal
         products.append(product)
 
