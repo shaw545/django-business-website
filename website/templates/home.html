@@ -1,8 +1,6 @@
-{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-
 <div style="padding: 40px; background:#f5f7fa;">
 
     <h2 style="margin-bottom: 30px;">Featured Products</h2>
@@ -12,6 +10,7 @@
         {% for product in products %}
         <div class="product-card">
 
+            <!-- IMAGE -->
             <div class="image-box">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
@@ -20,10 +19,13 @@
                 {% endif %}
             </div>
 
+            <!-- DETAILS -->
             <div class="info">
                 <h3>{{ product.name }}</h3>
                 <p class="category">{{ product.category }}</p>
-                <h2 class="price">SLE {{ product.price }}</h2>
+
+                <!-- ✅ FIXED PRICE -->
+                <h2 class="price">SLE {{ product.amount }}</h2>
 
                 <a href="{% url 'product_detail' product.id %}" class="btn-view">
                     View Product
@@ -34,79 +36,5 @@
         {% endfor %}
 
     </div>
-
 </div>
-
-<style>
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-}
-
-.product-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-.image-box {
-    height: 220px;
-    background: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.info {
-    padding: 20px;
-}
-
-.info h3 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.category {
-    color: #777;
-    margin: 10px 0;
-}
-
-.price {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.btn-view {
-    display: block;
-    background: orange;
-    color: black;
-    padding: 12px;
-    text-align: center;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-@media(max-width: 900px) {
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 500px) {
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
-
 {% endblock %}
