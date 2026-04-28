@@ -8,8 +8,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = 'django-insecure-change-this-key'
 DEBUG = True
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "www.yusufbusinesssolutions.com",
+    "yusufbusinesssolutions.com",
+    ".onrender.com",
+]
 
 # APPLICATIONS
 INSTALLED_APPS = [
