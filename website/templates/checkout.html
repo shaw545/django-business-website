@@ -4,76 +4,80 @@
 {% block content %}
 
 <div class="checkout-page">
-    <h1 class="checkout-title">Checkout</h1>
+    <h1>Checkout</h1>
 
     {% if products %}
-        <div class="checkout-container">
+    <div class="checkout-container">
 
-            <div class="order-summary">
-                <h2>Order Summary</h2>
+        <div class="order-summary">
+            <h2>Order Summary</h2>
 
-                {% for product in products %}
-                    <div class="checkout-item">
-                        <div class="checkout-image">
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                            {% endif %}
-                        </div>
+            {% for product in products %}
+            <div class="checkout-item">
 
-                        <div class="checkout-details">
-                            <h3>{{ product.name }}</h3>
-                            <p>Price: SLE {{ product.amount }}</p>
-                            <p>Quantity: {{ product.quantity }}</p>
-                            <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
-                        </div>
-                    </div>
-                {% endfor %}
-
-                <div class="checkout-total">
-                    <h2>Total: SLE {{ total }}</h2>
+                <div class="checkout-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="no-image">No image</div>
+                    {% endif %}
                 </div>
+
+                <div class="checkout-details">
+                    <h3>{{ product.name }}</h3>
+                    <p>Amount: SLE {{ product.display_amount }}</p>
+                    <p>Quantity: {{ product.quantity }}</p>
+                    <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
+                </div>
+
             </div>
+            {% endfor %}
 
-            <form method="POST" class="checkout-form">
-                {% csrf_token %}
-
-                <h2>Buyer Information</h2>
-
-                <label>Full Name</label>
-                <input type="text" name="full_name" required>
-
-                <label>Email</label>
-                <input type="email" name="email" required>
-
-                <label>Phone Number</label>
-                <input type="text" name="phone" required>
-
-                <label>Delivery Address</label>
-                <textarea name="address" rows="4" required></textarea>
-
-                <label>Payment Method</label>
-                <select name="payment_method" required>
-                    <option value="manual">Manual Payment</option>
-                    <option value="cash">Cash on Delivery</option>
-                    <option value="mobile_money">Mobile Money</option>
-                    <option value="bank_transfer">Bank Transfer</option>
-                </select>
-
-                <button type="submit" class="place-order-btn">
-                    Place Order
-                </button>
-            </form>
-
+            <div class="checkout-total">
+                <h2>Total: SLE {{ total }}</h2>
+            </div>
         </div>
+
+        <form method="POST" class="checkout-form">
+            {% csrf_token %}
+
+            <h2>Buyer Information</h2>
+
+            <label>Full Name</label>
+            <input type="text" name="full_name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Phone Number</label>
+            <input type="text" name="phone" required>
+
+            <label>Delivery Address</label>
+            <textarea name="address" rows="4" required></textarea>
+
+            <label>Payment Method</label>
+            <select name="payment_method" required>
+                <option value="manual">Manual Payment</option>
+                <option value="cash">Cash on Delivery</option>
+                <option value="mobile_money">Mobile Money</option>
+                <option value="bank_transfer">Bank Transfer</option>
+            </select>
+
+            <button type="submit" class="place-order-btn">
+                Place Order
+            </button>
+        </form>
+
+    </div>
     {% else %}
-        <div class="empty-checkout">
-            <h2>No items in checkout</h2>
-            <p>Please add products before checkout.</p>
+    <div class="empty-checkout">
+        <h2>No items in checkout</h2>
+        <p>Please add products before checkout.</p>
 
-            <a href="{% url 'products' %}" class="start-shopping-btn">
-                Start Shopping
-            </a>
-        </div>
+        <a href="{% url 'products' %}" class="start-shopping-btn">
+            Start Shopping
+        </a>
+    </div>
     {% endif %}
 </div>
 
@@ -81,13 +85,12 @@
 .checkout-page {
     padding: 35px 40px;
     background: #f5f7fa;
-    min-height: 70vh;
     font-size: 14px;
 }
 
-.checkout-title {
-    font-size: 28px;
-    margin-bottom: 25px;
+.checkout-page h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
 }
 
 .checkout-container {
@@ -100,49 +103,56 @@
 .checkout-form,
 .empty-checkout {
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
 .order-summary h2,
 .checkout-form h2 {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 18px;
 }
 
 .checkout-item {
     display: flex;
     gap: 18px;
-    padding: 15px 0;
     border-bottom: 1px solid #ddd;
+    padding: 15px 0;
 }
 
-.checkout-image img {
+.checkout-image img,
+.no-image {
     width: 110px;
     height: 110px;
     object-fit: contain;
-    border-radius: 10px;
     background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
 }
 
 .checkout-details h3 {
     font-size: 18px;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
 }
 
 .checkout-details p {
     margin: 4px 0;
-    font-size: 14px;
 }
 
 .checkout-total {
-    margin-top: 20px;
     text-align: right;
+    margin-top: 20px;
 }
 
 .checkout-total h2 {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .checkout-form {
@@ -159,37 +169,27 @@
 .checkout-form input,
 .checkout-form textarea,
 .checkout-form select {
-    width: 100%;
     padding: 11px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 14px;
 }
 
-.place-order-btn {
+.place-order-btn,
+.start-shopping-btn {
     margin-top: 20px;
     background: orange;
     color: black;
     border: none;
-    padding: 14px;
-    border-radius: 10px;
+    padding: 13px;
+    border-radius: 8px;
     font-weight: bold;
+    text-decoration: none;
+    text-align: center;
     cursor: pointer;
 }
 
 .empty-checkout {
     text-align: center;
-}
-
-.start-shopping-btn {
-    display: inline-block;
-    margin-top: 20px;
-    background: orange;
-    color: black;
-    padding: 12px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
 }
 
 @media (max-width: 768px) {

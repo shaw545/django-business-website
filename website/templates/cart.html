@@ -4,91 +4,73 @@
 {% block content %}
 
 <div class="cart-page">
-
-    <h1 class="cart-title">Your Cart</h1>
+    <h1>Your Cart</h1>
 
     {% if products %}
+    <div class="cart-container">
 
-        <div class="cart-container">
+        {% for product in products %}
+        <div class="cart-item">
 
-            {% for product in products %}
-            <div class="cart-item">
-
-                <div class="cart-image">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" alt="No Image">
-                    {% endif %}
-                </div>
-
-                <div class="cart-details">
-                    <h3>{{ product.name }}</h3>
-
-                    {% if product.category %}
-                        <p class="category">{{ product.category }}</p>
-                    {% endif %}
-
-                    <!-- ✅ USE AMOUNT -->
-                    <p>Price: <strong>SLE {{ product.amount }}</strong></p>
-
-                    <p>Quantity: {{ product.quantity }}</p>
-
-                    <!-- ✅ SUBTOTAL -->
-                    <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
-                </div>
-
+            <div class="cart-image">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">No image</div>
+                {% endif %}
             </div>
-            {% endfor %}
 
-            <!-- ✅ TOTAL -->
-            <div class="cart-summary">
-                <h2>Total: SLE {{ total }}</h2>
-
-                <a href="{% url 'checkout' %}" class="checkout-btn">
-                    Proceed to Checkout
-                </a>
+            <div class="cart-details">
+                <h3>{{ product.name }}</h3>
+                <p>Amount: SLE {{ product.display_amount }}</p>
+                <p>Quantity: {{ product.quantity }}</p>
+                <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
             </div>
 
         </div>
+        {% endfor %}
 
-    {% else %}
+        <div class="cart-summary">
+            <h2>Total: SLE {{ total }}</h2>
 
-        <div class="empty-cart">
-            <h2>Your cart is empty</h2>
-            <p>Please add products before checkout.</p>
-
-            <a href="{% url 'products' %}" class="start-shopping-btn">
-                Start Shopping
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+                Proceed to Checkout
             </a>
         </div>
 
-    {% endif %}
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Please add products before checkout.</p>
 
+        <a href="{% url 'products' %}" class="start-shopping-btn">
+            Start Shopping
+        </a>
+    </div>
+    {% endif %}
 </div>
 
 <style>
-
-/* PAGE */
 .cart-page {
     padding: 35px 40px;
     background: #f5f7fa;
+    font-size: 14px;
 }
 
-/* TITLE */
-.cart-title {
+.cart-page h1 {
     font-size: 26px;
     margin-bottom: 20px;
 }
 
-/* CONTAINER */
-.cart-container {
+.cart-container,
+.empty-cart {
     background: white;
     padding: 25px;
     border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
-/* ITEM */
 .cart-item {
     display: flex;
     gap: 20px;
@@ -97,8 +79,8 @@
     padding: 15px 0;
 }
 
-/* IMAGE */
-.cart-image img {
+.cart-image img,
+.no-image {
     width: 110px;
     height: 110px;
     object-fit: contain;
@@ -106,64 +88,47 @@
     background: #f1f1f1;
 }
 
-/* DETAILS */
-.cart-details h3 {
-    margin: 0;
-    font-size: 18px;
+.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
 }
 
-.category {
-    color: #777;
-    font-size: 13px;
+.cart-details h3 {
+    font-size: 18px;
+    margin: 0 0 8px;
 }
 
 .cart-details p {
     margin: 4px 0;
-    font-size: 14px;
 }
 
-/* SUMMARY */
 .cart-summary {
-    margin-top: 20px;
     text-align: right;
+    margin-top: 20px;
 }
 
 .cart-summary h2 {
     font-size: 20px;
 }
 
-/* BUTTON */
-.checkout-btn {
-    display: inline-block;
-    margin-top: 10px;
-    background: orange;
-    color: black;
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* EMPTY */
-.empty-cart {
-    background: white;
-    padding: 40px;
-    text-align: center;
-    border-radius: 12px;
-}
-
+.checkout-btn,
 .start-shopping-btn {
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 12px;
     background: orange;
     color: black;
-    padding: 12px 28px;
+    padding: 12px 25px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
 }
 
-/* MOBILE */
+.empty-cart {
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .cart-item {
         flex-direction: column;
@@ -174,7 +139,6 @@
         text-align: center;
     }
 }
-
 </style>
 
 {% endblock %}
