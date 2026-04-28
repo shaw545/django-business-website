@@ -4,34 +4,28 @@
 {% block content %}
 
 <div class="product-detail-page">
+
     <div class="product-detail-container">
 
-        <div class="product-images">
-            <div class="main-image">
-                {% if product.image %}
-                    <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <div class="no-image">No image</div>
-                {% endif %}
-            </div>
-
-            {% if extra_images %}
-            <div class="thumbnail-images">
-                {% for img in extra_images %}
-                    <img src="{{ img.image.url }}" onclick="changeImage(this)">
-                {% endfor %}
-            </div>
+        <!-- PRODUCT IMAGE -->
+        <div class="product-image-box">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="no-image">No image</div>
             {% endif %}
         </div>
 
+        <!-- PRODUCT INFO -->
         <div class="product-info">
+
             <h1>{{ product.name }}</h1>
 
             {% if product.category %}
                 <p class="category">{{ product.category }}</p>
             {% endif %}
 
-            <h2 class="amount">SLE {{ display_amount }}</h2>
+            <h2 class="price">SLE {{ product.price }}</h2>
 
             {% if product.description %}
                 <p class="description">{{ product.description }}</p>
@@ -48,9 +42,11 @@
             <a href="{% url 'products' %}" class="back-link">
                 ← Back to Products
             </a>
+
         </div>
 
     </div>
+
 </div>
 
 <style>
@@ -68,7 +64,7 @@
     border-radius: 12px;
 }
 
-.main-image img {
+.product-image-box img {
     width: 100%;
     height: 450px;
     object-fit: contain;
@@ -86,36 +82,20 @@
     border-radius: 10px;
 }
 
-.thumbnail-images {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.thumbnail-images img {
-    width: 75px;
-    height: 75px;
-    object-fit: cover;
-    cursor: pointer;
-    border-radius: 6px;
-    border: 2px solid transparent;
-}
-
-.thumbnail-images img:hover {
-    border-color: orange;
-}
-
 .product-info h1 {
     font-size: 30px;
+    margin-bottom: 15px;
 }
 
 .category {
     color: #777;
+    font-size: 16px;
 }
 
-.amount {
-    font-size: 24px;
+.price {
+    font-size: 26px;
     font-weight: bold;
+    margin: 20px 0;
 }
 
 .description {
@@ -157,11 +137,5 @@
     }
 }
 </style>
-
-<script>
-function changeImage(element) {
-    document.getElementById("mainProductImage").src = element.src;
-}
-</script>
 
 {% endblock %}

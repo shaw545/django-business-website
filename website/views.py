@@ -1,127 +1,94 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 
-
-def get_product_amount(product):
-    if hasattr(product, "amount") and product.amount is not None:
-        return product.amount
-    if hasattr(product, "price") and product.price is not None:
-        return product.price
-    return 0
-
-
+# =========================
+# HOME PAGE
+# =========================
 def home(request):
     products = Product.objects.all()
-    return render(request, "home.html", {"products": products})
+    return render(request, 'home.html', {'products': products})
 
 
-def products_view(request):
+# =========================
+# ALL PRODUCTS PAGE
+# =========================
+def products(request):
     products = Product.objects.all()
-    return render(request, "products.html", {"products": products})
+    return render(request, 'products.html', {'products': products})
 
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    extra_images = product.images.all() if hasattr(product, "images") else []
-
-    return render(request, "product_detail.html", {
-        "product": product,
-        "extra_images": extra_images,
-        "display_amount": get_product_amount(product),
-    })
+# =========================
+# PRODUCT DETAIL
+# =========================
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'product_detail.html', {'product': product})
 
 
-def add_to_cart(request, product_id):
-    cart = request.session.get("cart", {})
-    product_id = str(product_id)
+# =========================
+# ADD TO CART
+# =========================
+def add_to_cart(request, pk):
+    cart = request.session.get('cart', {})
 
-    if product_id in cart:
-        cart[product_id] += 1
+    if str(pk) in cart:
+        cart[str(pk)] += 1
     else:
-        cart[product_id] = 1
+        cart[str(pk)] = 1
 
-    request.session["cart"] = cart
-    request.session.modified = True
-    return redirect("cart")
-
-
-def buy_now(request, product_id):
-    request.session["cart"] = {str(product_id): 1}
-    request.session.modified = True
-    return redirect("checkout")
+    request.session['cart'] = cart
+    return redirect('cart')
 
 
+# =========================
+# CART VIEW
+# =========================
 def cart_view(request):
-    cart = request.session.get("cart", {})
+    cart = request.session.get('cart', {})
     products = []
     total = 0
 
-    for product_id, quantity in cart.items():
-        product = get_object_or_404(Product, id=product_id)
-        amount = get_product_amount(product)
+    for pk, quantity in cart.items():
+        product = get_object_or_404(Product, pk=pk)
 
         product.quantity = quantity
-        product.display_amount = amount
-        product.subtotal = amount * quantity
+        product.subtotal = product.price * quantity   # ✅ FIXED
 
         total += product.subtotal
         products.append(product)
 
-    return render(request, "cart.html", {
-        "products": products,
-        "total": total,
+    return render(request, 'cart.html', {
+        'products': products,
+        'total': total
     })
 
 
+# =========================
+# CHECKOUT
+# =========================
 def checkout_view(request):
-    cart = request.session.get("cart", {})
+    cart = request.session.get('cart', {})
     products = []
     total = 0
 
-    for product_id, quantity in cart.items():
-        product = get_object_or_404(Product, id=product_id)
-        amount = get_product_amount(product)
+    for pk, quantity in cart.items():
+        product = get_object_or_404(Product, pk=pk)
 
         product.quantity = quantity
-        product.display_amount = amount
-        product.subtotal = amount * quantity
+        product.subtotal = product.price * quantity   # ✅ FIXED
 
         total += product.subtotal
         products.append(product)
 
-    return render(request, "checkout.html", {
-        "products": products,
-        "total": total,
+    return render(request, 'checkout.html', {
+        'products': products,
+        'total': total
     })
 
 
-def about(request):
-    return render(request, "about.html")
-
-
-def services(request):
-    return render(request, "services.html")
-
-
-def contact(request):
-    return render(request, "contact.html")
-
-
-def terms_view(request):
-    return render(request, "terms.html")
-
-
-def privacy_view(request):
-    return render(request, "privacy.html")
-
-
-def login_view(request):
-    return render(request, "login.html")
-
-
-def register(request):
-    return render(request, "register.html")
-
-
-def seller_dashboard(request):
-    return render(request, "dashboard.html")
+# =========================
+# CLEAR CART
+# =========================
+def clear_cart(request):
+    request.session['cart'] = {}
+    return redirect('cart')
