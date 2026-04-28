@@ -213,7 +213,7 @@
     <div class="container hero-inner">
 
         <div class="hero-text">
-            <h1>Welcome to Yusuf Marketplace</h1>
+            <h1>Welcome to MarketHub</h1>
             <p>Discover quality products and trusted services in one place.</p>
 
             <div class="hero-buttons">
@@ -268,7 +268,7 @@
                         <div class="product-category">{{ product.category.name }}</div>
                     {% endif %}
 
-                    <div class="price">SLE {{ product.price_sle }}</div>
+                    <div class="amount">SLE {{ product.amount }}</div>
 
                     <a href="{% url 'product_detail' product.id %}" class="view-product-btn">
                         View Product
