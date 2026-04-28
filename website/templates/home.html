@@ -1,40 +1,270 @@
+{% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-<div style="padding: 40px; background:#f5f7fa;">
+{% block title %}Marketplace{% endblock %}
 
-    <h2 style="margin-bottom: 30px;">Featured Products</h2>
+{% block extra_css %}
+<style>
+.hero {
+    background: linear-gradient(135deg, #7cc6f2, #d9f3ff);
+    padding: 22px 0;
+}
+
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.hero-text p {
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: right;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 360px;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.category-bar {
+    background: white;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.category-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-left: 15px;
+}
+
+.category-item {
+    white-space: nowrap;
+    padding: 5px 10px;
+    background: #f2f2f2;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+
+.category-item:hover {
+    background: orange;
+}
+
+.products-section {
+    margin-top: 10px;
+}
+
+.products-section h3 {
+    margin: 12px 0;
+    font-size: 24px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 15px;
+}
+
+.product-card {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #f1f3f5;
+}
+
+.product-name {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 6px;
+}
+
+.product-category {
+    font-size: 11px;
+    color: gray;
+}
+
+.product-price {
+    font-size: 13px;
+    font-weight: bold;
+    color: black;
+}
+
+.btn-small {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px;
+    font-size: 11px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.view-btn {
+    background: orange;
+    color: black;
+}
+
+.cart-btn {
+    border: 1px solid blue;
+    color: blue;
+    background: white;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 18px 0;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .hero-text h1 {
+        font-size: 26px;
+    }
+
+    .hero-text p {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-image {
+        text-align: center;
+    }
+
+    .hero-image img {
+        max-width: 100%;
+        max-height: 180px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .product-card img {
+        height: 125px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="category-bar">
+    <div class="category-scroll">
+        <a href="{% url 'products' %}" class="category-item">All</a>
+
+        {% for category in categories %}
+            <a href="{% url 'products' %}?category={{ category.id }}" class="category-item">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<section class="hero">
+    <div class="container hero-inner">
+
+        <div class="hero-text">
+            <h1>Browse millions of products across electronics, fashion, furniture and more.</h1>
+            <p>Shop smarter with trusted sellers worldwide.</p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'products' %}" class="btn-orange">Shop Now</a>
+                <a href="{% url 'register' %}" class="btn-outline">Become a Seller</a>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df" alt="Marketplace shopping">
+        </div>
+
+    </div>
+</section>
+
+<div class="container products-section">
+
+    <h3>Featured Products</h3>
 
     <div class="product-grid">
-
         {% for product in products %}
-        <div class="product-card">
+            <div class="product-card">
 
-            <!-- IMAGE -->
-            <div class="image-box">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
                 {% else %}
-                    <p>No image</p>
+                    <img src="{% static 'images/default.png' %}" alt="No Image">
                 {% endif %}
-            </div>
 
-            <!-- DETAILS -->
-            <div class="info">
-                <h3>{{ product.name }}</h3>
-                <p class="category">{{ product.category }}</p>
+                <div class="product-name">{{ product.name }}</div>
 
-                <!-- ✅ FIXED PRICE -->
-                <h2 class="price">SLE {{ product.amount }}</h2>
+                {% if product.category %}
+                    <div class="product-category">{{ product.category.name }}</div>
+                {% endif %}
 
-                <a href="{% url 'product_detail' product.id %}" class="btn-view">
-                    View Product
+                <div class="product-price">SLE {{ product.price_sle }}</div>
+
+                <a href="{% url 'product_detail' product.id %}" class="btn-small view-btn">
+                    View
                 </a>
+
+                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="ajax-add-cart-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-small cart-btn">
+                        Add
+                    </button>
+                </form>
+
             </div>
-
-        </div>
+        {% empty %}
+            <p>No featured products available.</p>
         {% endfor %}
-
     </div>
+
 </div>
+
 {% endblock %}
