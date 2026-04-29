@@ -11,69 +11,52 @@
         {% for product in products %}
         <div style="display:flex; gap:20px; margin-bottom:20px; align-items:center;">
 
-            <!-- Product Image -->
             {% if product.image %}
-                <img src="{{ product.image.url }}" width="100" style="border-radius:8px;">
+                <img src="{{ product.image.url }}" width="100" height="100" style="object-fit:cover; border-radius:8px;">
+            {% elif product.image_url %}
+                <img src="{{ product.image_url }}" width="100" height="100" style="object-fit:cover; border-radius:8px;">
             {% else %}
                 <img src="https://via.placeholder.com/100" width="100">
             {% endif %}
 
-            <!-- Product Info -->
             <div style="flex:1;">
-                <h3 style="margin:0;">{{ product.name }}</h3>
-                <p>Amount: SLE {{ product.amount }}</p>
-                <p>Quantity: {{ product.quantity }}</p>
-                <strong>Subtotal: SLE {{ product.subtotal }}</strong>
+                <h3>{{ product.name }}</h3>
+                <p>Amount: SLE {{ product.amount|floatformat:2 }}</p>
+
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <a href="{% url 'decrease_cart_item' product.id %}" style="padding:6px 12px; background:#ddd; text-decoration:none; color:black; border-radius:6px;">−</a>
+
+                    <strong>{{ product.quantity }}</strong>
+
+                    <a href="{% url 'increase_cart_item' product.id %}" style="padding:6px 12px; background:#ddd; text-decoration:none; color:black; border-radius:6px;">+</a>
+                </div>
+
+                <p><strong>Subtotal: SLE {{ product.subtotal|floatformat:2 }}</strong></p>
             </div>
+
+            <a href="{% url 'remove_cart_item' product.id %}" style="background:red; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; font-weight:bold;">
+                Remove
+            </a>
 
         </div>
         <hr>
         {% endfor %}
 
-        <!-- Total -->
         <div style="text-align:right; margin-top:20px;">
-            <h3>Total: SLE {{ total }}</h3>
+            <h3>Total: SLE {{ total|floatformat:2 }}</h3>
         </div>
 
-        <!-- ACTION BUTTONS -->
-        <div style="
-            margin-top:30px;
-            display:flex;
-            gap:15px;
-            justify-content:flex-end;
-            flex-wrap:wrap;
-        ">
+        <div style="margin-top:30px; display:flex; gap:15px; justify-content:flex-end; flex-wrap:wrap;">
 
-            <!-- Return Home -->
-            <a href="{% url 'home' %}" style="
-                padding:12px 20px;
-                background:#555;
-                color:white;
-                border-radius:8px;
-                text-decoration:none;
-                font-weight:bold;">
+            <a href="{% url 'home' %}" style="padding:12px 20px; background:#555; color:white; border-radius:8px; text-decoration:none; font-weight:bold;">
                 ← Return Home
             </a>
 
-            <!-- Continue Shopping -->
-            <a href="{% url 'products' %}" style="
-                padding:12px 20px;
-                background:#3498db;
-                color:white;
-                border-radius:8px;
-                text-decoration:none;
-                font-weight:bold;">
+            <a href="{% url 'products' %}" style="padding:12px 20px; background:#3498db; color:white; border-radius:8px; text-decoration:none; font-weight:bold;">
                 Continue Shopping
             </a>
 
-            <!-- Checkout -->
-            <a href="{% url 'checkout' %}" style="
-                padding:12px 20px;
-                background:orange;
-                color:black;
-                border-radius:8px;
-                text-decoration:none;
-                font-weight:bold;">
+            <a href="{% url 'checkout' %}" style="padding:12px 20px; background:orange; color:black; border-radius:8px; text-decoration:none; font-weight:bold;">
                 Proceed to Checkout →
             </a>
 
@@ -82,20 +65,13 @@
     </div>
 
     {% else %}
-        <div style="text-align:center; margin-top:40px;">
-            <h3>Your cart is empty</h3>
-            <a href="{% url 'products' %}" style="
-                display:inline-block;
-                margin-top:20px;
-                padding:12px 20px;
-                background:orange;
-                color:black;
-                border-radius:8px;
-                text-decoration:none;
-                font-weight:bold;">
-                Start Shopping
-            </a>
-        </div>
+    <div style="text-align:center; margin-top:40px;">
+        <h3>Your cart is empty</h3>
+
+        <a href="{% url 'products' %}" style="display:inline-block; margin-top:20px; padding:12px 20px; background:orange; color:black; border-radius:8px; text-decoration:none; font-weight:bold;">
+            Start Shopping
+        </a>
+    </div>
     {% endif %}
 
 </div>

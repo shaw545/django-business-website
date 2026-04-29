@@ -65,9 +65,10 @@
                 <option value="bank_transfer">Bank Transfer</option>
             </select>
 
-            <button type="submit" class="place-order-btn">Place Order</button>
-        </form>
-
+           <a href="{% url 'order_confirmation' %}" style="display:block; text-align:center; background:orange; color:black; padding:14px; border-radius:10px; text-decoration:none; font-weight:bold;">
+    Place Order
+</a>        
+</form>
     </div>
     {% else %}
     <div class="empty-checkout">
