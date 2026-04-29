@@ -132,9 +132,9 @@ def edit_product(request, product_id):
             product.image = request.FILES.get("image")
 
         product.save()
-        return redirect("seller_dashboard")
+        return redirect("Dashboard")
 
-    return render(request, "product_form.html", {"product": product})
+    return render(request, "product_form.html", {"product": product})s
 
 def terms_view(request):
     return render(request, "terms.html")
