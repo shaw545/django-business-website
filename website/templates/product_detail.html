@@ -13,60 +13,31 @@
         align-items:center;
     ">
 
-        <!-- PRODUCT IMAGE -->
         <div style="flex:1;">
             {% if product.image %}
                 <img src="{{ product.image.url }}" style="width:100%; border-radius:12px;">
-            {% elif product.image_url %}
-                <img src="{{ product.image_url }}" style="width:100%; border-radius:12px;">
             {% else %}
                 <img src="https://via.placeholder.com/400" style="width:100%; border-radius:12px;">
             {% endif %}
         </div>
 
-        <!-- PRODUCT DETAILS -->
         <div style="flex:1;">
 
-            <h1 style="font-size:28px; margin-bottom:10px;">
-                {{ product.name }}
-            </h1>
+            <h1 style="font-size:28px;">{{ product.name }}</h1>
 
-            <h2 style="font-size:24px; margin-bottom:15px;">
+            <h2 style="font-size:24px;">
                 SLE {{ product.amount|floatformat:2 }}
             </h2>
 
-            <p style="font-size:13px;">
-                <strong>Category:</strong> {{ product.category }}
-            </p>
+            <p><strong>Category:</strong> {{ product.category }}</p>
 
-            <p style="font-size:13px;">
-                <strong>Condition:</strong> {{ product.condition }}
-            </p>
+            <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-            <p style="font-size:13px; color:#555; line-height:1.6;">
+            <p><strong>Seller:</strong> {{ seller_name }}</p>
+
+            <p style="color:#555; line-height:1.6;">
                 {{ product.description }}
             </p>
-
-            <!-- SELLER INFO -->
-            <div style="
-                background:#f5f7fa;
-                padding:10px;
-                border-radius:10px;
-                margin:15px 0;
-                font-size:12px;
-            ">
-                <strong>Seller:</strong>
-                {% if product.seller %}
-                    {{ product.seller.username }}
-                {% else %}
-                    Seller
-                {% endif %}
-                <br>
-
-                <span style="color:#555; font-size:11px;">
-                    Trusted seller on MarketHub
-                </span>
-            </div>
 
             <a href="{% url 'buy_now' product.id %}" style="
                 display:block;
@@ -77,9 +48,7 @@
                 border-radius:30px;
                 text-decoration:none;
                 font-weight:bold;
-                margin-top:20px;
-                font-size:13px;
-            ">
+                margin-top:20px;">
                 Buy It Now
             </a>
 
@@ -92,14 +61,12 @@
                 border-radius:30px;
                 text-decoration:none;
                 font-weight:bold;
-                margin-top:15px;
-                font-size:13px;
-            ">
+                margin-top:15px;">
                 Add to Cart
             </a>
 
             <div style="margin-top:20px;">
-                <a href="{% url 'products' %}" style="color:#6a0dad; text-decoration:none; font-size:13px;">
+                <a href="{% url 'products' %}" style="color:#6a0dad; text-decoration:none;">
                     ← Back to Products
                 </a>
             </div>

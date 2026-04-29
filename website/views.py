@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Product
+from .models import Product, SellerProfile
 
 def products_view(request):
     products = Product.objects.all()
@@ -60,12 +60,14 @@ def checkout_view(request):
 
     return render(request, "checkout.html", {"products": products, "total": total})
 
-
 def register(request):
     if request.method == "POST":
+        seller_type = request.POST.get("seller_type")
+        business_name = request.POST.get("business_name")
         username = request.POST.get("username")
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
+        phone = request.POST.get("phone")
         email = request.POST.get("email") or ""
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
@@ -83,10 +85,48 @@ def register(request):
         user.last_name = last_name
         user.save()
 
+        SellerProfile.objects.create(
+            user=user,
+            seller_type=seller_type,
+            business_name=business_name,
+            phone=phone,
+        )
+
         return redirect("login")
 
     return render(request, "register.html")
 
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    seller_name = "Seller"
+    if product.seller:
+        try:
+            seller_name = product.seller.sellerprofile.display_name()
+        except SellerProfile.DoesNotExist:
+            seller_name = product.seller.get_full_name() or product.seller.username
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "seller_name": seller_name,
+    })
+
+
+def add_product(request):
+    if request.method == "POST":
+        Product.objects.create(
+            seller=request.user if request.user.is_authenticated else None,
+            name=request.POST.get("name"),
+            category=request.POST.get("category"),
+            amount=request.POST.get("amount"),
+            description=request.POST.get("description"),
+            condition=request.POST.get("condition"),
+            image=request.FILES.get("image"),
+        )
+        return redirect("seller_dashboard")
+
+    return render(request, "product_form.html")
 
 def seller_dashboard(request):
     products = Product.objects.all()
@@ -98,21 +138,6 @@ def seller_dashboard(request):
         "total_products": total_products,
         "total_value": total_value,
     })
-
-
-def add_product(request):
-    if request.method == "POST":
-        Product.objects.create(
-            name=request.POST.get("name"),
-            category=request.POST.get("category"),
-            amount=request.POST.get("amount"),
-            description=request.POST.get("description"),
-            condition=request.POST.get("condition"),
-            image=request.FILES.get("image"),
-        )
-        return redirect("seller_dashboard")
-
-    return render(request, "product_form.html")
 
 
 def edit_product(request, product_id):
@@ -127,6 +152,9 @@ def edit_product(request, product_id):
 
         if request.FILES.get("image"):
             product.image = request.FILES.get("image")
+
+        if not product.seller and request.user.is_authenticated:
+            product.seller = request.user
 
         product.save()
         return redirect("seller_dashboard")
@@ -178,10 +206,7 @@ def remove_cart_item(request, product_id):
     request.session.modified = True
 
     return redirect("cart")
-
-
 def order_confirmation(request):
     request.session["cart"] = {}
     request.session.modified = True
-
     return render(request, "order_confirmation.html")

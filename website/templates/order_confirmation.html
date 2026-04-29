@@ -2,22 +2,16 @@
 
 {% block content %}
 <div style="max-width:700px; margin:70px auto; background:white; padding:40px; border-radius:14px; text-align:center;">
-
     <h1>Order Confirmed</h1>
 
-    <p style="font-size:18px;">
-        Thank you for shopping with MarketHub. Your order has been received successfully.
-    </p>
+    <p>Thank you for shopping with MarketHub. Your order has been received successfully.</p>
 
-    <div style="margin-top:30px;">
-        <a href="{% url 'home' %}" style="padding:12px 20px; background:#555; color:white; border-radius:8px; text-decoration:none; font-weight:bold;">
-            Return Home
-        </a>
+    <a href="{% url 'home' %}" style="padding:12px 20px; background:#555; color:white; border-radius:8px; text-decoration:none; font-weight:bold;">
+        Return Home
+    </a>
 
-        <a href="{% url 'products' %}" style="padding:12px 20px; background:orange; color:black; border-radius:8px; text-decoration:none; font-weight:bold; margin-left:10px;">
-            Continue Shopping
-        </a>
-    </div>
-
+    <a href="{% url 'products' %}" style="padding:12px 20px; background:orange; color:black; border-radius:8px; text-decoration:none; font-weight:bold; margin-left:10px;">
+        Continue Shopping
+    </a>
 </div>
 {% endblock %}
