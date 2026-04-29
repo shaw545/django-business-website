@@ -93,7 +93,7 @@ def seller_dashboard(request):
     total_products = products.count()
     total_value = sum(product.amount for product in products)
 
-    return render(request, ""seller_dashboard".html", {
+    return render(request, "dashboard.html", {
         "products": products,
         "total_products": total_products,
         "total_value": total_value,
@@ -129,7 +129,7 @@ def edit_product(request, product_id):
             product.image = request.FILES.get("image")
 
         product.save()
-        return redirect(""seller_dashboard"")
+        return redirect("seller_dashboard")
 
     return render(request, "product_form.html", {"product": product})
 
