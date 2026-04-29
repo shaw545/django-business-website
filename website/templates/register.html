@@ -1,165 +1,123 @@
-{% extends 'base.html' %}
-
-{% block title %}Seller Registration{% endblock %}
-
-{% block extra_css %}
-<style>
-.register-page {
-    padding: 35px 0;
-}
-
-.register-box {
-    max-width: 650px;
-    margin: auto;
-    background: white;
-    padding: 28px;
-    border-radius: 16px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-}
-
-.register-box h1 {
-    margin-top: 0;
-    font-size: 30px;
-}
-
-.form-group {
-    margin-bottom: 16px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-}
-
-.seller-type-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.seller-option {
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    padding: 15px;
-    background: #f9fafb;
-}
-
-.seller-option input {
-    margin-right: 8px;
-}
-
-.seller-option strong {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.help-text {
-    color: #6b7280;
-    font-size: 13px;
-}
-
-.submit-btn {
-    width: 100%;
-    background: orange;
-    border: none;
-    padding: 13px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.errorlist {
-    color: red;
-    font-size: 13px;
-}
-
-@media (max-width: 700px) {
-    .seller-type-box {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
-{% endblock %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
-<div class="container register-page">
+<div style="max-width:600px;margin:40px auto;padding:30px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
 
-    <div class="register-box">
-        <h1>Become a Seller</h1>
-        <p class="help-text">Choose whether you are registering as a personal seller or a business seller.</p>
+    <h2 style="margin-bottom:20px;">Seller Registration</h2>
 
-        <form method="POST">
-            {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
 
-            {{ form.non_field_errors }}
+        <!-- Seller Type -->
+        <label>Seller Type</label>
 
-            <label><strong>Seller Type</strong></label>
+        <div style="display:flex;gap:15px;margin-bottom:20px;">
+            <label style="flex:1;border:1px solid #ccc;padding:15px;border-radius:10px;">
+                <input type="radio" name="seller_type" value="personal" required>
+                <strong>Personal Seller</strong><br>
+                <small>Sell personal items</small>
+            </label>
 
-            <div class="seller-type-box">
-                <label class="seller-option">
-                    <input type="radio" name="seller_type" value="personal" required>
-                    <strong>Personal Seller</strong>
-                    <span class="help-text">Sell personal items, small products, or individual listings.</span>
-                </label>
+            <label style="flex:1;border:1px solid #ccc;padding:15px;border-radius:10px;">
+                <input type="radio" name="seller_type" value="business" required>
+                <strong>Business Seller</strong><br>
+                <small>Register as company</small>
+            </label>
+        </div>
 
-                <label class="seller-option">
-                    <input type="radio" name="seller_type" value="business" required>
-                    <strong>Business Seller</strong>
-                    <span class="help-text">Register as a shop, company, or professional seller.</span>
-                </label>
-            </div>
+        <!-- Fields -->
+        <label>Username</label>
+        <input type="text" name="username" required>
 
-            <div class="form-group">
-                <label>Username</label>
-                {{ form.username }}
-                {{ form.username.errors }}
-            </div>
+        <label>First Name</label>
+        <input type="text" name="first_name" required>
 
-            <div class="form-group">
-                <label>First Name</label>
-                {{ form.first_name }}
-                {{ form.first_name.errors }}
-            </div>
+        <label>Last Name</label>
+        <input type="text" name="last_name" required>
 
-            <div class="form-group">
-                <label>Last Name</label>
-                {{ form.last_name }}
-                {{ form.last_name.errors }}
-            </div>
+        <label>Phone Number</label>
+        <input type="tel" name="phone" required>
 
-            <div class="form-group">
-                <label>Email</label>
-                {{ form.email }}
-                {{ form.email.errors }}
-            </div>
+        <label>Email (optional)</label>
+        <input type="email" name="email">
 
-            <div class="form-group">
-                <label>Password</label>
-                {{ form.password1 }}
-                {{ form.password1.errors }}
-            </div>
+        <label>Password</label>
+        <input type="password" name="password" required>
 
-            <div class="form-group">
-                <label>Confirm Password</label>
-                {{ form.password2 }}
-                {{ form.password2.errors }}
-            </div>
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" required>
 
-            <button type="submit" class="submit-btn">Create Seller Account</button>
-        </form>
-    </div>
+        <button type="submit">Create Seller Account</button>
+
+<p style="text-align:center; margin-top:18px;">
+    Already have an account?
+    <a href="{% url 'login' %}">Sign In</a>
+</p>
+
+<p style="text-align:center; margin-top:10px; font-size:14px;">
+    By creating an account, you agree to our
+    <a href="{% url 'terms' %}">Terms & Conditions</a>
+    and
+    <a href="{% url 'privacy' %}">Privacy Policy</a>.
+</p>
+
+
+    </form>
 
 </div>
+
+<style>
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: orange;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+<button type="submit" class="btn btn-primary w-100">
+    Create Seller Account
+</button>
+
+<p class="mt-3 text-center">
+    Already have an account?
+    <a href="{% url 'login' %}">Sign In</a>
+</p>
+
+<p class="mt-2 text-center small">
+    By creating an account, you agree to our
+    <a href="{% url 'terms' %}">Terms & Conditions</a>
+    and
+    <a href="{% url 'privacy' %}">Privacy Policy</a>.
+</p>
+
+<button type="submit">Create Seller Account</button>
+
+<p style="text-align:center; margin-top:18px;">
+    Already have an account?
+    <a href="{% url 'login' %}">Sign In</a>
+</p>
+
+<p style="text-align:center; margin-top:10px; font-size:14px;">
+    By creating an account, you agree to our
+    <a href="{% url 'terms' %}">Terms & Conditions</a>
+    and
+    <a href="{% url 'privacy' %}">Privacy Policy</a>.
+</p>
+
+
+</style>
 
 {% endblock %}

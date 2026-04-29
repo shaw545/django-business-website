@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding:40px;">
+
+    <h2>Seller Dashboard</h2>
+
+    <div style="margin-bottom:20px;">
+        <strong>Total Products:</strong> {{ total_products }} |
+        <strong>Total Value:</strong> SLE {{ total_value }}
+    </div>
+
+    <a href="{% url 'add_product' %}" style="background:orange; padding:10px 15px; border-radius:6px; text-decoration:none; font-weight:bold;">
+        + Add Product
+    </a>
+
+    <h3 style="margin-top:30px;">Your Products</h3>
+
+    <table style="width:100%; margin-top:20px;">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Condition</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    {% if product.image_url %}
+                        <img src="{{ product.image_url }}" width="60">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.condition }}</td>
+                <td>SLE {{ product.amount }}</td>
+
+                <td>
+                    <a href="{% url 'product_detail' product.id %}">View</a>
+
+                    <!-- ✅ FIXED LINE -->
+                    <a href="{% url 'edit_product' product.id %}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

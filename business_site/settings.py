@@ -89,6 +89,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/"
 
 # 🔥 MEDIA FILES (THIS FIXES YOUR IMAGES)
 MEDIA_URL = '/media/'
