@@ -134,7 +134,11 @@ def edit_product(request, product_id):
         product.save()
         return redirect("dashboard")
 
-    return render(request, "product_form.html", {"product": product})s
+    return render(request, "product_form.html", {"product": product})
+
+    def products_view(request):
+    products = Product.objects.all()
+    return render(request, "products.html", {"products": products})
 
 def terms_view(request):
     return render(request, "terms.html")
