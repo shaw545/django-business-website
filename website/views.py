@@ -132,7 +132,7 @@ def edit_product(request, product_id):
             product.image = request.FILES.get("image")
 
         product.save()
-        return redirect("Dashboard")
+        return redirect("dashboard")
 
     return render(request, "product_form.html", {"product": product})s
 
