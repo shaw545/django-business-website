@@ -3,16 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Product
 
-
-def home(request):
-    products = Product.objects.all()
-    return render(request, "home.html", {"products": products})
-
-
 def products_view(request):
     products = Product.objects.all()
     return render(request, "products.html", {"products": products})
 
+def home(request):
+    products = Product.objects.all()
+    return render(request, "home.html", {"products": products})
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -135,10 +132,6 @@ def edit_product(request, product_id):
         return redirect("dashboard")
 
     return render(request, "product_form.html", {"product": product})
-
-    def products_view(request):
-    products = Product.objects.all()
-    return render(request, "products.html", {"products": products})
 
 def terms_view(request):
     return render(request, "terms.html")
