@@ -9,11 +9,38 @@
                style="background:orange; padding:8px 14px; border-radius:6px; text-decoration:none; color:black; font-weight:bold; font-size:12px;">
                 + Add Product
             </a>
-
-            <a href="{% url 'logout' %}" 
-               style="background:#333; padding:8px 14px; border-radius:6px; text-decoration:none; color:white; font-weight:bold; font-size:12px; margin-left:10px;">
-                Logout
-            </a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" style="
+        background:#333;
+        color:white;
+        border:none;
+        padding:8px 14px;
+        border-radius:6px;
+        font-weight:bold;
+        font-size:12px;
+        cursor:pointer;
+        margin-left:10px;
+    ">
+        Logout
+    </button>
+</form>
+              <form action="{% url 'logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" style="
+        background:#333;
+        color:white;
+        border:none;
+        padding:8px 14px;
+        border-radius:6px;
+        font-weight:bold;
+        font-size:12px;
+        cursor:pointer;
+        margin-left:10px;
+    ">
+        Logout
+    </button>
+</form>            </a>
         </div>
 
     </div>
