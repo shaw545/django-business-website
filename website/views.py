@@ -45,7 +45,6 @@ def cart_view(request):
 
     return render(request, "cart.html", {"products": products, "total": total})
 
-
 def checkout_view(request):
     cart = request.session.get("cart", {})
     products = []
@@ -58,7 +57,19 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
-    return render(request, "checkout.html", {"products": products, "total": total})
+    if request.method == "POST":
+        payment_method = request.POST.get("payment_method")
+
+        # Save payment method
+        request.session["payment_method"] = payment_method
+        request.session.modified = True
+
+        return redirect("order_confirmation")
+
+    return render(request, "checkout.html", {
+        "products": products,
+        "total": total
+    })
 
 def register(request):
     if request.method == "POST":
@@ -85,6 +96,11 @@ def register(request):
         user.last_name = last_name
         user.save()
 
+        SellerProfile.objects.create(
+            user=user,
+            phone=phone,
+            orange_number=request.POST.get("orange_number"),
+       )
         SellerProfile.objects.create(
             user=user,
             seller_type=seller_type,

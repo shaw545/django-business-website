@@ -13,6 +13,9 @@ class SellerProfile(models.Model):
     business_name = models.CharField(max_length=200, blank=True, null=True)
     phone = models.CharField(max_length=30)
 
+    orange_number = models.CharField(max_length=30, blank=True, null=True)
+
+
     def display_name(self):
         if self.seller_type == "business" and self.business_name:
             return self.business_name

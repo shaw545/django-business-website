@@ -80,6 +80,44 @@
     {% endif %}
 </div>
 
+<h3>Select Payment Method</h3>
+
+<label>
+    <input type="radio" name="payment_method" value="cod" checked>
+    Pay on Delivery
+</label><br>
+
+<label>
+    <input type="radio" name="payment_method" value="mobile_money">
+    Mobile Money
+
+<div style="margin-top:15px; font-size:13px; background:#f9f9f9; padding:10px; border-radius:8px;">
+    <strong>Mobile Money Payment Instructions:</strong><br>
+    Send payment to:<br>
+    <div style="margin-top:15px; font-size:13px; background:#f9f9f9; padding:10px; border-radius:8px;">
+    <strong>Mobile Money Payment Instructions:</strong><br>
+    Send payment to:<br>
+
+    {% if products.0.seller.sellerprofile.orange_number %}
+        <strong>Orange Money:</strong> {{ products.0.seller.sellerprofile.orange_number }}
+    {% else %}
+        <span style="color:red;">Seller Orange Money number not available.</span>
+    {% endif %}
+
+    <br><br>
+    <span style="color:#555;">
+        After payment, please contact the seller or wait for confirmation.
+    </span>
+</div>
+
+    <span style="color:#555;">
+        After payment, you will receive confirmation.
+    </span>
+</div>
+
+
+</label>
+
 <style>
 .checkout-page {
     padding: 35px 40px;
@@ -165,3 +203,15 @@
 </style>
 
 {% endblock %}
+
+<script>
+    const mobileOption = document.querySelector('input[value="mobile_money"]');
+    const instructions = document.getElementById("mobileInstructions");
+
+    mobileOption.addEventListener("change", function() {
+        instructions.style.display = "block";
+    });
+</script>
+<div id="mobileInstructions" style="display:none; margin-top:15px;">
+    ...
+</div>

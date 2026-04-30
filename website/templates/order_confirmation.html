@@ -13,5 +13,6 @@
     <a href="{% url 'products' %}" style="padding:12px 20px; background:orange; color:black; border-radius:8px; text-decoration:none; font-weight:bold; margin-left:10px;">
         Continue Shopping
     </a>
+<p><strong>Payment Method:</strong> {{ request.session.payment_method }}</p>
 </div>
-{% endblock %}
+{% endblock %}s
