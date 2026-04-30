@@ -1,217 +1,114 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block content %}
 
-<div class="checkout-page">
-    <h1>Checkout</h1>
+<div style="max-width:800px; margin:auto; padding:20px;">
 
-    {% if products %}
-    <div class="checkout-container">
+    <h2 style="margin-bottom:20px;">Checkout</h2>
 
-        <div class="order-summary">
-            <h2>Order Summary</h2>
+    <!-- CART SUMMARY -->
+    <div style="background:#f5f7fa; padding:20px; border-radius:10px; margin-bottom:20px;">
+        <h3>Order Summary</h3>
 
-            {% for product in products %}
-            <div class="checkout-item">
-
-                <div class="checkout-image">
-                    {% if product.image_url %}
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}">
-                    {% elif product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <div class="no-image">No image</div>
-                    {% endif %}
-                </div>
-
-                <div class="checkout-details">
-                    <h3>{{ product.name }}</h3>
-                    <p>Amount: SLE {{ product.display_amount }}</p>
-                    <p>Quantity: {{ product.quantity }}</p>
-                    <p><strong>Subtotal: SLE {{ product.subtotal }}</strong></p>
-                </div>
-
+        {% for product in products %}
+            <div style="margin-bottom:10px;">
+                <strong>{{ product.name }}</strong><br>
+                Quantity: {{ product.quantity }}<br>
+                Price: SLE {{ product.amount }}<br>
+                Subtotal: SLE {{ product.subtotal }}
             </div>
-            {% endfor %}
+            <hr>
+        {% endfor %}
 
-            <div class="checkout-total">
-                <h2>Total: SLE {{ total }}</h2>
-            </div>
+        <h3>Total: SLE {{ total }}</h3>
+    </div>
+
+    <!-- PAYMENT SECTION -->
+    <form method="post">
+        {% csrf_token %}
+
+        <label style="font-weight:bold;">Payment Method</label>
+
+        <select name="payment_method" id="paymentMethod" required style="
+            width:100%;
+            padding:12px;
+            margin-top:8px;
+            border-radius:8px;
+            border:1px solid #ccc;
+        ">
+            <option value="pay_on_delivery">Pay on Delivery</option>
+            <option value="mobile_money">Mobile Money</option>
+        </select>
+
+        <!-- MOBILE MONEY DETAILS -->
+        <div id="mobileMoneyDetails" style="
+            display:none;
+            margin-top:15px;
+            background:#f9f9f9;
+            padding:15px;
+            border-radius:10px;
+            font-size:13px;
+        ">
+
+            <strong>Mobile Money Payment Instructions</strong><br><br>
+
+            <strong>Orange Money:</strong><br>
+            {% if products.0.seller.sellerprofile.orange_number %}
+                {{ products.0.seller.sellerprofile.orange_number }}
+            {% else %}
+                <span style="color:red;">Orange Money number not available.</span>
+            {% endif %}
+
+            <br><br>
+
+            <strong>Afri Money:</strong><br>
+            {% if products.0.seller.sellerprofile.afri_number %}
+                {{ products.0.seller.sellerprofile.afri_number }}
+            {% else %}
+                <span style="color:red;">Afri Money number not available.</span>
+            {% endif %}
+
+            <br><br>
+            <span style="color:#555;">
+                Please send payment to the seller after placing your order.
+            </span>
         </div>
 
-        <form method="POST" class="checkout-form">
-            {% csrf_token %}
+        <!-- BUTTON -->
+        <button type="submit" style="
+            width:100%;
+            background:orange;
+            padding:14px;
+            border:none;
+            border-radius:10px;
+            font-weight:bold;
+            margin-top:20px;
+            cursor:pointer;
+        ">
+            Place Order
+        </button>
 
-            <h2>Buyer Information</h2>
+    </form>
 
-            <label>Full Name</label>
-            <input type="text" name="full_name" required>
-
-            <label>Email</label>
-            <input type="email" name="email" required>
-
-            <label>Phone Number</label>
-            <input type="text" name="phone" required>
-
-            <label>Delivery Address</label>
-            <textarea name="address" rows="4" required></textarea>
-
-            <label>Payment Method</label>
-            <select name="payment_method" required>
-                <option value="manual">Manual Payment</option>
-                <option value="cash">Cash on Delivery</option>
-                <option value="mobile_money">Mobile Money</option>
-                <option value="bank_transfer">Bank Transfer</option>
-            </select>
-
-           <a href="{% url 'order_confirmation' %}" style="display:block; text-align:center; background:orange; color:black; padding:14px; border-radius:10px; text-decoration:none; font-weight:bold;">
-    Place Order
-</a>        
-</form>
-    </div>
-    {% else %}
-    <div class="empty-checkout">
-        <h2>No items in checkout</h2>
-        <p>Please add products before checkout.</p>
-
-        <a href="{% url 'products' %}" class="start-shopping-btn">Start Shopping</a>
-    </div>
-    {% endif %}
 </div>
 
-<h3>Select Payment Method</h3>
+<!-- SCRIPT -->
+<script>
+    const paymentMethod = document.getElementById("paymentMethod");
+    const mobileMoneyDetails = document.getElementById("mobileMoneyDetails");
 
-<label>
-    <input type="radio" name="payment_method" value="cod" checked>
-    Pay on Delivery
-</label><br>
+    function toggleMobileMoneyDetails() {
+        if (paymentMethod.value === "mobile_money") {
+            mobileMoneyDetails.style.display = "block";
+        } else {
+            mobileMoneyDetails.style.display = "none";
+        }
+    }
 
-<label>
-    <input type="radio" name="payment_method" value="mobile_money">
-    Mobile Money
+    paymentMethod.addEventListener("change", toggleMobileMoneyDetails);
 
-<div style="margin-top:15px; font-size:13px; background:#f9f9f9; padding:10px; border-radius:8px;">
-    <strong>Mobile Money Payment Instructions:</strong><br>
-    Send payment to:<br>
-    <div style="margin-top:15px; font-size:13px; background:#f9f9f9; padding:10px; border-radius:8px;">
-    <strong>Mobile Money Payment Instructions:</strong><br>
-    Send payment to:<br>
-
-    {% if products.0.seller.sellerprofile.orange_number %}
-        <strong>Orange Money:</strong> {{ products.0.seller.sellerprofile.orange_number }}
-    {% else %}
-        <span style="color:red;">Seller Orange Money number not available.</span>
-    {% endif %}
-
-    <br><br>
-    <span style="color:#555;">
-        After payment, please contact the seller or wait for confirmation.
-    </span>
-</div>
-
-    <span style="color:#555;">
-        After payment, you will receive confirmation.
-    </span>
-</div>
-
-
-</label>
-
-<style>
-.checkout-page {
-    padding: 35px 40px;
-    background: #f5f7fa;
-    font-size: 14px;
-}
-
-.checkout-page h1 {
-    font-size: 26px;
-    margin-bottom: 20px;
-}
-
-.checkout-container {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 25px;
-}
-
-.order-summary,
-.checkout-form,
-.empty-checkout {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-}
-
-.checkout-item {
-    display: flex;
-    gap: 18px;
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
-}
-
-.checkout-image img,
-.no-image {
-    width: 110px;
-    height: 110px;
-    object-fit: contain;
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.no-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #777;
-}
-
-.checkout-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.checkout-form label {
-    font-weight: bold;
-    margin-top: 12px;
-    margin-bottom: 5px;
-}
-
-.checkout-form input,
-.checkout-form textarea,
-.checkout-form select {
-    padding: 11px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
-.place-order-btn,
-.start-shopping-btn {
-    margin-top: 20px;
-    background: orange;
-    color: black;
-    border: none;
-    padding: 13px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-}
-</style>
+    // Run on load
+    toggleMobileMoneyDetails();
+</script>
 
 {% endblock %}
-
-<script>
-    const mobileOption = document.querySelector('input[value="mobile_money"]');
-    const instructions = document.getElementById("mobileInstructions");
-
-    mobileOption.addEventListener("change", function() {
-        instructions.style.display = "block";
-    });
-</script>
-<div id="mobileInstructions" style="display:none; margin-top:15px;">
-    ...
-</div>
