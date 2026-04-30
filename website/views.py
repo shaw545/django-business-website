@@ -80,14 +80,37 @@ def checkout_view(request):
         products.append(product)
 
     if request.method == "POST":
+        # Create Order
+        order = Order.objects.create(
+            buyer_name=request.POST.get("buyer_name"),
+            buyer_phone=request.POST.get("buyer_phone"),
+            buyer_email=request.POST.get("buyer_email"),
+            buyer_address=request.POST.get("buyer_address"),
+            payment_method=request.POST.get("payment_method"),
+            total_amount=total,
+        )
+
+        # Create Order Items (VERY IMPORTANT for seller dashboard)
+        for product in products:
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                seller=product.seller,   # 🔥 THIS is what links seller to order
+                quantity=product.quantity,
+                price=product.amount,
+            )
+
+        # Clear cart
         request.session["cart"] = {}
+        request.session["last_order_id"] = order.id
+        request.session.modified = True
+
         return redirect("order_confirmation")
 
     return render(request, "checkout.html", {
         "products": products,
-        "total": total
+        "total": total,
     })
-
 
 def order_confirmation(request):
     return render(request, "order_confirmation.html")
