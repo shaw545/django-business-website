@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Product, SellerProfile
+from django.contrib.auth.decorators import login_required
+
 
 def products_view(request):
     products = Product.objects.all()
@@ -129,10 +131,11 @@ def product_detail(request, product_id):
     })
 
 
+@login_required
 def add_product(request):
     if request.method == "POST":
         Product.objects.create(
-            seller=request.user if request.user.is_authenticated else None,
+            seller=request.user,
             name=request.POST.get("name"),
             category=request.POST.get("category"),
             amount=request.POST.get("amount"),
@@ -143,9 +146,10 @@ def add_product(request):
         return redirect("seller_dashboard")
 
     return render(request, "product_form.html")
-
+@login_required
 def seller_dashboard(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(seller=request.user)
+
     total_products = products.count()
     total_value = sum(product.amount for product in products)
 
@@ -154,7 +158,6 @@ def seller_dashboard(request):
         "total_products": total_products,
         "total_value": total_value,
     })
-
 
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
