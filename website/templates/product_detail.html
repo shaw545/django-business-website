@@ -33,7 +33,14 @@
 
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-            <p><strong>Seller:</strong> {{ seller_name }}</p>
+            <p>
+    <strong>Seller:</strong>
+    {% if product.seller %}
+        {{ product.seller.get_full_name|default:product.seller.username }}
+    {% else %}
+        Seller not assigned
+    {% endif %}
+</p>
 
             <p style="color:#555; line-height:1.6;">
                 {{ product.description }}
