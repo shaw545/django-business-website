@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Product
+from .models import Product, Order, OrderItem
 
 
 # =========================
@@ -143,12 +144,14 @@ def seller_dashboard(request):
     total_products = products.count()
     total_value = sum(product.amount for product in products)
 
+    order_items = OrderItem.objects.filter(seller=request.user).select_related("order", "product").order_by("-order__created_at")
+
     return render(request, "dashboard.html", {
         "products": products,
         "total_products": total_products,
         "total_value": total_value,
+        "order_items": order_items,
     })
-
 
 @login_required
 def add_product(request):
