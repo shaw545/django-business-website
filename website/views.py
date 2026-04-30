@@ -187,7 +187,7 @@ def edit_product(request, product_id):
             product.seller = request.user
 
         product.save()
-        return render(request, ""seller_dashboard".html",)
+        return redirect("seller_dashboard")
 
     return render(request, "product_form.html", {"product": product})
 
