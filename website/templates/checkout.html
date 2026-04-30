@@ -26,6 +26,19 @@
     <!-- PAYMENT SECTION -->
     <form method="post">
         {% csrf_token %}
+<h3>Buyer Information</h3>
+
+<label>Full Name</label>
+<input type="text" name="buyer_name" required style="width:100%; padding:12px; margin-bottom:12px;">
+
+<label>Phone Number</label>
+<input type="text" name="buyer_phone" required style="width:100%; padding:12px; margin-bottom:12px;">
+
+<label>Email (optional)</label>
+<input type="email" name="buyer_email" style="width:100%; padding:12px; margin-bottom:12px;">
+
+<label>Delivery Address</label>
+<textarea name="buyer_address" required style="width:100%; padding:12px; margin-bottom:20px;"></textarea>
 
         <label style="font-weight:bold;">Payment Method</label>
 

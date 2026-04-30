@@ -59,6 +59,17 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
+   if request.method == "POST":
+       buyer_name = request.POST.get("buyer_name")
+       buyer_phone = request.POST.get("buyer_phone")
+       buyer_email = request.POST.get("buyer_email")
+       buyer_address = request.POST.get("buyer_address")
+       payment_method = request.POST.get("payment_method")
+
+    print("Buyer:", buyer_name, buyer_phone, buyer_address, payment_method)
+
+    return redirect("order_confirmation")
+
     if request.method == "POST":
         payment_method = request.POST.get("payment_method")
 
