@@ -65,26 +65,35 @@
 
             <strong>Mobile Money Payment Instructions</strong><br><br>
 
+{% if products %}
+    {% with seller=products.0.seller %}
+        {% if seller and seller.sellerprofile %}
+
             <strong>Orange Money:</strong><br>
-            {% if products.0.seller.sellerprofile.orange_number %}
-                {{ products.0.seller.sellerprofile.orange_number }}
-            {% else %}
-                <span style="color:red;">Orange Money number not available.</span>
-            {% endif %}
+            {{ seller.sellerprofile.orange_number|default:"Orange Money number not available" }}
 
             <br><br>
 
             <strong>Afri Money:</strong><br>
-            {% if products.0.seller.sellerprofile.afri_number %}
-                {{ products.0.seller.sellerprofile.afri_number }}
-            {% else %}
-                <span style="color:red;">Afri Money number not available.</span>
-            {% endif %}
+            {{ seller.sellerprofile.afri_number|default:"Afri Money number not available" }}
 
-            <br><br>
-            <span style="color:#555;">
-                Please send payment to the seller after placing your order.
-            </span>
+        {% else %}
+            <span style="color:red;">Seller payment details not available.</span>
+        {% endif %}
+    {% endwith %}
+{% else %}
+    <span style="color:red;">No product in cart.</span>
+{% endif %}
+
+<br><br>
+
+<p style="color:#555;">
+    Please send payment to the seller after placing your order.
+</p>
+
+<p style="color:#555;">
+    After payment, please call or WhatsApp the seller with your receipt and order details. The seller will confirm payment before delivery.
+</p>            </span>
         </div>
 
         <!-- BUTTON -->
