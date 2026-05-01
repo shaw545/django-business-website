@@ -34,13 +34,16 @@
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
             <p>
+    <p>
     <strong>Seller:</strong>
     {% if product.seller %}
-        {{ product.seller.get_full_name|default:product.seller.username }}
+        <a href="{% url 'seller_store' product.seller.id %}" style="color:#1e5be0; font-weight:bold; text-decoration:none;">
+            {{ product.seller.get_full_name }}
+        </a>
     {% else %}
         Seller not assigned
     {% endif %}
-</p>
+</p></p>
 
             <p style="color:#555; line-height:1.6;">
                 {{ product.description }}

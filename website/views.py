@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Product
-from .models import Product, Order, OrderItem
+from .models import Product, Order, OrderItem, SellerRating
 
 
 # =========================
@@ -272,3 +271,34 @@ def remove_cart_item(request, product_id):
 
 def privacy_view(request):
     return render(request, "privacy.html")
+
+def seller_store(request, seller_id):
+    seller = get_object_or_404(User, id=seller_id)
+    products = Product.objects.filter(seller=seller)
+    ratings = SellerRating.objects.filter(seller=seller).order_by("-created_at")
+
+    if ratings.exists():
+        average_rating = sum(r.rating for r in ratings) / ratings.count()
+    else:
+        average_rating = 0
+
+    if request.method == "POST":
+        buyer_name = request.POST.get("buyer_name")
+        rating = request.POST.get("rating")
+        comment = request.POST.get("comment")
+
+        SellerRating.objects.create(
+            seller=seller,
+            buyer_name=buyer_name,
+            rating=rating,
+            comment=comment,
+        )
+
+        return redirect("seller_store", seller_id=seller.id)
+
+    return render(request, "seller_store.html", {
+        "seller": seller,
+        "products": products,
+        "ratings": ratings,
+        "average_rating": average_rating,
+    })
