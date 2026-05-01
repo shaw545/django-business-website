@@ -97,6 +97,7 @@ def checkout_view(request):
     cart = request.session.get("cart", {})
     products = []
     total = 0
+    seller_profile = None
 
     for product_id, quantity in cart.items():
         product = get_object_or_404(Product, id=product_id)
@@ -105,8 +106,13 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
+    if products and products[0].seller:
+        try:
+            seller_profile = products[0].seller.sellerprofile
+        except:
+            seller_profile = None
+
     if request.method == "POST":
-        # Create Order
         order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
             buyer_phone=request.POST.get("buyer_phone"),
@@ -116,6 +122,25 @@ def checkout_view(request):
             total_amount=total,
         )
 
+        for product in products:
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                seller=product.seller,
+                quantity=product.quantity,
+                price=product.amount,
+            )
+
+        request.session["cart"] = {}
+        request.session["last_order_id"] = order.id
+        request.session.modified = True
+        return redirect("order_confirmation")
+
+    return render(request, "checkout.html", {
+        "products": products,
+        "total": total,
+        "seller_profile": seller_profile,
+    })
         # Create Order Items (VERY IMPORTANT for seller dashboard)
         for product in products:
             OrderItem.objects.create(
@@ -156,7 +181,7 @@ def register(request):
         confirm_password = request.POST.get("confirm_password")
 
         if password != confirm_password:
-            messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match")def checkout_view(request):
             return redirect("register")
 
         if User.objects.filter(username=username).exists():
