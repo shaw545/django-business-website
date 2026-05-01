@@ -192,6 +192,16 @@ def add_product(request):
 
     return render(request, "product_form.html")
 
+@login_required
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id, seller=request.user)
+
+    if request.method == "POST":
+        product.delete()
+        return redirect("seller_dashboard")
+
+    return render(request, "delete_product.html", {"product": product})
+
 
 @login_required
 def edit_product(request, product_id):

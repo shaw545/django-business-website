@@ -23,7 +23,7 @@ urlpatterns = [path("logout/", auth_views.LogoutView.as_view(next_page="home"), 
     path("checkout/", views.checkout_view, name="checkout"),
     path("add-to-cart/<int:product_id>/", views.add_to_cart, name="add_to_cart"),
     path("buy-now/<int:product_id>/", views.buy_now, name="buy_now"),
-
+    path("dashboard/delete-product/<int:product_id>/", views.delete_product, name="delete_product"),
     path("cart/increase/<int:product_id>/", views.increase_cart_item, name="increase_cart_item"),
     path("cart/decrease/<int:product_id>/", views.decrease_cart_item, name="decrease_cart_item"),
     path("cart/remove/<int:product_id>/", views.remove_cart_item, name="remove_cart_item"),

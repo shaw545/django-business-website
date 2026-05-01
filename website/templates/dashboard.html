@@ -43,6 +43,15 @@
 </form>            </a>
         </div>
 
+
+<form action="{% url 'delete_product' product.id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Are you sure you want to remove this product?');"
+        style="background:red; color:white; padding:8px 12px; border:none; border-radius:6px; font-weight:bold;">
+        Remove
+    </button>
+</form>
+
     </div>
 {% block content %}
 <div style="padding:40px; background:#f5f7fa; min-height:80vh;">
