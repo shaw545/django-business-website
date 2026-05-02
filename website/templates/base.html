@@ -182,11 +182,10 @@
 <nav class="navbar">
     <a href="{% url 'home' %}" class="logo">MarketHub</a>
 
-    <form class="search-bar" method="GET" action="{% url 'products' %}">
-        <input type="text" name="q" placeholder="Search products...">
-        <button type="submit">Search</button>
-    </form>
-
+    <form method="get" action="{% url 'products' %}" style="display:flex;">
+    <input type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}">
+    <button type="submit">Search</button>
+</form>
     <div class="nav-links">
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'products' %}">Products</a>
