@@ -178,6 +178,7 @@ def checkout_view(request):
         "total": total,
         "seller_profile": seller_profile,
     })
+
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None
@@ -311,6 +312,14 @@ def delete_product(request, product_id):
         "product": product,
     })
 
+def seller_store(request, seller_id):
+    seller = get_object_or_404(User, id=seller_id)
+    products = Product.objects.filter(seller=seller)
+
+    return render(request, "seller_store.html", {
+        "seller": seller,
+        "products": products,
+    })
 
 # =========================
 # STATIC PAGES
