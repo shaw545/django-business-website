@@ -149,7 +149,7 @@ def checkout_view(request):
         except Exception:
             seller_profile = None
 
-    if request.method == "POST":
+        if request.method == "POST":
         order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
             buyer_phone=request.POST.get("buyer_phone"),
@@ -171,12 +171,11 @@ def checkout_view(request):
         request.session["cart"] = {}
         return redirect("order_success")
 
-        return render(request, "checkout.html", {
+    return render(request, "checkout.html", {
         "products": products,
         "total": total,
         "seller_profile": seller_profile,
     })
-
 def order_confirmation(request):
     return render(request, "order_confirmation.html")
     order_id = request.session.get("last_order_id")
