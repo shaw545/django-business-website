@@ -3,9 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-
-from .models import Product, Order, OrderItem
-
+from models import Product, Order, OrderItem, SellerProfiles
 
 # =========================
 # PUBLIC PAGES
@@ -325,7 +323,6 @@ SellerProfile.objects.create(
     orange_number=request.POST.get("orange_number"),
     afri_number=request.POST.get("afri_number"),
 )
-
 # =========================
 # STATIC PAGES
 # =========================
