@@ -142,10 +142,10 @@ def checkout_view(request):
         products.append(product)
 
     if products:
-        try:
-            seller_profile = products[0].seller.sellerprofile
-        except Exception:
-            seller_profile = None
+ try:
+    seller_profile = SellerProfile.objects.filter(user=products[0].seller).first()
+ except Exception:
+    seller_profile = None
 
     if request.method == "POST":
         order = Order.objects.create(
@@ -167,7 +167,7 @@ def checkout_view(request):
             )
 
         request.session["cart"] = {}
-        return redirect("order_success")
+        return redirect("order_confirmation")
 
     return render(request, "checkout.html", {
         "products": products,

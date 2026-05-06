@@ -65,24 +65,17 @@
      
   <strong>Mobile Money Payment Instructions</strong><br><br>
 
-        {% if seller_profile %}
+  {% if seller_profile %}
+    <strong>Orange Money:</strong><br>
+    {{ seller_profile.orange_number|default:"Orange Money number not available" }}
 
-            <strong>Orange Money:</strong><br>
-            {{ seller_profile.orange_number|default:"Orange Money number not available" }}
+    <br><br>
 
-            <br><br>
-
-            <strong>Afri Money:</strong><br>
-            {{ seller_profile.afri_number|default:"Afri Money number not available" }}
-
-        {% else %}
-
-            <span style="color:red;">
-                Seller payment details not available.
-            </span>
-
-        {% endif %}
-
+    <strong>Afri Money:</strong><br>
+    {{ seller_profile.afri_number|default:"Afri Money number not available" }}
+{% else %}
+    <span style="color:red;">Seller payment details not available.</span>
+{% endif %}
     </div>
 
     <p style="color:#555;">
