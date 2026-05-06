@@ -141,6 +141,7 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
+    # Get seller profile from the first product in cart
     if products and products[0].seller:
         try:
             seller_profile = products[0].seller.sellerprofile
@@ -177,7 +178,6 @@ def checkout_view(request):
         "total": total,
         "seller_profile": seller_profile,
     })
-
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None
