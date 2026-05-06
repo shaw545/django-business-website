@@ -11,13 +11,11 @@
         {% csrf_token %}
 
         <!-- Seller Type -->
-
         <label>Seller Type</label>
 
 <div style="display:flex;gap:15px;margin-bottom:20px;">
     <label style="flex:1;border:1px solid #ccc;padding:15px;border-radius:10px;">
         <input type="radio" name="seller_type" value="personal" required onclick="toggleSellerFields()">
-        <input type="radio" name="seller_type" value="business" required onclick="toggleSellerFields()">
         <strong>Personal Seller</strong><br>
         <small>Sell personal items</small>
     </label>
