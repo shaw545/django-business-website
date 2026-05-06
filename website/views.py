@@ -171,12 +171,14 @@ def checkout_view(request):
         request.session["cart"] = {}
         return redirect("order_success")
 
-    return render(request, "checkout.html", {
+        return render(request, "checkout.html", {
         "products": products,
         "total": total,
         "seller_profile": seller_profile,
-    })def order_confirmation(request):
-    order_id = request.session.get("last_order_id")
+    })
+
+def order_confirmation(request):
+    return render(request, "order_confirmation.html")    order_id = request.session.get("last_order_id")
     order = None
 
     if order_id:
