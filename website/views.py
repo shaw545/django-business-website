@@ -215,21 +215,19 @@ def register(request):
             last_name=last_name,
         )
 
-SellerProfile.objects.create(
-    user=user,
-    seller_type=request.POST.get("seller_type"),
-    business_name=request.POST.get("business_name"),
-    phone=request.POST.get("phone"),
-    orange_number=request.POST.get("orange_number"),
-    afri_number=request.POST.get("afri_number"),
-)
-        user.save()
+        SellerProfile.objects.create(
+            user=user,
+            seller_type=request.POST.get("seller_type"),
+            business_name=request.POST.get("business_name"),
+            phone=request.POST.get("phone"),
+            orange_number=request.POST.get("orange_number"),
+            afri_number=request.POST.get("afri_number"),
+        )
 
+        user.save()
         return redirect("login")
 
     return render(request, "register.html")
-
-
 def logout_view(request):
     logout(request)
     return redirect("home")
