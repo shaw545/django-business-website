@@ -87,6 +87,20 @@
 
 </div>
 
+<script>
+document.querySelectorAll('input[name="seller_type"]').forEach(function(radio) {
+    radio.addEventListener("change", function() {
+        document.getElementById("personalFields").style.display =
+            this.value === "personal" ? "block" : "none";
+
+        document.getElementById("businessFields").style.display =
+            this.value === "business" ? "block" : "none";
+    });
+});
+</script>
+
+<style>
+
 <style>
 input {
     width: 100%;
@@ -150,6 +164,10 @@ button {
 
 
 <script>
+</form>
+</div>
+
+<script>
 function toggleSellerFields() {
     const selected = document.querySelector('input[name="seller_type"]:checked');
 
@@ -166,6 +184,16 @@ function toggleSellerFields() {
         businessFields.style.display = "block";
     }
 }
-</script>
-{% endblock %}
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    toggleSellerFields();
+
+    document.querySelectorAll('input[name="seller_type"]').forEach(function(radio) {
+        radio.addEventListener("change", toggleSellerFields);
+    });
+
+});
+</script>
+
+{% endblock %}
