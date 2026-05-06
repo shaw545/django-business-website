@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from models import Product, Order, OrderItem, SellerProfiles
+from models import Product, Order, OrderItem, SellerProfile
 
 # =========================
 # PUBLIC PAGES
@@ -315,7 +315,14 @@ def seller_store(request, seller_id):
         "products": products,
     })
 
-
+SellerProfile.objects.create(
+    user=user,
+    seller_type=request.POST.get("seller_type"),
+    business_name=request.POST.get("business_name"),
+    phone=request.POST.get("phone"),
+    orange_number=request.POST.get("orange_number"),
+    afri_number=request.POST.get("afri_number"),
+)
 # =========================
 # STATIC PAGES
 # =========================
