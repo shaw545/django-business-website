@@ -166,16 +166,17 @@ def checkout_view(request):
                 price=product.amount,
             )
 
-        request.session["cart"] = {}
-        return redirect("order_confirmation")
+          request.session["cart"] = {}
+          request.session["last_order_id"] = order.id
+          return redirect("order_confirmation")
 
-    return render(request, "checkout.html", {
-        "products": products,
-        "total": total,
-        "seller_profile": seller_profile,
-    })
+      return render(request, "checkout.html", {
+         "products": products,
+         "total": total,
+         "seller_profile": seller_profile,
+})
+
 def order_confirmation(request):
-    return render(request, "order_confirmation.html")
     order_id = request.session.get("last_order_id")
     order = None
 
@@ -316,6 +317,15 @@ def seller_store(request, seller_id):
         "seller": seller,
         "products": products,
     })
+
+SellerProfile.objects.create(
+    user=user,
+    seller_type=request.POST.get("seller_type"),
+    business_name=request.POST.get("business_name"),
+    phone=request.POST.get("phone"),
+    orange_number=request.POST.get("orange_number"),
+    afri_number=request.POST.get("afri_number"),
+)
 
 # =========================
 # STATIC PAGES
