@@ -56,29 +56,37 @@
         <!-- MOBILE MONEY DETAILS -->
         <div id="mobileMoneyDetails" style="
             display:none;
-            margin-top:15px;
-            background:#f9f9f9;
-            padding:15px;
-            border-radius:10px;
-            font-size:13px;
-        ">
+           <div style="
+    margin-top:15px;
+    background:#f9f9f9;
+    padding:15px;
+    border-radius:10px;
+    font-size:13px;
+">
 
-           <strong>Mobile Money Payment Instructions</strong><br><br>
+    <strong>Mobile Money Payment Instructions</strong><br><br>
 
-{% if seller_profile %}
-    <strong>Orange Money:</strong><br>
-    {{ seller_profile.orange_number|default:"Orange Money number not available" }}
+    {% if seller_profile %}
 
-    <br><br>
+        <strong>Orange Money:</strong><br>
+        {{ seller_profile.orange_number|default:"Orange Money number not available" }}
 
-    <strong>Afri Money:</strong><br>
-    {{ seller_profile.afri_number|default:"Afri Money number not available" }}
-{% else %}
-    <span style="color:red;">Seller payment details not available.</span>
-{% endif %}
+        <br><br>
+
+        <strong>Afri Money:</strong><br>
+        {{ seller_profile.afri_number|default:"Afri Money number not available" }}
+
+    {% else %}
+
+        <span style="color:red;">
+            Seller payment details not available.
+        </span>
+
+    {% endif %}
+
+</div>
 
 <br><br>
-
 <p style="color:#555;">
     After payment, please call or WhatsApp the seller with your receipt and order details.
 </p>        </div>
