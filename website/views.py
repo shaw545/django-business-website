@@ -147,7 +147,7 @@ def checkout_view(request):
         except Exception:
             seller_profile = None
 
-    if request.method == "POST":
+   if request.method == "POST":
        order = Order.objects.create(
         buyer_name=request.POST.get("buyer_name"),
         buyer_phone=request.POST.get("buyer_phone"),
