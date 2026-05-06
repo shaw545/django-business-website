@@ -178,7 +178,8 @@ def checkout_view(request):
     })
 
 def order_confirmation(request):
-    return render(request, "order_confirmation.html")    order_id = request.session.get("last_order_id")
+    return render(request, "order_confirmation.html")
+    order_id = request.session.get("last_order_id")
     order = None
 
     if order_id:
