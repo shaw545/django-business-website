@@ -62,7 +62,7 @@
     padding:15px;
     border-radius:10px;
     font-size:13px;
-">      
+     
   <strong>Mobile Money Payment Instructions</strong><br><br>
 
         {% if seller_profile %}
@@ -127,3 +127,17 @@
 </script>
 
 {% endblock %}
+<script>
+function showPaymentDetails() {
+    const paymentMethod = document.getElementById("paymentMethod").value;
+    const mobileMoneyDetails = document.getElementById("mobileMoneyDetails");
+
+    if (paymentMethod === "Mobile Money") {
+        mobileMoneyDetails.style.display = "block";
+    } else {
+        mobileMoneyDetails.style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", showPaymentDetails);
+</script>

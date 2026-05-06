@@ -127,7 +127,6 @@ def remove_cart_item(request, product_id):
 # =========================
 # CHECKOUT / ORDER
 # =========================
-
 def checkout_view(request):
     cart = request.session.get("cart", {})
     products = []
@@ -141,10 +140,12 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
-    # Get seller profile from the first product in cart
-    if products and products[0].seller:
+    # Get seller profile from first product in cart
+    if products:
+        first_product = products[0]
+
         try:
-            seller_profile = products[0].seller.sellerprofile
+            seller_profile = first_product.seller.sellerprofile
         except Exception:
             seller_profile = None
 
@@ -168,17 +169,13 @@ def checkout_view(request):
             )
 
         request.session["cart"] = {}
-        request.session["last_order_id"] = order.id
-        request.session.modified = True
-
-        return redirect("order_confirmation")
+        return redirect("order_success")
 
     return render(request, "checkout.html", {
         "products": products,
         "total": total,
         "seller_profile": seller_profile,
-    })
-def order_confirmation(request):
+    })def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None
 
