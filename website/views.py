@@ -127,6 +127,7 @@ def remove_cart_item(request, product_id):
 # =========================
 # CHECKOUT / ORDER
 # =========================
+
 def checkout_view(request):
     cart = request.session.get("cart", {})
     products = []
@@ -140,17 +141,14 @@ def checkout_view(request):
         total += product.subtotal
         products.append(product)
 
-    # Get seller profile from first product in cart
     if products:
-        first_product = products[0]
-
         try:
-            seller_profile = first_product.seller.sellerprofile
+            seller_profile = products[0].seller.sellerprofile
         except Exception:
             seller_profile = None
 
-        if request.method == "POST":
-          order = Order.objects.create(
+    if request.method == "POST":
+        order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
             buyer_phone=request.POST.get("buyer_phone"),
             buyer_email=request.POST.get("buyer_email"),
@@ -176,7 +174,6 @@ def checkout_view(request):
         "total": total,
         "seller_profile": seller_profile,
     })
-
 def order_confirmation(request):
     return render(request, "order_confirmation.html")
     order_id = request.session.get("last_order_id")
