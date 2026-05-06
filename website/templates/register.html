@@ -18,6 +18,7 @@
 <div style="display:flex;gap:15px;margin-bottom:20px;">
     <label style="flex:1;border:1px solid #ccc;padding:15px;border-radius:10px;">
         <input type="radio" name="seller_type" value="personal" required onclick="toggleSellerFields()">
+        <input type="radio" name="seller_type" value="business" required onclick="toggleSellerFields()">
         <strong>Personal Seller</strong><br>
         <small>Sell personal items</small>
     </label>
@@ -148,3 +149,22 @@ button {
 </style>
 
 {% endblock %}
+
+<script>
+function toggleSellerFields() {
+    const selected = document.querySelector('input[name="seller_type"]:checked');
+
+    if (!selected) return;
+
+    const personalFields = document.getElementById("personalFields");
+    const businessFields = document.getElementById("businessFields");
+
+    if (selected.value === "personal") {
+        personalFields.style.display = "block";
+        businessFields.style.display = "none";
+    } else {
+        personalFields.style.display = "none";
+        businessFields.style.display = "block";
+    }
+}
+</script>s
