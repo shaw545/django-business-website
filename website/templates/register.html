@@ -30,32 +30,25 @@
         </div>
 
         <!-- Fields -->
-        <label>Username</label>
-        <input type="text" name="username" required>
+        <<label>Phone Number</label>
+<input type="tel" name="phone" required>
 
-        <label>First Name</label>
-        <input type="text" name="first_name" required>
+<label>Orange Money Number</label>
+<input type="text" name="orange_number" placeholder="+232 XX XXX XXX" required>
 
-        <label>Last Name</label>
-        <input type="text" name="last_name" required>
+<label>Afri Money Number</label>
+<input type="text" name="afri_number" placeholder="+232 XX XXX XXX" required>
 
-        <label>Phone Number</label>
-        <label>Orange Money Number</label>
-        <input type="text" name="orange_number" placeholder="+232 XX XXX XXX" required>
+<label>Email (optional)</label>
+<input type="email" name="email">
 
-        <input type="tel" name="phone" required>
+<label>Password</label>
+<input type="password" name="password" required>
 
-        <label>Email (optional)</label>
-        <input type="email" name="email">
+<label>Confirm Password</label>
+<input type="password" name="confirm_password" required>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
-
-        <label>Confirm Password</label>
-        <input type="password" name="confirm_password" required>
-
-        <button type="submit">Create Seller Account</button>
-
+<button type="submit">Create Seller Account</button>
 <p style="text-align:center; margin-top:18px;">
     Already have an account?
     <a href="{% url 'login' %}">Sign In</a>
