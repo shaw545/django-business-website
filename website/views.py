@@ -147,34 +147,34 @@ def checkout_view(request):
         except Exception:
             seller_profile = None
 
-   if request.method == "POST":
-       order = Order.objects.create(
-        buyer_name=request.POST.get("buyer_name"),
-        buyer_phone=request.POST.get("buyer_phone"),
-        buyer_email=request.POST.get("buyer_email"),
-        buyer_address=request.POST.get("buyer_address"),
-        payment_method=request.POST.get("payment_method"),
-        total_amount=total,
-    )
-
-    for product in products:
-        OrderItem.objects.create(
-            order=order,
-            product=product,
-            seller=product.seller,
-            quantity=product.quantity,
-            price=product.amount,
+    if request.method == "POST":
+        order = Order.objects.create(
+            buyer_name=request.POST.get("buyer_name"),
+            buyer_phone=request.POST.get("buyer_phone"),
+            buyer_email=request.POST.get("buyer_email"),
+            buyer_address=request.POST.get("buyer_address"),
+            payment_method=request.POST.get("payment_method"),
+            total_amount=total,
         )
 
-    request.session["cart"] = {}
-    request.session["last_order_id"] = order.id
-    return redirect("order_confirmation")
-      return render(request, "checkout.html", {
-         "products": products,
-         "total": total,
-         "seller_profile": seller_profile,
-})
+        for product in products:
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                seller=product.seller,
+                quantity=product.quantity,
+                price=product.amount,
+            )
 
+        request.session["cart"] = {}
+        request.session["last_order_id"] = order.id
+        return redirect("order_confirmation")
+
+    return render(request, "checkout.html", {
+        "products": products,
+        "total": total,
+        "seller_profile": seller_profile,
+    })
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None
