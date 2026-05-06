@@ -54,47 +54,42 @@
         </select>
 
         <!-- MOBILE MONEY DETAILS -->
-        <div id="mobileMoneyDetails" style="
-            display:none;
+       <div id="mobileMoneyDetails" style="display:none;">
 
-  <div style="
+    <div style="
     margin-top:15px;
     background:#f9f9f9;
     padding:15px;
     border-radius:10px;
     font-size:13px;
-">
+">      
+  <strong>Mobile Money Payment Instructions</strong><br><br>
 
-    <strong>Mobile Money Payment Instructions</strong><br><br>
+        {% if seller_profile %}
 
-    {% if seller_profile %}
+            <strong>Orange Money:</strong><br>
+            {{ seller_profile.orange_number|default:"Orange Money number not available" }}
 
-        <strong>Orange Money:</strong><br>
-        {{ seller_profile.orange_number|default:"Orange Money number not available" }}
+            <br><br>
 
-        <br><br>
+            <strong>Afri Money:</strong><br>
+            {{ seller_profile.afri_number|default:"Afri Money number not available" }}
 
-        <strong>Afri Money:</strong><br>
-        {{ seller_profile.afri_number|default:"Afri Money number not available" }}
+        {% else %}
 
-    {% else %}
+            <span style="color:red;">
+                Seller payment details not available.
+            </span>
 
-        <span style="color:red;">
-            Seller payment details not available.
-        </span>
+        {% endif %}
 
-    {% endif %}
+    </div>
 
-</div>
+    <p style="color:#555;">
+        After payment, please call or WhatsApp the seller with your receipt and order details.
+    </p>
 
-
-<br><br>
-
-<p style="color:#555;">
-    After payment, please call or WhatsApp the seller with your receipt and order details.
-</p>        </div>
-
-        <!-- BUTTON -->
+</div>        <!-- BUTTON -->
         <button type="submit" style="
             width:100%;
             background:orange;
