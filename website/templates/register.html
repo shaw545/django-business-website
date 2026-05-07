@@ -167,30 +167,39 @@ button {
 <script>
 function toggleSellerFields() {
     const selected = document.querySelector('input[name="seller_type"]:checked');
+    const personalFields = document.getElementById("personalFields");
+    const businessFields = document.getElementById("businessFields");
 
     if (!selected) return;
 
-    const personalFields = document.getElementById("personalFields");
-    const businessFields = document.getElementById("businessFields");
+    const personalInputs = personalFields.querySelectorAll("input");
+    const businessInputs = businessFields.querySelectorAll("input");
 
     if (selected.value === "personal") {
         personalFields.style.display = "block";
         businessFields.style.display = "none";
+
+        personalInputs.forEach(input => input.required = true);
+        businessInputs.forEach(input => input.required = false);
     } else {
         personalFields.style.display = "none";
         businessFields.style.display = "block";
+
+        personalInputs.forEach(input => input.required = false);
+        businessInputs.forEach(input => {
+            if (input.name !== "business_logo") {
+                input.required = true;
+            }
+        });
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
     toggleSellerFields();
 
     document.querySelectorAll('input[name="seller_type"]').forEach(function(radio) {
         radio.addEventListener("change", toggleSellerFields);
     });
-
 });
 </script>
-
 {% endblock %}
