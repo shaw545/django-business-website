@@ -11,18 +11,31 @@ from .models import Product, Order, OrderItem, SellerProfile
 
 def home(request):
     query = request.GET.get("q", "")
+    category = request.GET.get("category", "")
+
+    products = Product.objects.all()
 
     if query:
-        products = Product.objects.filter(name__icontains=query)
-    else:
-        products = Product.objects.all()
+        products = products.filter(name__icontains=query)
+
+    if category:
+        products = products.filter(category=category)
+
+    categories = [
+        "Electronics",
+        "Fashion & Clothing",
+        "Home & Living",
+        "Beauty & Personal Care",
+        "Sports",
+        "Other",
+    ]
 
     return render(request, "home.html", {
         "products": products,
         "query": query,
+        "categories": categories,
+        "selected_category": category,
     })
-
-
 def products_view(request):
     query = request.GET.get("q", "")
 
@@ -339,9 +352,6 @@ def seller_products(request, seller_id):
         "seller": seller,
         "products": products,
     })
-
-
-
 
 # =========================
 # STATIC PAGES
