@@ -191,48 +191,58 @@ def order_confirmation(request):
 
 def register(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        phone = request.POST.get("phone")
-        email = request.POST.get("email") or ""
+        seller_type = request.POST.get("seller_type")
+
+        if seller_type == "business":
+            username = request.POST.get("username_business")
+        else:
+            username = request.POST.get("username")
+
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
+        email = request.POST.get("email", "")
+        first_name = request.POST.get("first_name", "")
+        last_name = request.POST.get("last_name", "")
+
+        if not username:
+            messages.error(request, "Username is required")
+            return redirect("register")
 
         if password != confirm_password:
             messages.error(request, "Passwords do not match")
             return redirect("register")
 
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists")
+            messages.error(request, "Username already exists. Please choose another username.")
             return redirect("register")
 
         user = User.objects.create_user(
             username=username,
-            password=password,
             email=email,
+            password=password,
             first_name=first_name,
             last_name=last_name,
         )
 
         SellerProfile.objects.create(
             user=user,
-            seller_type=request.POST.get("seller_type"),
-            business_name=request.POST.get("business_name"),
-            phone=request.POST.get("phone"),
-            orange_number=request.POST.get("orange_number"),
-            afri_number=request.POST.get("afri_number"),
+            seller_type=seller_type,
+            business_name=request.POST.get("business_name", ""),
+            business_address=request.POST.get("business_address", ""),
+            business_logo=request.FILES.get("business_logo"),
+            phone=request.POST.get("phone", ""),
+            orange_number=request.POST.get("orange_number", ""),
+            afri_number=request.POST.get("afri_number", ""),
         )
 
-        user.save()
+        messages.success(request, "Seller account created successfully.")
         return redirect("login")
 
     return render(request, "register.html")
+
 def logout_view(request):
     logout(request)
     return redirect("home")
-
-
 # =========================
 # SELLER DASHBOARD
 # =========================
@@ -320,6 +330,18 @@ def seller_store(request, seller_id):
         "seller": seller,
         "products": products,
     })
+
+def seller_products(request, seller_id):
+    seller = User.objects.get(id=seller_id)
+    products = Product.objects.filter(seller=seller)
+
+    return render(request, "seller_products.html", {
+        "seller": seller,
+        "products": products,
+    })
+
+
+
 
 # =========================
 # STATIC PAGES

@@ -14,6 +14,8 @@ class SellerProfile(models.Model):
     phone = models.CharField(max_length=30)
     orange_number = models.CharField(max_length=30, blank=True, null=True)
     afri_number = models.CharField(max_length=30, blank=True, null=True)
+    business_address = models.CharField(max_length=255, blank=True, null=True)
+    business_logo = models.ImageField(upload_to="seller_logos/", blank=True, null=True)
 
     def display_name(self):
         if self.seller_type == "business" and self.business_name:
