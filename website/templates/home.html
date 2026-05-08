@@ -165,33 +165,71 @@
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-    <div class="logo">MarketHub</div>
+<div class="navbar" style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:18px 40px;
+    background:#79c2e8;
+">
 
-    <div class="search-box">
-        <input type="text" placeholder="Search products...">
-        <button>Search</button>
+    <div class="logo" style="font-size:28px; font-weight:bold;">
+        MarketHub
     </div>
 
-    <div class="nav-links">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'cart' %}">Cart</a>
-        <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
-    </div>
-</div>
+    <form method="GET" action="{% url 'home' %}" style="display:flex; gap:8px;">
+        <input type="text" name="q" placeholder="Search products..."
+               value="{{ query }}"
+               style="padding:12px; width:320px; border-radius:8px; border:none;">
+        <button type="submit"
+                style="background:orange; padding:12px 20px; border:none; border-radius:8px; font-weight:bold;">
+            Search
+        </button>
+    </form>
 
+    <div class="nav-links" style="
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    margin-left:-20px;
+">      
+        <a href="{% url 'home' %}" style="text-decoration:none; color:black; font-weight:bold;">Home</a>
+        <a href="{% url 'products' %}" style="text-decoration:none; color:black; font-weight:bold;">Products</a>
+        <a href="{% url 'cart' %}" style="text-decoration:none; color:black; font-weight:bold;">Cart</a>
+
+        <a href="{% url 'products' %}" style="background:orange; padding:6px 12px; border-radius:8px; text-decoration:none; color:black; font-weight:bold; font-size:14px;"> 
+    Shop Now
+        </a>
+
+       <a href="{% url 'register' %}" style="background:white; padding:6px 12px; border-radius:8px; text-decoration:none; color:black; font-weight:bold; border:2px solid black; font-size:14px;">
+            Become a Seller
+        </a>
+
+        <a href="{% url 'seller_dashboard' %}" style="background:orange; padding:6px 12px; border-radius:8px; text-decoration:none; color:black; font-weight:bold; font-size:14px; margin-left:-5px;">
+            Dashboard
+        </a>
+    </div>
+
+</div>s
 <!-- HERO -->
-<section class="hero-section">
-    <div class="hero-text">
-        <h1>Welcome to MarketHub</h1>
-        <p>Discover quality products and trusted services in one place.</p>
+<section class="hero-section" style="
+    background:#a8d5f2;
+    padding:10px 60px 40px;
+    margin-top:0;
+">
+<h1 style="
+    font-size:18px;
+    margin-top:0;
+    margin-bottom:5px;
+    line-height:1.1;
+    color:#0a1f44;
+">
+    Welcome to Online Luma
+</h1>        <p>Discover quality products and trusted services in one place.</p>
 
-        <div class="hero-buttons">
-            <a href="{% url 'products' %}" class="shop-btn">Shop Now</a>
-            <a href="{% url 'register' %}" class="seller-btn">Become a Seller</a>
-        </div>
-    </div>
+            </div>
 
     <div class="hero-image">
         <img src="{% static 'images/marketplace-hero.png' %}">
