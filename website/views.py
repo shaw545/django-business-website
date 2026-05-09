@@ -153,11 +153,8 @@ def checkout_view(request):
         products.append(product)
 
     if products:
-        try:
-            seller_profile = SellerProfile.objects.filter(user=products[0].seller).first()
-        except Exception:
-            seller_profile = None
-
+        first_product = products[0]
+        seller_profile = SellerProfile.objects.filter(user=first_product.seller).first()
     if request.method == "POST":
         order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
