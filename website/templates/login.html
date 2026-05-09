@@ -1,36 +1,48 @@
 {% extends 'base.html' %}
 
-{% block title %}Seller Login - MarketHub{% endblock %}
+{% block title %}Seller Sign In - MarketHub{% endblock %}
 
 {% block content %}
 <div class="container section-padding">
     <div class="row justify-content-center">
         <div class="col-lg-6">
+
             <div class="card shadow-soft">
                 <div class="card-body p-5">
-                    <h2 class="section-title">Seller Login</h2>
-                    <p class="muted-text">Login to manage your products and dashboard.</p>
+
+                    <h2 class="section-title">Seller Sign In</h2>
+
+                    <p class="muted-text">
+                        Login to manage your products and dashboard.
+                    </p>
 
                     <form method="POST">
                         {% csrf_token %}
+
                         {{ form.as_p }}
 
                         <button type="submit" class="btn btn-primary">
-                            Login
+                            Sign In
                         </button>
+
+                        <br><br>
+
+                        <a href="{% url 'password_reset' %}">
+                            Forgot Password?
+                        </a>
                     </form>
 
                     <p class="mt-3">
                         Don’t have an account?
-                        <a href="{% url 'register' %}">Register</a>
+                        <a href="{% url 'register' %}">
+                            Register
+                        </a>
                     </p>
 
-                    <p class="mt-2">
-                        <a href="{% url 'home' %}">← Back to MarketHub</a>
-                    </p>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-{% endblock %}s
+{% endblock %}
