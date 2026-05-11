@@ -41,14 +41,13 @@
     <div>
 
         {% if product.image %}
-            <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
-                 style="
-                    width:100%;
-                    border-radius:20px;
-                    max-height:180px;
-                    object-fit:cover;
-                 ">
-        {% else %}
+ <img
+    id="mainProductImage"
+    src="{{ product.image.url }}"
+    alt="{{ product.name }}"
+    style="width:100%; border-radius:20px; max-height:150px; object-fit:cover;"
+>       
+ {% else %}
             <div style="
                 width:100%;
                 height:400px;
@@ -220,10 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>s
-
-
-
-
 
         <div style="margin-top:25px;">
             <a href="{% url 'products' %}"
