@@ -23,10 +23,20 @@
 
     <label>Amount / Price</label>
     <input type="number" name="amount" step="0.01" required>
-
     <label>Category</label>
-    <input type="text" name="category" required>
+<select name="category" required>
+    <option value="">Select Category</option>
 
+    <option value="Electronics">Electronics</option>
+    <option value="Fashion"&"Clothing>Fashion</option>
+    <option value="Home Appliances">Home Appliances</option>
+    <option value="Beauty">Beauty</option>
+    <option value="Shoes">Shoes</option>
+    <option value="Spare Parts"></option>
+    <option value="Sports">Sports</option>
+    <option value="Other">Other</option>
+</select>
+    
     <label>Condition</label>
     <select name="condition" required>
         <option value="">Select condition</option>
