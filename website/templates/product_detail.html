@@ -41,7 +41,7 @@
     <div>
 
         {% if product.image %}
-            <img src="{{ product.image.url }}"
+            <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
                  style="
                     width:100%;
                     border-radius:20px;
@@ -100,18 +100,21 @@
 <div class="color-select-box">
     <label><strong>Color:</strong></label>
 
-    <select name="selected_color" required>
-        <option value="">Select</option>
+    <select id="colorSelect" name="selected_color" required>
+        <option value="">Select Color</option>
+
         {% for color in product.colors.all %}
-            <option value="{{ color.color_name }}">
-                {{ color.color_name }}
-            </option>
+            {% with color.images.first as color_image %}
+                <option 
+                    value="{{ color.color_name }}"
+                    data-image="{% if color_image %}{{ color_image.image.url }}{% else %}{{ product.image.url }}{% endif %}">
+                    {{ color.color_name }}
+                </option>
+            {% endwith %}
         {% endfor %}
     </select>
 </div>
-{% endif %}
-
-        <br>
+{% endif %}        <br>
 
         <!-- SELLER -->
         <p>
@@ -191,6 +194,36 @@
            ">
             Add to Cart
         </a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const colorSelect = document.getElementById("colorSelect");
+    const mainImage = document.getElementById("mainProductImage");
+
+    if (colorSelect && mainImage) {
+
+        colorSelect.addEventListener("change", function () {
+
+            const selectedOption =
+                colorSelect.options[colorSelect.selectedIndex];
+
+            const newImage =
+                selectedOption.getAttribute("data-image");
+
+            if (newImage) {
+                mainImage.src = newImage;
+            }
+
+        });
+
+    }
+
+});
+</script>s
+
+
+
+
 
         <div style="margin-top:25px;">
             <a href="{% url 'products' %}"
