@@ -12,47 +12,43 @@
 
                     <h2 class="mb-4">Add Product</h2>
 
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
+                   <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-                        {{ form.as_p }}
+    <label>Product Name</label>
+    <input type="text" name="name" required>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">
-                                Extra Product Images
-                            </label>
-                            <input type="file"
-                                   name="extra_images"
-                                   class="form-control"
-                                   accept="image/*"
-                                   multiple>
+    <label>Description</label>
+    <textarea name="description" required></textarea>
 
-                            <small class="text-muted">
-                                Upload front, back, side, and close-up images.
-                            </small>
-                        </div>
-<label>Available Colors</label>
-<input 
-    type="text" 
-    name="colors" 
-    placeholder="Example: Black, Silver, Blue, Red"
-    class="form-control"
->
+    <label>Amount / Price</label>
+    <input type="number" name="amount" step="0.01" required>
 
-<label>Upload More Product Images / Different Angles</label>
-<input 
-    type="file" 
-    name="gallery_images" 
-    multiple
-    class="form-control"
->
-<small>You can upload front, back, side, and close-up images.</small>
+    <label>Category</label>
+    <input type="text" name="category" required>
 
-                        <button type="submit" class="btn btn-main">
-                            Save Product
-                        </button>
+    <label>Condition</label>
+    <select name="condition" required>
+        <option value="">Select condition</option>
+        <option value="Excellent">Excellent</option>
+        <option value="Good">Good</option>
+        <option value="Fair/Damaged">Fair/Damaged</option>
+    </select>
 
-                        <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
+    <label>Main Product Image</label>
+    <input type="file" name="image" required>
+
+    <label>Available Colors</label>
+    <input type="text" name="colors" placeholder="Example: Black, Silver, Blue">
+
+    <label>Extra Product Images</label>
+    <input type="file" name="gallery_images" multiple>
+
+    <small>Upload front, back, side, and close-up images.</small>
+
+    <button type="submit">Add Product</button>
+</form>                       
+ <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
                             Back to Dashboard
                         </a>
                     </form>
