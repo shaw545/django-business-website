@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Product, Order, OrderItem, SellerProfile
+from .models import Product, ProductColor, ProductImage
 
 # =========================
 # PUBLIC PAGES
@@ -275,24 +276,51 @@ def seller_dashboard(request):
         "order_items": order_items,
     })
 
-
 @login_required
 def add_product(request):
     if request.method == "POST":
-        Product.objects.create(
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        amount = request.POST.get("amount")
+        category = request.POST.get("category")
+        condition = request.POST.get("condition")
+        image = request.FILES.get("image")
+
+        product = Product.objects.create(
             seller=request.user,
-            name=request.POST.get("name"),
-            category=request.POST.get("category"),
-            amount=request.POST.get("amount"),
-            description=request.POST.get("description"),
-            condition=request.POST.get("condition"),
-            image=request.FILES.get("image"),
+            name=name,
+            description=description,
+            amount=amount,
+            category=category,
+            condition=condition,
+            image=image,
         )
+
+        # Save colors
+        colors_text = request.POST.get("colors", "")
+        color_list = [c.strip() for c in colors_text.split(",") if c.strip()]
+
+        color_objects = []
+        for color_name in color_list:
+            color_obj = ProductColor.objects.create(
+                product=product,
+                color_name=color_name
+            )
+            color_objects.append(color_obj)
+
+        # Save multiple gallery images
+        gallery_images = request.FILES.getlist("gallery_images")
+
+        for gallery_image in gallery_images:
+            ProductImage.objects.create(
+                product=product,
+                image=gallery_image,
+                angle="other"
+            )
 
         return redirect("seller_dashboard")
 
-    return render(request, "product_form.html")
-
+    return render(request, "add_product.html")
 
 @login_required
 def edit_product(request, product_id):
