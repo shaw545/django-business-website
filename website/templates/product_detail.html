@@ -4,6 +4,21 @@
     <title>{{ product.name }}</title>
 </head>
 
+<style>
+.color-select-box {
+    margin: 25px 0;
+}
+
+.color-select-box select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 18px;
+    background: white;
+}
+</style>
+
 <body style="
     font-family:Arial, sans-serif;
     background:#f5f5f5;
@@ -80,6 +95,21 @@
             <strong>Condition:</strong>
             {{ product.condition }}
         </p>
+
+{% if product.colors.all %}
+<div class="color-select-box">
+    <label><strong>Color:</strong></label>
+
+    <select name="selected_color" required>
+        <option value="">Select</option>
+        {% for color in product.colors.all %}
+            <option value="{{ color.color_name }}">
+                {{ color.color_name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
 
         <br>
 
