@@ -63,7 +63,20 @@
         {% endif %}
 
     </div>
+{% if product.images.all %}
+<div class="product-gallery">
 
+    {% for img in product.images.all %}
+        <img 
+            src="{{ img.image.url }}"
+            alt="{{ product.name }}"
+            onclick="document.getElementById('mainProductImage').src=this.src"
+            style="width:90px; height:90px; object-fit:cover; border-radius:10px; margin:8px; cursor:pointer;"
+        >
+    {% endfor %}
+
+</div>
+{% endif %}
     <!-- DETAILS -->
     <div>
 
