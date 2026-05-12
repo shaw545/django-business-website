@@ -325,8 +325,8 @@ def add_product(request):
 
         return redirect("seller_dashboard")
 
-    return render(request, "add_product.html")@login_required
-
+    return render(request, "add_product.html")
+@login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
