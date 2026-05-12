@@ -285,6 +285,8 @@ def add_product(request):
         category = request.POST.get("category")
         condition = request.POST.get("condition")
         image = request.FILES.get("image")
+        extra_images = request.FILES.getlist("extra_images")
+        extra_images = extra_images[:15]
 
         product = Product.objects.create(
             seller=request.user,
