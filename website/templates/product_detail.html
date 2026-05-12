@@ -3,25 +3,13 @@
 
 {% block content %}
 
-<div style="
-    max-width:1400px;
-    margin:40px auto;
-    padding:30px;
-    background:white;
-    border-radius:25px;
-">
+<div class="product-detail">
 
-    <div style="
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:50px;
-        align-items:start;
-    ">
+    <div class="product-layout">
 
-        <!-- LEFT SIDE -->
-        <div>
+        <!-- LEFT: PRODUCT IMAGES -->
+        <div class="image-section">
 
-            <!-- IMAGE AREA -->
             <div class="product-image-area">
 
                 <button type="button" class="image-arrow left-arrow" onclick="changeImage(-1)">
@@ -36,9 +24,7 @@
                         class="main-product-image"
                     >
                 {% else %}
-                    <div class="no-image-box">
-                        No Image
-                    </div>
+                    <div class="no-image-box">No Image</div>
                 {% endif %}
 
                 <button type="button" class="image-arrow right-arrow" onclick="changeImage(1)">
@@ -47,7 +33,6 @@
 
             </div>
 
-            <!-- GALLERY -->
             <div class="product-gallery">
 
                 {% if product.image %}
@@ -70,134 +55,54 @@
 
         </div>
 
-        <!-- RIGHT SIDE -->
-        <div>
+        <!-- RIGHT: PRODUCT DETAILS -->
+        <div class="details-section">
 
-            <h1 style="
-                font-size:25px;
-                font-weight:800;
-                color:#0b1f52;
-                margin-bottom:20px;
-            ">
-                {{ product.name }}
-            </h1>
+            <h1>{{ product.name }}</h1>
 
-            <h2 style="
-                font-size:26px;
-                color:#0b1f52;
-                margin-bottom:30px;
-                font-weight:700;
-            ">
-                SLE {{ product.amount }}
-            </h2>
+            <h2>SLE {{ product.amount }}</h2>
 
-            <!-- DESCRIPTION -->
             {% if product.description %}
-            <p style="
-                font-size:18px;
-                line-height:1.7;
-                color:#444;
-                margin-bottom:30px;
-            ">
-                {{ product.description }}
-            </p>
+                <p class="description">{{ product.description }}</p>
             {% endif %}
 
-            <!-- CATEGORY -->
-            <p style="font-size:18px; margin-bottom:25px;">
-                <strong>Category:</strong> {{ product.category }}
-            </p>
+            <p><strong>Category:</strong> {{ product.category }}</p>
 
-            <!-- CONDITION -->
-            <p style="font-size:28px; margin-bottom:25px;">
-                <strong>Condition:</strong> {{ product.condition }}
-            </p>
+            <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-            <!-- COLOR SELECT -->
             {% if product.colors.all %}
-            <div style="margin-bottom:35px;">
+            <div class="color-box">
+                <label><strong>Color:</strong></label>
 
-                <label style="
-                    font-size:28px;
-                    font-weight:bold;
-                    display:block;
-                    margin-bottom:15px;
-                ">
-                    Color:
-                </label>
-
-                <select
-                    id="colorSelect"
-                    style="
-                        width:100%;
-                        padding:18px;
-                        border-radius:14px;
-                        font-size:22px;
-                        border:1px solid #ccc;
-                    "
-                >
-
+                <select id="colorSelect" name="selected_color">
                     <option value="">Select Color</option>
 
                     {% for color in product.colors.all %}
                         {% with color.images.first as color_image %}
-                        <option
-                            value="{{ color.color_name }}"
-                            data-image="{% if color_image %}{{ color_image.image.url }}{% else %}{{ product.image.url }}{% endif %}"
-                        >
-                            {{ color.color_name }}
-                        </option>
+                            <option
+                                value="{{ color.color_name }}"
+                                data-image="{% if color_image %}{{ color_image.image.url }}{% else %}{{ product.image.url }}{% endif %}"
+                            >
+                                {{ color.color_name }}
+                            </option>
                         {% endwith %}
                     {% endfor %}
-
                 </select>
-
             </div>
             {% endif %}
 
-            <!-- SELLER -->
-            <div style="margin-top:30px;">
+            <div class="seller-box">
+                <p><strong>Seller:</strong></p>
 
-                <p style="
-                    font-size:28px;
-                    font-weight:bold;
-                    margin-bottom:20px;
-                ">
-                    Seller:
-                </p>
-
-                <div style="
-                    display:flex;
-                    align-items:center;
-                    gap:15px;
-                ">
+                <div class="seller-info">
 
                     {% if product.seller.sellerprofile.logo %}
-                        <img
-                            src="{{ product.seller.sellerprofile.logo.url }}"
-                            style="
-                                width:70px;
-                                height:70px;
-                                border-radius:50%;
-                                object-fit:cover;
-                            "
-                        >
+                        <img src="{{ product.seller.sellerprofile.logo.url }}" class="seller-logo">
                     {% else %}
-                        <img
-                            src="{% static 'images/default.png' %}"
-                            style="
-                                width:70px;
-                                height:70px;
-                                border-radius:50%;
-                                object-fit:cover;
-                            "
-                        >
+                        <img src="{% static 'images/default.png' %}" class="seller-logo">
                     {% endif %}
 
-                    <span style="
-                        font-size:26px;
-                        font-weight:700;
-                    ">
+                    <span>
                         {% if product.seller.sellerprofile.business_name %}
                             {{ product.seller.sellerprofile.business_name }}
                         {% else %}
@@ -206,25 +111,15 @@
                     </span>
 
                 </div>
-
             </div>
 
-            <!-- BUTTONS -->
-            <div style="
-                margin-top:50px;
-                display:flex;
-                gap:20px;
-            ">
+            <div class="button-row">
 
-                <a
-                    <a href="{% url 'checkout' %}" class="buy-now-btn">                >
+                <a href="{% url 'checkout' %}" class="buy-now-btn">
                     Buy It Now
                 </a>
 
-                <a
-                    href="{% url 'add_to_cart' product.id %}"
-                    class="cart-btn"
-                >
+                <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
                     Add to Cart
                 </a>
 
@@ -237,132 +132,195 @@
 </div>
 
 <style>
-
-.main-product-image{
-    width:100%;
-    max-height:550px;
-    object-fit:contain;
-    border-radius:25px;
-    background:#f5f5f5;
+.product-detail {
+    max-width: 1250px;
+    margin: 25px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 22px;
 }
 
-.product-image-area{
-    position:relative;
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    align-items: start;
 }
 
-.image-arrow{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    width:50px;
-    height:50px;
-    border:none;
-    border-radius:50%;
-    background:white;
-    font-size:40px;
-    cursor:pointer;
-    z-index:10;
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+.main-product-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 18px;
+    background: #f5f5f5;
 }
 
-.left-arrow{
-    left:15px;
+.product-image-area {
+    position: relative;
 }
 
-.right-arrow{
-    right:15px;
+.image-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.product-gallery{
-    display:flex;
-    gap:15px;
-    margin-top:20px;
-    flex-wrap:wrap;
+.left-arrow {
+    left: 10px;
 }
 
-.thumb{
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:15px;
-    cursor:pointer;
-    border:3px solid transparent;
+.right-arrow {
+    right: 10px;
 }
 
-.active-thumb{
-    border:3px solid #2563eb;
+.product-gallery {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
 }
 
-.buy-now-btn{
-    flex:1;
-    padding:22px;
-    background:#2563eb;
-    color:white;
-    text-align:center;
-    border-radius:50px;
-    text-decoration:none;
-    font-size:24px;
-    font-weight:700;
+.thumb {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
 }
 
-.buy-now-btn:hover{
-    background:#1d4ed8;
+.active-thumb {
+    border: 2px solid #2563eb;
 }
 
-.cart-btn{
-    flex:1;
-    padding:22px;
-    background:white;
-    color:#2563eb;
-    text-align:center;
-    border-radius:50px;
-    text-decoration:none;
-    font-size:24px;
-    font-weight:700;
-    border:3px solid #2563eb;
+.details-section h1 {
+    font-size: 30px !important;
+    color: #0b1f52;
+    margin-bottom: 12px;
+    font-weight: 800;
 }
 
-.cart-btn:hover{
-    background:#2563eb;
-    color:white;
+.details-section h2 {
+    font-size: 24px !important;
+    color: #0b1f52;
+    margin-bottom: 20px;
+    font-weight: 700;
 }
 
-.no-image-box{
-    width:100%;
-    height:500px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#eee;
-    border-radius:20px;
-    font-size:30px;
+.details-section p,
+.details-section strong,
+.details-section label,
+.details-section select,
+.description {
+    font-size: 15px !important;
+    line-height: 1.5;
 }
 
-@media(max-width:900px){
+.color-box {
+    margin: 18px 0;
+}
 
-    div[style*="grid-template-columns:1fr 1fr"]{
-        grid-template-columns:1fr !important;
+.color-box select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 9px;
+    border: 1px solid #ccc;
+    font-size: 15px !important;
+}
+
+.seller-box {
+    margin-top: 20px;
+}
+
+.seller-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seller-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.seller-info span {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.button-row {
+    margin-top: 28px;
+    display: flex;
+    gap: 14px;
+}
+
+.buy-now-btn,
+.cart-btn {
+    flex: 1;
+    padding: 13px;
+    text-align: center;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 15px !important;
+    font-weight: 700;
+}
+
+.buy-now-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.cart-btn {
+    background: white;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+}
+
+.buy-now-btn:hover,
+.cart-btn:hover {
+    opacity: 0.9;
+}
+
+.no-image-box {
+    width: 100%;
+    height: 350px;
+    background: #eee;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+@media(max-width: 900px) {
+    .product-layout {
+        grid-template-columns: 1fr;
     }
 
-    h1{
-        font-size:38px !important;
+    .details-section h1 {
+        font-size: 24px !important;
     }
 
-    h2{
-        font-size:30px !important;
+    .details-section h2 {
+        font-size: 20px !important;
     }
 
-    .buy-now-btn,
-    .cart-btn{
-        font-size:18px;
-        padding:16px;
+    .button-row {
+        flex-direction: column;
     }
-
 }
-
 </style>
-
-<script>
 
 <script>
 let images = [];
@@ -377,43 +335,54 @@ images.push("{{ img.image.url }}");
 
 let currentImageIndex = 0;
 
-function setImage(index){
+function setImage(index) {
     currentImageIndex = index;
-    document.getElementById("mainProductImage").src = images[index];
+
+    const mainImage = document.getElementById("mainProductImage");
+
+    if (mainImage && images[index]) {
+        mainImage.src = images[index];
+    }
+
+    const thumbs = document.querySelectorAll(".thumb");
+    thumbs.forEach(t => t.classList.remove("active-thumb"));
+
+    if (thumbs[index]) {
+        thumbs[index].classList.add("active-thumb");
+    }
 }
 
-function changeImage(direction){
-    if(images.length === 0) return;
+function changeImage(direction) {
+    if (images.length === 0) return;
 
     currentImageIndex += direction;
 
-    if(currentImageIndex < 0){
+    if (currentImageIndex < 0) {
         currentImageIndex = images.length - 1;
     }
 
-    if(currentImageIndex >= images.length){
+    if (currentImageIndex >= images.length) {
         currentImageIndex = 0;
     }
 
     setImage(currentImageIndex);
 }
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
     const colorSelect = document.getElementById("colorSelect");
     const mainImage = document.getElementById("mainProductImage");
 
-    if(colorSelect && mainImage){
-        colorSelect.addEventListener("change", function(){
+    if (colorSelect && mainImage) {
+        colorSelect.addEventListener("change", function () {
             const selectedOption = colorSelect.options[colorSelect.selectedIndex];
             const colorImage = selectedOption.getAttribute("data-image");
 
-            if(colorImage){
+            if (colorImage) {
                 mainImage.src = colorImage;
             }
         });
     }
 });
-</script>
 </script>
 
 {% endblock %}
