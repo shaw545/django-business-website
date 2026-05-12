@@ -314,13 +314,17 @@ def add_product(request):
         gallery_images = request.FILES.getlist("gallery_images")
 
        # Save extra gallery images
-for img in extra_images:
-    ProductImage.objects.create(
-        product=product,
-        image=img,
-        angle="other"
-    )
+        # Save extra gallery images
+        for img in extra_images:
+            ProductImage.objects.create(
+                product=product,
+                image=img,
+                angle="other"
+            )
+
         return redirect("seller_dashboard")
+
+    return render(request, "add_product.html")        return redirect("seller_dashboard")
 
     return render(request, "add_product.html")
 
