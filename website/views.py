@@ -322,7 +322,7 @@ def add_product(request):
                 angle="other"
             )
 
-        return redirect("seller_dashboard")
+    return redirect("seller_dashboard")
 
     return render(request, "add_product.html")        return redirect("seller_dashboard")
 
