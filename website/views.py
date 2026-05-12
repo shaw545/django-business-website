@@ -315,6 +315,7 @@ def add_product(request):
 
        # Save extra gallery images
         # Save extra gallery images
+               # Save extra gallery images
         for img in extra_images:
             ProductImage.objects.create(
                 product=product,
@@ -322,13 +323,10 @@ def add_product(request):
                 angle="other"
             )
 
-    return redirect("seller_dashboard")
+        return redirect("seller_dashboard")
 
-    return render(request, "add_product.html")        return redirect("seller_dashboard")
+    return render(request, "add_product.html")@login_required
 
-    return render(request, "add_product.html")
-
-@login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
