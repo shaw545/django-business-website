@@ -125,7 +125,7 @@ class ProductImage(models.Model):
 
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="seller_reviews")
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="product_seller_reviews")
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="buyer_reviews")
     rating = models.IntegerField()
     comment = models.TextField(blank=True, null=True)
@@ -133,3 +133,4 @@ class ProductReview(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.rating} stars"
+

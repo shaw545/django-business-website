@@ -112,10 +112,13 @@
            {% endif %}
        </a>
 
-       <div class="seller-rating">
-    <p style="font-size:14px;">
-    ⭐ Seller Review
-</p>
+      <div class="seller-rating">
+    {% if average_rating %}
+        ⭐ {{ average_rating|floatformat:1 }}★ Seller Review
+    {% else %}
+        ⭐ Seller Review
+    {% endif %}
+</div>
 <div class="button-row">
 
                 <a href="{% url 'checkout' %}" class="buy-now-btn">
