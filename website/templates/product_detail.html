@@ -103,17 +103,19 @@
                     {% endif %}
 
                     <span>
-                        {% if product.seller.sellerprofile.business_name %}
-                            {{ product.seller.sellerprofile.business_name }}
-                        {% else %}
-                            {{ product.seller.username }}
-                        {% endif %}
-                    </span>
+                      
+        <a href="{% url 'seller_store' product.seller.id %}" class="seller-link">
+             {% if product.seller.sellerprofile.business_name %}
+                {{ product.seller.sellerprofile.business_name }}
+            {% else %}
+               {{ product.seller.username }}
+           {% endif %}
+       </a>
 
-                </div>
-            </div>
+       <div class="seller-rating">
+    ⭐ {{ average_rating|default:"No rating yet" }} Seller Rating
 
-            <div class="button-row">
+<div class="button-row">
 
                 <a href="{% url 'checkout' %}" class="buy-now-btn">
                     Buy It Now

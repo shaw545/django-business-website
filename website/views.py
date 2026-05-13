@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Product, Order, OrderItem, SellerProfile
 from .models import Product, ProductColor, ProductImage
+from .models import Product, ProductReview
+from django.db.models import Avg
+
+
 
 # =========================
 # PUBLIC PAGES
@@ -52,8 +56,18 @@ def products_view(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    return render(request, "product_detail.html", {"product": product})
 
+    average_rating = ProductReview.objects.filter(
+        product__seller=product.seller
+    ).aggregate(Avg("rating"))["rating__avg"]
+
+    if average_rating:
+        average_rating = round(average_rating, 1)
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "average_rating": average_rating,
+    })
 
 # =========================
 # CART
@@ -368,23 +382,61 @@ def seller_store(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)
     products = Product.objects.filter(seller=seller)
 
+    if request.method == "POST":
+        rating = request.POST.get("rating")
+        comment = request.POST.get("comment")
+        buyer_name = request.POST.get("buyer_name", "Anonymous")
+
+        ProductReview.objects.create(
+            product=products.first(),
+            seller=seller,
+            buyer=request.user if request.user.is_authenticated else seller,
+            rating=rating,
+            comment=comment
+        )
+
+        return redirect("seller_store", seller_id=seller.id)
+
+    ratings = ProductReview.objects.filter(seller=seller)
+
+    average_rating = ratings.aggregate(Avg("rating"))["rating__avg"]
+
+    if average_rating:
+        average_rating = round(average_rating, 1)
+    else:
+        average_rating = "No ratings yet"
+
     return render(request, "seller_store.html", {
         "seller": seller,
         "products": products,
+        "ratings": ratings,
+        "average_rating": average_rating,
     })
-
-def seller_products(request, seller_id):
-    seller = User.objects.get(id=seller_id)
-    products = Product.objects.filter(seller=seller)
-
-    return render(request, "seller_products.html", {
-        "seller": seller,
-        "products": products,
-    })
-
 # =========================
 # STATIC PAGES
 # =========================
+
+@login_required
+def submit_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == "POST":
+        rating = request.POST.get("rating")
+        comment = request.POST.get("comment")
+
+        ProductReview.objects.create(
+            product=product,
+            seller=product.seller,
+            buyer=request.user,
+            rating=rating,
+            comment=comment
+        )
+
+    return redirect("product_detail", product_id=product.id)
+
+
+
+
 
 def terms_view(request):
     return render(request, "terms.html")

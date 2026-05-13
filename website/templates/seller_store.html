@@ -4,20 +4,20 @@
 <div style="padding:40px; background:#f5f7fa; min-height:80vh;">
 
     <div style="background:white; padding:30px; border-radius:14px; margin-bottom:30px;">
-        <h1>
-            {% if seller.get_full_name %}
-                {{ seller.get_full_name }}
-            {% else %}
-                Seller Name Not Provided
-            {% endif %}
-        </h1>
+        <h2 style="font-size:32px; font-weight:bold; margin-bottom:15px;">
 
-        <p><strong>Average Rating:</strong>
-            {% if average_rating %}
-                ⭐ {{ average_rating|floatformat:1 }} / 5
-            {% else %}
-                No ratings yet
-            {% endif %}
+    {% if seller.sellerprofile.business_name %}
+        {{ seller.sellerprofile.business_name }}
+
+    {% elif seller.get_full_name %}
+        {{ seller.get_full_name }}
+
+    {% else %}
+        {{ seller.username }}
+
+    {% endif %}
+
+</h2>
         </p>
     </div>
 
@@ -31,12 +31,22 @@
                         <img src="{{ product.image.url }}" style="width:100%; height:160px; object-fit:cover; border-radius:10px;">
                     {% endif %}
 
-                    <h3>{{ product.name }}</h3>
-                    <p><strong>Category:</strong> {{ product.category }}</p>
-                    <p><strong>Condition:</strong> {{ product.condition }}</p>
-                    <p><strong>Price:</strong> SLE {{ product.amount|floatformat:2 }}</p>
+               <h3 style="font-size:20px; margin-bottom:10px;">
+    {{ product.name }}
+</h3>
 
-                    <a href="{% url 'product_detail' product.id %}" style="display:inline-block; background:orange; padding:10px 14px; border-radius:8px; color:black; text-decoration:none; font-weight:bold;">
+<p style="font-size:15px; margin-bottom:6px;">
+    <strong>Category:</strong> {{ product.category }}
+</p>
+
+<p style="font-size:15px; margin-bottom:6px;">
+    <strong>Condition:</strong> {{ product.condition }}
+</p>
+
+<p style="font-size:15px; margin-bottom:12px;">
+    <strong>Price:</strong> SLE {{ product.amount }}
+</p>
+    <a href="{% url 'product_detail' product.id %}" style="display:inline-block; background:orange; padding:8px 12px; border-radius:4px; color:black; text-decoration:none; font-weight:bold;">
                         View Product
                     </a>
                 </div>
@@ -46,7 +56,7 @@
         </div>
     </div>
 
-    <div style="background:white; padding:30px; border-radius:14px; margin-bottom:30px;">
+    <div style="background:white; padding:20px; border-radius:14px; margin-bottom:20px;">
         <h2>Rate This Seller</h2>
 
         <form method="post">
