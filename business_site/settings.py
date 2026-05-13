@@ -65,15 +65,16 @@ TEMPLATES = [
 ]
 
 
-# DATABASE (SQLite)
+import dj_database_url
+import os
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
-
-
 # PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = []
 
@@ -124,11 +125,3 @@ STORAGES = {
     },
 }
 
-import cloudinary
-
-cloudinary.config(
-    cloud_name="YOUR_CLOUD_NAME",
-    api_key="YOUR_API_KEY",
-    api_secret="YOUR_API_SECRET",
-    secure=True
-)
