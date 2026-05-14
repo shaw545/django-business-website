@@ -178,6 +178,7 @@ def checkout_view(request):
             buyer_email=request.POST.get("buyer_email"),
             buyer_address=request.POST.get("buyer_address"),
             payment_method=request.POST.get("payment_method"),
+            payment_proof=request.FILES.get("payment_proof"),
             total_amount=total,
         )
 

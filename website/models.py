@@ -65,6 +65,7 @@ class Order(models.Model):
     buyer_address = models.TextField()
 
     payment_method = models.CharField(max_length=50, choices=PAYMENT_CHOICES)
+    payment_proof = models.ImageField(upload_to="payment_proofs/", blank=True, null=True)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField(auto_now_add=True)
