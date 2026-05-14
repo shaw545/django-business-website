@@ -80,7 +80,7 @@
             <button type="submit" style="background:orange; padding:12px 18px; border:none; border-radius:8px; font-weight:bold;">
                 Submit Rating
             </button>
-        </form>
+       </form>
     </div>
 
     <div style="background:white; padding:30px; border-radius:14px;">
@@ -99,3 +99,33 @@
 
 </div>
 {% endblock %}
+<hr style="margin:30px 0;">
+
+<h2>Customer Orders & Payment Proof</h2>
+
+{% for order in orders %}
+
+<div style="background:white; padding:20px; border-radius:12px; margin-bottom:20px;">
+
+    <p><strong>Buyer:</strong> {{ order.buyer_name }}</p>
+
+    <p><strong>Total:</strong> SLE {{ order.total_amount }}</p>
+
+    <p><strong>Status:</strong> {{ order.status }}</p>
+
+    {% if order.payment_proof %}
+        <p><strong>Payment Proof:</strong></p>
+
+        <a href="{{ order.payment_proof.url }}" target="_blank">
+            <img src="{{ order.payment_proof.url }}"
+                 style="width:180px; border-radius:10px;">
+        </a>
+    {% else %}
+        <p>No payment proof uploaded.</p>
+    {% endif %}
+
+</div>
+
+{% empty %}
+<p>No customer orders yet.</p>
+{% endfor %}
