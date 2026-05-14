@@ -8,6 +8,36 @@
 
     <style>
 
+/* ROLLING PROMOTION BANNER */
+.promo-banner {
+    width: 100%;
+    overflow: hidden;
+    background: #ff6600;
+    color: white;
+    padding: 10px 0;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.promo-track {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollPromo 22s linear infinite;
+}
+
+@keyframes scrollPromo {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+
         body{
             margin:0;
             font-family:Arial, sans-serif;
@@ -63,6 +93,18 @@
       color:black;
       font-weight:bold;
       font-size:8px;
+
+<!-- ROLLING PROMOTION BANNER -->
+<div class="promo-banner">
+    <div class="promo-track">
+        🔥 20% OFF Electronics &nbsp;&nbsp; • &nbsp;&nbsp;
+        🚚 Free Delivery in Selected Areas &nbsp;&nbsp; • &nbsp;&nbsp;
+        🛒 Buy More, Save More &nbsp;&nbsp; • &nbsp;&nbsp;
+        💥 Weekend Mega Deals &nbsp;&nbsp; • &nbsp;&nbsp;
+        🎉 New Seller Discounts Available &nbsp;&nbsp; • &nbsp;&nbsp;
+        📱 Hot Phone Deals Today
+    </div>
+</div>
 }
   .dashboard-btn{
        background:orange;
@@ -268,6 +310,26 @@
 
             <div class="product-card">
 
+                <div class="discount-badge">
+            DEAL
+         </div>
+
+.product-card {
+    position: relative;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: white;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 5;
+}
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
                 {% else %}
