@@ -129,30 +129,28 @@
             </thead>
 
             <tbody>
-                  <td>#{{ item.order.id }}</td>
-                  <td>{{ item.product.name }}</td>
-                  <td>{{ item.order.buyer_name }}</td>
-                  <td>{{ item.order.buyer_phone }}</td>
-                  <td>{{ item.order.buyer_address }}</td>
-                  <td>{{ item.order.payment_method }}</td>
-                  <td>{{ item.order.status }}</td>
-                 <td>SLE {{ item.price }}</td>
-            <td>
 
-    {% if item.order.payment_proof %}
-        <a href="{{ item.order.payment_proof.url }}" target="_blank">View Proof</a>
-    {% else %}
-        No proof
-    {% endif %}
-</td>
+{% for item in order_items %}
+<tr>
+    <td>#{{ item.order.id }}</td>
+    <td>{{ item.product.name }}</td>
+    <td>{{ item.order.buyer_name }}</td>
+    <td>{{ item.order.buyer_phone }}</td>
+    <td>{{ item.order.buyer_address }}</td>
+    <td>{{ item.order.payment_method }}</td>
+    <td>{{ item.order.status }}</td>
+    <td>SLE {{ item.price }}</td>
 
-                {% endfor %}
-           </tbody>
-        </table>
+    <td>
+        {% if item.order.payment_proof %}
+            <a href="{{ item.order.payment_proof.url }}" target="_blank">
+                View Proof
+            </a>
         {% else %}
-            <p>No orders received yet.</p>
+            No proof
         {% endif %}
-    </div>
+    </td>
+</tr>
+{% endfor %}
 
-</div>
-{% endblock %}
+</tbody>
