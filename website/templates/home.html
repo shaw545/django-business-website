@@ -6,6 +6,17 @@
     <title>Online Luma</title>
 
     <style>
+<style>
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.03) rotate(1deg);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+</style>
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -74,6 +85,7 @@
     border-radius: 10px;
     padding: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card img {
@@ -101,6 +113,11 @@
     border: 2px solid blue;
     color: blue;
     background: white;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.03) rotate(1deg);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 768px) {
