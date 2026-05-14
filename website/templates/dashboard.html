@@ -129,19 +129,25 @@
             </thead>
 
             <tbody>
-                {% for item in order_items %}
-                <tr style="border-bottom:1px solid #ddd;">
-                    <td style="padding:12px;">#{{ item.order.id }}</td>
-                    <td style="padding:12px;">{{ item.product.name }}</td>
-                    <td style="padding:12px;">{{ item.order.buyer_name }}</td>
-                    <td style="padding:12px;">{{ item.order.buyer_phone }}</td>
-                    <td style="padding:12px;">{{ item.order.buyer_address }}</td>
-                    <td style="padding:12px;">{{ item.order.get_payment_method_display }}</td>
-                    <td style="padding:12px;">{{ item.order.get_status_display }}</td>
-                    <td style="padding:12px;">SLE {{ item.price|floatformat:2 }}</td>
-                </tr>
+                  <td>#{{ item.order.id }}</td>
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.order.buyer_name }}</td>
+                  <td>{{ item.order.buyer_phone }}</td>
+                  <td>{{ item.order.buyer_address }}</td>
+                  <td>{{ item.order.payment_method }}</td>
+                  <td>{{ item.order.status }}</td>
+                 <td>SLE {{ item.price }}</td>
+            <td>
+
+    {% if item.order.payment_proof %}
+        <a href="{{ item.order.payment_proof.url }}" target="_blank">View Proof</a>
+    {% else %}
+        No proof
+    {% endif %}
+</td>
+
                 {% endfor %}
-            </tbody>
+           </tbody>
         </table>
         {% else %}
             <p>No orders received yet.</p>
