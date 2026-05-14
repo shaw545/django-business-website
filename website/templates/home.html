@@ -95,31 +95,26 @@
     border-radius: 8px;
 }
 
-.product-card h3 {
-    font-size: 16px;
-    margin-top: 8px;
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-.product-card p {
-    font-size: 13px;
-}
-
-.btn {
-    font-size: 13px;
-    padding: 8px 12px;
-}
-
-.add-btn {
-    border: 2px solid blue;
-    color: blue;
+.product-card {
     background: white;
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
     transform: translateY(-10px) scale(1.03) rotate(1deg);
     box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
-
+</style>
 @media (max-width: 768px) {
 
     .navbar {
