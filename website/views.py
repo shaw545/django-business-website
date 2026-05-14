@@ -7,6 +7,7 @@ from .models import Product, Order, OrderItem, SellerProfile
 from .models import Product, ProductColor, ProductImage
 from .models import Product, ProductReview
 from django.db.models import Avg
+from django.conf import settings
 
 
 
@@ -189,14 +190,18 @@ def checkout_view(request):
                 price=product.amount,
             )
 
-        request.session["cart"] = {}
-        request.session["last_order_id"] = order.id
-        return redirect("order_confirmation")
+    request.session["cart"] = {}
+    request.session["last_order_id"] = order.id
+
+    return redirect("order_confirmation")
+
 
     return render(request, "checkout.html", {
         "products": products,
         "total": total,
-        "seller_profile": seller_profile,
+        "platform_orange_money": settings.PLATFORM_ORANGE_MONEY,
+        "platform_afri_money": settings.PLATFORM_AFRI_MONEY,
+        "platform_commission_percent": settings.PLATFORM_COMMISSION_PERCENT,
     })
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
@@ -395,7 +400,7 @@ def seller_store(request, seller_id):
             comment=comment
         )
 
-        return redirect("seller_store", seller_id=seller.id)
+    return redirect("seller_store", seller_id=seller.id)
 
     ratings = ProductReview.objects.filter(seller=seller)
 
@@ -433,10 +438,6 @@ def submit_review(request, product_id):
         )
 
     return redirect("product_detail", product_id=product.id)
-
-
-
-
 
 def terms_view(request):
     return render(request, "terms.html")

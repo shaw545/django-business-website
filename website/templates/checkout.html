@@ -54,43 +54,25 @@
         </select>
 
         <!-- MOBILE MONEY DETAILS -->
-       <div id="mobileMoneyDetails" style="display:none;">
+       <div style="background:#f8f9fa; padding:20px; border-radius:12px; margin-top:20px;">
+    <h3>Payment Instructions</h3>
 
-    <div style="
-    margin-top:15px;
-    background:#f9f9f9;
-    padding:15px;
-    border-radius:10px;
-    font-size:13px;
-     
-  <strong>Mobile Money Payment Instructions</strong><br><br>
-
-  {% if seller_profile %}
-    <div style="background:white; padding:15px; border-radius:10px;">
-
-        <p><strong>Seller:</strong> {{ seller_profile.business_name }}</p>
-
-        {% if seller_profile.phone %}
-            <p><strong>Phone:</strong> {{ seller_profile.phone }}</p>
-        {% endif %}
-
-        {% if seller_profile.orange_number %}
-            <p><strong>Orange Money:</strong> {{ seller_profile.orange_number }}</p>
-        {% endif %}
-
-        {% if seller_profile.afri_number %}
-            <p><strong>Afri Money:</strong> {{ seller_profile.afri_number }}</p>
-        {% endif %}
-
-    </div>
-{% else %}
-    <span style="color:red;">Seller payment details not available.</span>
-{% endif %}    </div>
-
-    <p style="color:#555;">
-        After payment, please call or WhatsApp the seller with your receipt and order details.
+    <p>
+        Please send payment to <strong>MarketHub / Online Luma</strong>.
+        Your payment will be verified before the seller is notified for delivery.
     </p>
 
+    <p><strong>Orange Money:</strong> {{ platform_orange_money }}</p>
+    <p><strong>Afri Money:</strong> {{ platform_afri_money }}</p>
+
+    <p style="color:#555;">
+        Platform commission: {{ platform_commission_percent }}%
+    </p>
+
+    <p style="color:red; font-weight:bold;">
+        Pay through MarketHub / Online Luma.
+    </p>
+</div>
 </div>        <!-- BUTTON -->
         <button type="submit" style="
             width:100%;

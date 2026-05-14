@@ -133,3 +133,10 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+# PLATFORM PAYMENT NUMBERS
+PLATFORM_ORANGE_MONEY = "+232 XX XXX XXXX"
+PLATFORM_AFRI_MONEY = "+232 XX XXX XXXX"
+
+# Commission percentage
+PLATFORM_COMMISSION_PERCENT = 3
