@@ -180,6 +180,7 @@ def checkout_view(request):
             payment_method=request.POST.get("payment_method"),
             payment_proof=request.FILES.get("payment_proof"),
             total_amount=total,
+            status="payment_received" if request.FILES.get("payment_proof") else "pending"
         )
 
         for product in products:
