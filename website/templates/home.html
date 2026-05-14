@@ -211,12 +211,27 @@
         </form>
 
         <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="{% url 'products' %}">Products</a>
-            <a href="{% url 'cart' %}">Cart</a>
-            <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
-        </div>
+    <a href="/">Home</a>
 
+    <a href="{% url 'products' %}">Products</a>
+
+    <a href="{% url 'cart' %}">Cart</a>
+
+    <a href="{% url 'register' %}"
+       style="
+       background:white;
+       padding:8px 10px;
+       border-radius:6px;
+       border:2px solid black;
+       ">
+       Become a Seller
+    </a>
+
+    <a href="{% url 'seller_dashboard' %}"
+       class="dashboard-btn">
+       Dashboard
+    </a>
+</div>
     </div>
 
     <!-- FILTER -->
