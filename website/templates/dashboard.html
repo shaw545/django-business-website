@@ -114,43 +114,45 @@
         <h2>Orders Received</h2>
 
         {% if order_items %}
-        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:20px;">
-            <thead>
-                <tr style="background:#eee;">
-                    <th style="padding:12px; text-align:left;">Order ID</th>
-                    <th style="padding:12px; text-align:left;">Product</th>
-                    <th style="padding:12px; text-align:left;">Buyer</th>
-                    <th style="padding:12px; text-align:left;">Phone</th>
-                    <th style="padding:12px; text-align:left;">Address</th>
-                    <th style="padding:12px; text-align:left;">Payment</th>
-                    <th style="padding:12px; text-align:left;">Status</th>
-                    <th style="padding:12px; text-align:left;">Amount</th>
-                </tr>
-            </thead>
+<table style="width:100%; border-collapse:collapse;">
+    <thead>
+        <tr style="background:#eee;">
+            <th style="padding:12px; text-align:left;">Order ID</th>
+            <th style="padding:12px; text-align:left;">Product</th>
+            <th style="padding:12px; text-align:left;">Buyer</th>
+            <th style="padding:12px; text-align:left;">Phone</th>
+            <th style="padding:12px; text-align:left;">Address</th>
+            <th style="padding:12px; text-align:left;">Payment</th>
+            <th style="padding:12px; text-align:left;">Proof</th>
+            <th style="padding:12px; text-align:left;">Status</th>
+            <th style="padding:12px; text-align:left;">Amount</th>
+        </tr>
+    </thead>
 
-            <tbody>
+    <tbody>
+        {% for item in order_items %}
+        <tr>
+            <td style="padding:12px;">#{{ item.order.id }}</td>
+            <td style="padding:12px;">{{ item.product.name }}</td>
+            <td style="padding:12px;">{{ item.order.buyer_name }}</td>
+            <td style="padding:12px;">{{ item.order.buyer_phone }}</td>
+            <td style="padding:12px;">{{ item.order.buyer_address }}</td>
+            <td style="padding:12px;">{{ item.order.payment_method }}</td>
 
-{% for item in order_items %}
-<tr>
-    <td>#{{ item.order.id }}</td>
-    <td>{{ item.product.name }}</td>
-    <td>{{ item.order.buyer_name }}</td>
-    <td>{{ item.order.buyer_phone }}</td>
-    <td>{{ item.order.buyer_address }}</td>
-    <td>{{ item.order.payment_method }}</td>
-    <td>{{ item.order.status }}</td>
-    <td>SLE {{ item.price }}</td>
+            <td style="padding:12px;">
+                {% if item.order.payment_proof %}
+                    <a href="{{ item.order.payment_proof.url }}" target="_blank">View Proof</a>
+                {% else %}
+                    No proof
+                {% endif %}
+            </td>
 
-    <td>
-        {% if item.order.payment_proof %}
-            <a href="{{ item.order.payment_proof.url }}" target="_blank">
-                View Proof
-            </a>
-        {% else %}
-            No proof
-        {% endif %}
-    </td>
-</tr>
-{% endfor %}
-
-</tbody>
+            <td style="padding:12px;">{{ item.order.status }}</td>
+            <td style="padding:12px;">SLE {{ item.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No orders received yet.</p>
+{% endif %}
