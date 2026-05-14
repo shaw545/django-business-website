@@ -23,6 +23,18 @@
     font-weight: bold;
     z-index: 5;
 }
+.old-price{
+    text-decoration: line-through;
+    color: gray;
+    font-size: 13px;
+}
+
+.new-price{
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 
 /* ROLLING PROMOTION BANNER */
 .promo-banner {
@@ -334,8 +346,17 @@
 
     <h3>{{ product.name }}</h3>
 
-    <p>SLE {{ product.amount }}</p>
+    <p>
+    <span class="old-price">
+        SLE {{ product.amount }}
+    </span>
 
+    <br>
+
+    <span class="new-price">
+        SLE {{ product.amount }}
+    </span>
+</p>
     <a href="{% url 'product_detail' product.id %}" class="view-btn">
         View
     </a>
