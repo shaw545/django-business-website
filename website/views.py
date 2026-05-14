@@ -190,11 +190,10 @@ def checkout_view(request):
                 price=product.amount,
             )
 
-    request.session["cart"] = {}
-    request.session["last_order_id"] = order.id
+        request.session["cart"] = {}
+        request.session["last_order_id"] = order.id
 
-    return redirect("order_confirmation")
-
+        return redirect("order_confirmation")
 
     return render(request, "checkout.html", {
         "products": products,
