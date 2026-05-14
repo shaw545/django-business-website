@@ -58,18 +58,18 @@
             gap:15px;
         }
 
-        .nav-links a{
-            text-decoration:none;
-            color:black;
-            font-weight:bold;
-        }
-
-        .dashboard-btn{
-            background:orange;
-            padding:10px 15px;
-            border-radius:8px;
-        }
-
+  .nav-links a{
+      text-decoration:none;
+      color:black;
+      font-weight:bold;
+      font-size:8px;
+}
+  .dashboard-btn{
+       background:orange;
+       padding:4px 8px;
+       border-radius:6px;
+      font-size:8px;
+}
         /* FILTER */
 
         .filter-section{
@@ -218,15 +218,16 @@
     <a href="{% url 'cart' %}">Cart</a>
 
     <a href="{% url 'register' %}"
-       style="
-       background:white;
-       padding:8px 10px;
-       border-radius:6px;
-       border:2px solid black;
-       ">
-       Become a Seller
-    </a>
-
+   style="
+   background:white;
+   padding:4px 8px;
+   border-radius:6px;
+   border:2px solid black;
+   font-size:11px;
+   font-weight:bold;
+   ">
+   Become a Seller
+</a>
     <a href="{% url 'seller_dashboard' %}"
        class="dashboard-btn">
        Dashboard
