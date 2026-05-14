@@ -7,6 +7,22 @@
     <title>Online Luma</title>
 
     <style>
+.product-card {
+    position: relative;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: white;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 5;
+}
 
 /* ROLLING PROMOTION BANNER */
 .promo-banner {
@@ -308,54 +324,29 @@
 
             {% for product in products %}
 
-            <div class="product-card">
+<div class="product-card">
 
-                <div class="discount-badge">
-            DEAL
-         </div>
+    <div class="discount-badge">DEAL</div>
 
-.product-card {
-    position: relative;
-}
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
 
-.discount-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: red;
-    color: white;
-    padding: 4px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
-    z-index: 5;
-}
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <img src="{% static 'images/default.png' %}" alt="No Image">
-                {% endif %}
+    <h3>{{ product.name }}</h3>
 
-                <h3>{{ product.name }}</h3>
+    <p>SLE {{ product.amount }}</p>
 
-                <p>{{ product.category.name }}</p>
+    <a href="{% url 'product_detail' product.id %}" class="view-btn">
+        View
+    </a>
 
-                <p>
-                    <strong>SLE {{ product.amount }}</strong>
-                </p>
+</div>
 
-                <a href="{% url 'product_detail' product.id %}" class="view-btn">
-                    View
-                </a>
+{% empty %}
 
-            </div>
+<p>No products found.</p>
 
-            {% empty %}
-
-                <p>No products found.</p>
-
-            {% endfor %}
-
+{% endfor %}
         </div>
 
     </div>
