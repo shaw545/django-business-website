@@ -302,13 +302,10 @@
                     {% endif %}
 
                    {% if product.image %}
-                       <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                  {% elif product.image_url %}
-                      <img src="{{ product.image_url }}" alt="{{ product.name }}">
-                  {% else %}
-                     <img src="{% static 'images/default.png' %}" alt="No image">
-                 {% endif %}
-                    <h3>{{ product.name }}</h3>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+{% else %}
+    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+{% endif %}                    <h3>{{ product.name }}</h3>
 
                     {% if product.category %}
                         <p>{{ product.category.name }}</p>
