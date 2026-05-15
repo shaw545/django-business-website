@@ -4,86 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Luma</title>
+    <title>Welcome Online Luma</title>
 
     <style>
-.product-card {
-    position: relative;
-}
-
-.discount-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: red;
-    color: white;
-    padding: 4px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
-    z-index: 5;
-}
-.old-price{
-    text-decoration: line-through;
-    color: gray;
-    font-size: 13px;
-}
-
-.new-price{
-    color: red;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-
-/* ROLLING PROMOTION BANNER */
-.promo-banner {
-    width: 100%;
-    overflow: hidden;
-    background: #ff6600;
-    color: white;
-    padding: 10px 0;
-    font-size: 13px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.promo-track {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scrollPromo 22s linear infinite;
-}
-
-@keyframes scrollPromo {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-
         body{
             margin:0;
             font-family:Arial, sans-serif;
             background:#f5f5f5;
         }
 
-        /* NAVBAR */
-
         .navbar{
             display:flex;
             justify-content:space-between;
             align-items:center;
-            padding:15px 40px;
+            padding:10px 25px;
             background:#6fb6dc;
-            flex-wrap:wrap;
         }
 
         .logo{
-            font-size:26px;
+            font-size:22px;
             font-weight:bold;
             color:black;
         }
@@ -94,52 +33,77 @@
         }
 
         .search-box input{
-            padding:10px;
+            padding:8px;
             width:300px;
             border-radius:8px;
             border:none;
+            font-size:13px;
         }
 
         .search-box button{
-            padding:10px 15px;
+            padding:8px 14px;
             background:orange;
             border:none;
             border-radius:8px;
             cursor:pointer;
             font-weight:bold;
+            font-size:13px;
         }
 
         .nav-links{
             display:flex;
             align-items:center;
-            gap:15px;
+            gap:12px;
         }
 
-  .nav-links a{
-      text-decoration:none;
-      color:black;
-      font-weight:bold;
-      font-size:8px;
+        .nav-links a{
+            text-decoration:none;
+            color:black;
+            font-weight:bold;
+            font-size:12px;
+        }
 
-<!-- ROLLING PROMOTION BANNER -->
-<div class="promo-banner">
-    <div class="promo-track">
-        🔥 20% OFF Electronics &nbsp;&nbsp; • &nbsp;&nbsp;
-        🚚 Free Delivery in Selected Areas &nbsp;&nbsp; • &nbsp;&nbsp;
-        🛒 Buy More, Save More &nbsp;&nbsp; • &nbsp;&nbsp;
-        💥 Weekend Mega Deals &nbsp;&nbsp; • &nbsp;&nbsp;
-        🎉 New Seller Discounts Available &nbsp;&nbsp; • &nbsp;&nbsp;
-        📱 Hot Phone Deals Today
-    </div>
-</div>
-}
-  .dashboard-btn{
-       background:orange;
-       padding:4px 8px;
-       border-radius:6px;
-      font-size:8px;
-}
-        /* FILTER */
+        .dashboard-btn{
+            background:orange;
+            padding:7px 12px;
+            border-radius:8px;
+            font-size:12px;
+        }
+
+        .seller-btn{
+            background:white;
+            padding:7px 12px;
+            border-radius:8px;
+            border:2px solid black;
+            font-size:12px;
+        }
+
+        .promo-banner{
+            width:100%;
+            overflow:hidden;
+            background:#ff6600;
+            color:white;
+            padding:10px 0;
+            font-size:13px;
+            font-weight:bold;
+            white-space:nowrap;
+        }
+
+        .promo-track{
+            display:inline-block;
+            padding-left:100%;
+            animation:scrollPromo 22s linear infinite;
+        }
+
+        @keyframes scrollPromo{
+            0%{
+                transform:translateX(0);
+            }
+
+            100%{
+                transform:translateX(-100%);
+            }
+        }
 
         .filter-section{
             padding:20px;
@@ -162,14 +126,12 @@
             cursor:pointer;
         }
 
-        /* PRODUCTS */
-
         .container{
             padding:20px;
         }
 
         .section-title{
-            font-size:22px;
+            font-size:24px;
             font-weight:bold;
             margin-bottom:20px;
         }
@@ -183,12 +145,11 @@
         .product-card{
             background:white;
             border-radius:10px;
-            padding:8px;
+            padding:10px;
             box-shadow:0 2px 8px rgba(0,0,0,0.08);
             transition:transform 0.3s ease, box-shadow 0.3s ease;
+            position:relative;
         }
-
-        /* SHAKING / HOVER EFFECT */
 
         .product-card:hover{
             transform:translateY(-10px) scale(1.03) rotate(1deg);
@@ -212,6 +173,31 @@
             margin:5px 0;
         }
 
+        .discount-badge{
+            position:absolute;
+            top:10px;
+            left:10px;
+            background:red;
+            color:white;
+            padding:4px 9px;
+            border-radius:20px;
+            font-size:11px;
+            font-weight:bold;
+            z-index:5;
+        }
+
+        .old-price{
+            text-decoration:line-through;
+            color:gray;
+            font-size:13px;
+        }
+
+        .new-price{
+            color:red;
+            font-weight:bold;
+            font-size:18px;
+        }
+
         .view-btn{
             display:block;
             text-align:center;
@@ -224,23 +210,15 @@
             margin-top:10px;
         }
 
-        /* MOBILE */
-
-        @media (max-width:768px){
-
+        @media(max-width:768px){
             .navbar{
                 flex-direction:column;
-                align-items:stretch;
                 gap:10px;
-                padding:15px;
+                align-items:stretch;
             }
 
             .logo{
                 text-align:center;
-            }
-
-            .search-box{
-                width:100%;
             }
 
             .search-box input{
@@ -260,19 +238,13 @@
                 width:100%;
             }
         }
-
     </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-
     <div class="navbar">
-
-        <div class="logo">
-            Online Luma
-        </div>
+        <div class="logo">Online Luma</div>
 
         <form method="GET" action="" class="search-box">
             <input type="text" name="q" placeholder="Search products...">
@@ -280,108 +252,89 @@
         </form>
 
         <div class="nav-links">
-    <a href="/">Home</a>
-
-    <a href="{% url 'products' %}">Products</a>
-
-    <a href="{% url 'cart' %}">Cart</a>
-
-    <a href="{% url 'register' %}"
-   style="
-   background:white;
-   padding:4px 8px;
-   border-radius:6px;
-   border:2px solid black;
-   font-size:11px;
-   font-weight:bold;
-   ">
-   Become a Seller
-</a>
-    <a href="{% url 'seller_dashboard' %}"
-       class="dashboard-btn">
-       Dashboard
-    </a>
-</div>
+            <a href="/">Home</a>
+            <a href="{% url 'products' %}">Products</a>
+            <a href="{% url 'cart' %}">Cart</a>
+            <a href="{% url 'register' %}" class="seller-btn">Become a Seller</a>
+            <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
+        </div>
     </div>
 
-    <!-- FILTER -->
+    <div class="promo-banner">
+        <div class="promo-track">
+            🔥 Hot Deals Available &nbsp;&nbsp; • &nbsp;&nbsp;
+            🚚 Free Delivery in Selected Areas &nbsp;&nbsp; • &nbsp;&nbsp;
+            🛒 Buy More, Save More &nbsp;&nbsp; • &nbsp;&nbsp;
+            💥 Weekend Mega Deals &nbsp;&nbsp; • &nbsp;&nbsp;
+            🎉 New Seller Discounts Available
+        </div>
+    </div>
 
     <form method="GET" class="filter-section">
-
         <select name="category">
             <option value="">All Categories</option>
 
             {% for category in categories %}
-                <option value="{{ category.id }}">
-                    {{ category.name }}
-                </option>
+                <option value="{{ category.id }}">{{ category.name }}</option>
             {% endfor %}
-
         </select>
 
         <button type="submit">Filter</button>
-
     </form>
 
-    <!-- PRODUCTS -->
-
     <div class="container">
-
-        <div class="section-title">
-            Featured Products
-        </div>
+        <div class="section-title">Featured Products</div>
 
         <div class="product-grid">
 
             {% for product in products %}
 
-<div class="product-card">
+                <div class="product-card">
 
-    {% if product.name == "Iphone 17 Pro" %}
-        <div class="discount-badge">20% OFF</div>
-    {% endif %}
+                    {% if product.is_deal and product.discount_price %}
+                        <div class="discount-badge">
+                            {% if product.deal_label %}
+                                {{ product.deal_label }}
+                            {% else %}
+                                DEAL
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
-    {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-    {% endif %}
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="No image">
+                    {% endif %}
 
-    <h3>{{ product.name }}</h3>
+                    <h3>{{ product.name }}</h3>
 
-    {% if product.name == "Iphone 17 Pro" %}
+                    {% if product.category %}
+                        <p>{{ product.category.name }}</p>
+                    {% endif %}
 
-        <p>
-            <span style="
-                text-decoration: line-through;
-                color: gray;
-                font-size: 13px;
-            ">
-                SLE 42,000
-            </span>
+                    {% if product.is_deal and product.discount_price %}
+                        <p>
+                            <span class="old-price">SLE {{ product.amount }}</span><br>
+                            <span class="new-price">SLE {{ product.discount_price }}</span>
+                        </p>
+                    {% else %}
+                        <p><strong>SLE {{ product.amount }}</strong></p>
+                    {% endif %}
 
-            <br>
+                    <a href="{% url 'product_detail' product.id %}" class="view-btn">
+                        View
+                    </a>
 
-            <span style="
-                color: red;
-                font-weight: bold;
-                font-size: 18px;
-            ">
-                SLE {{ product.amount }}
-            </span>
-        </p>
+                </div>
 
-    {% else %}
+            {% empty %}
 
-        <p>SLE {{ product.amount }}</p>
+                <p>No products found.</p>
 
-    {% endif %}
+            {% endfor %}
 
-    <a href="{% url 'product_detail' product.id %}" class="view-btn">
-        View
-    </a>
-
-</div>
-{% endfor %}        
-
+        </div>
     </div>
 
 </body>

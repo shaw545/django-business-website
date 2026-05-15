@@ -40,6 +40,9 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     condition = models.CharField(max_length=20, choices=CONDITION_CHOICES, default="Good")
     image = models.ImageField(upload_to="products/", blank=True, null=True)
+   discount_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+   is_deal = models.BooleanField(default=False)
+   deal_label = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name
