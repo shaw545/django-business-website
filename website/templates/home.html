@@ -48,27 +48,6 @@
     white-space: nowrap;
 }
 
-{% if product.name == "T-Shirt" %}
-    <div class="discount-badge">20% OFF</div>
-
-    <p>
-        <span class="old-price">
-            SLE 250
-        </span>
-
-        <br>
-
-        <span class="new-price">
-            SLE {{ product.amount }}
-        </span>
-    </p>
-
-{% else %}
-
-    <p>SLE {{ product.amount }}</p>
-
-{% endif %}
-
 .promo-track {
     display: inline-block;
     padding-left: 100%;
@@ -358,7 +337,9 @@
 
 <div class="product-card">
 
-    <div class="discount-badge">DEAL</div>
+    {% if product.name == "Iphone 17 Pro" %}
+        <div class="discount-badge">20% OFF</div>
+    {% endif %}
 
     {% if product.image %}
         <img src="{{ product.image.url }}" alt="{{ product.name }}">
@@ -366,28 +347,40 @@
 
     <h3>{{ product.name }}</h3>
 
-    <p>
-    <span class="old-price">
-        SLE {{ product.amount }}
-    </span>
+    {% if product.name == "Iphone 17 Pro" %}
 
-    <br>
+        <p>
+            <span style="
+                text-decoration: line-through;
+                color: gray;
+                font-size: 13px;
+            ">
+                SLE 28,000
+            </span>
 
-    <span class="new-price">
-        SLE {{ product.amount }}
-    </span>
-</p>
+            <br>
+
+            <span style="
+                color: red;
+                font-weight: bold;
+                font-size: 18px;
+            ">
+                SLE {{ product.amount }}
+            </span>
+        </p>
+
+    {% else %}
+
+        <p>SLE {{ product.amount }}</p>
+
+    {% endif %}
+
     <a href="{% url 'product_detail' product.id %}" class="view-btn">
         View
     </a>
 
 </div>
-
-{% empty %}
-
-<p>No products found.</p>
-
-{% endfor %}        </div>
+{% endfor %}        
 
     </div>
 
