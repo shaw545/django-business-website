@@ -52,7 +52,7 @@ class Product(models.Model):
     deal_label = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.names
 class Order(models.Model):
     PAYMENT_CHOICES = [
         ("pay_on_delivery", "Pay on Delivery"),
