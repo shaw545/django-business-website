@@ -6,7 +6,7 @@ admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(SellerProfile)
 
-@admin.register(Product)
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "amount", "discount_price", "is_deal", "deal_label")
     list_filter = ("is_deal", "category")

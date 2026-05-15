@@ -318,36 +318,40 @@ def add_product(request):
             image=image,
         )
 
-        # Save colors
-        colors_text = request.POST.get("colors", "")
-        color_list = [c.strip() for c in colors_text.split(",") if c.strip()]
-
-        color_objects = []
-        for color_name in color_list:
-            color_obj = ProductColor.objects.create(
-                product=product,
-                color_name=color_name
-            )
-            color_objects.append(color_obj)
+    ProductImage.objects.create(
+        product=product,
+        image=img,
+        angle="other"
+    )
 
         # Save multiple gallery images
-        gallery_images = request.FILES.getlist("gallery_images")
-
+   
        # Save extra gallery images
         # Save extra gallery images
                # Save extra gallery images
-        for img in extra_images:
-            ProductImage.objects.create(
-                product=product,
-                image=img,
-                angle="other"
-            )
+ # Save extra gallery images
+
+    ProductImage.objects.create(
+        product=product,
+        image=img,
+        angle="other"
+    )
+
+
+@login_required
+def add_product(request):
+
+    if request.method == "POST":
+        # your product saving code here
 
         return redirect("seller_dashboard")
 
     return render(request, "add_product.html")
+
+
 @login_required
 def edit_product(request, product_id):
+
     product = get_object_or_404(Product, id=product_id)
 
     if request.method == "POST":
@@ -360,17 +364,13 @@ def edit_product(request, product_id):
         if request.FILES.get("image"):
             product.image = request.FILES.get("image")
 
-        if not product.seller:
-            product.seller = request.user
-
         product.save()
 
         return redirect("seller_dashboard")
 
-    return render(request, "product_form.html", {
-        "product": product,
+    return render(request, "edit_product.html", {
+        "product": product
     })
-
 
 @login_required
 def delete_product(request, product_id):
