@@ -350,27 +350,54 @@ def add_product(request):
 
 
 @login_required
-def edit_product(request, product_id):
+def add_product(request):
+    if request.method == "POST":
+        product = Product.objects.create(
+            seller=request.user,
+            name=request.POST.get("name"),
+            category=request.POST.get("category"),
+            amount=request.POST.get("amount") or 0,
+            description=request.POST.get("description"),
+            condition=request.POST.get("condition") or "Good",
+            image=request.FILES.get("image"),
+        )
 
-    product = get_object_or_404(Product, id=product_id)
+        return redirect("seller_dashboard")
+
+    return render(request, "add_product.html")
+
+
+@login_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id, seller=request.user)
 
     if request.method == "POST":
         product.name = request.POST.get("name")
         product.category = request.POST.get("category")
-        product.amount = request.POST.get("amount")
+        product.amount = request.POST.get("amount") or 0
         product.description = request.POST.get("description")
-        product.condition = request.POST.get("condition")
+        product.condition = request.POST.get("condition") or "Good"
 
         if request.FILES.get("image"):
             product.image = request.FILES.get("image")
 
         product.save()
-
         return redirect("seller_dashboard")
 
     return render(request, "edit_product.html", {
         "product": product
     })
+
+
+
+
+
+
+
+
+
+
+
 
 @login_required
 def delete_product(request, product_id):
