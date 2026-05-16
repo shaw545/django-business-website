@@ -7,6 +7,51 @@
     <title>Welcome Online Luma</title>
 
     <style>
+
+.product-slider{
+    width:100%;
+    overflow:hidden;
+    background:white;
+    margin:20px 30px;
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.slider-track{
+    display:flex;
+    gap:20px;
+    animation:slideProducts 25s linear infinite;
+}
+
+.slider-track img{
+    width:180px;
+    height:140px;
+    object-fit:cover;
+    border-radius:10px;
+    flex-shrink:0;
+}
+
+@keyframes slideProducts{
+    0%{
+        transform:translateX(100%);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
         body{
             margin:0;
             font-family:Arial, sans-serif;
@@ -282,6 +327,18 @@
         <button type="submit">Filter</button>
     </form>
 
+<div class="product-slider">
+    <div class="slider-track">
+
+        {% for product in products %}
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+        {% endfor %}
+
+    </div>
+</div>
+
     <div class="container">
         <div class="section-title">Featured Products</div>
 
@@ -302,10 +359,12 @@
                     {% endif %}
 
                    {% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-{% else %}
-    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-{% endif %}                    <h3>{{ product.name }}</h3>
+                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                  {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+                  {% endif %}                    
+
+              <h3>{{ product.name }}</h3>
 
                     {% if product.category %}
                         <p>{{ product.category.name }}</p>
