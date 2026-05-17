@@ -104,14 +104,19 @@
 
                     <span>
                       
-        <a href="{% url 'seller_store' product.seller.id %}" class="seller-link">
-             {% if product.seller.sellerprofile.business_name %}
-                {{ product.seller.sellerprofile.business_name }}
-            {% else %}
-               {{ product.seller.username }}
-           {% endif %}
-       </a>
-
+ {% if product.seller %}
+      <a href="{% url 'seller_store' product.seller.id %}" class="seller-link">
+         {% if product.seller.sellerprofile.business_name %}
+            {{ product.seller.sellerprofile.business_name }}
+         {% else %}
+            {{ product.seller.username }}
+         {% endif %}
+    </a>
+{% else %}
+    <span class="seller-link">
+        Seller not available
+    </span>
+{% endif %}
       <div class="seller-rating">
     {% if average_rating %}
         ⭐ {{ average_rating|floatformat:1 }}★ Seller Review
