@@ -162,13 +162,21 @@ def checkout_view(request):
     total = 0
 
     for product_id, quantity in cart.items():
-        product = Product.objects.get(id=product_id)
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            continue
+
         product.quantity = quantity
         product.subtotal = product.amount * quantity
         products.append(product)
         total += product.subtotal
 
     if request.method == "POST":
+        if not products:
+            request.session["cart"] = {}
+            return redirect("cart")
+
         order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
             buyer_phone=request.POST.get("buyer_phone"),
@@ -198,7 +206,6 @@ def checkout_view(request):
         "platform_afri_money": settings.PLATFORM_AFRI_MONEY,
         "platform_commission_percent": settings.PLATFORM_COMMISSION_PERCENT,
     })
-
 
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
