@@ -440,10 +440,12 @@ color:orange;
 .promo-slider{
     width:100%;
     overflow:hidden;
-    background:#ff6600;
+    background:#d50000;
     color:white;
     font-weight:bold;
-    padding:12px 0;
+    padding:14px 0;
+    border-top:3px solid gold;
+    border-bottom:3px solid gold;
 }
 
 .promo-track{
@@ -453,20 +455,10 @@ color:orange;
 }
 
 .promo-slide{
-    min-width:300px;
+    min-width:500px;
     text-align:center;
     font-size:18px;
 }
-
-@keyframes promoMove{
-    from{
-        transform:translateX(100%);
-    }
-    to{
-        transform:translateX(-100%);
-    }
-}
-
 /* ADD THIS HERE */
 @media(max-width:767px){
 
@@ -555,34 +547,28 @@ body{
     }
 }
 
-@media(max-width:767px){
-
-    .search-container{
-        position:sticky;
-        top:0;
-        z-index:999;
-        background:#74b5df;
-        padding:10px;
-    }
-
-    .search-container input{
-        width:70%;
-        padding:12px;
-        border-radius:8px;
-        border:none;
-    }
-
-    .search-container button{
-        width:25%;
-        padding:12px;
-        border-radius:8px;
-        border:none;
-        background:orange;
-        font-weight:bold;
-    }
+.promo-slider{
+    width:100%;
+    overflow:hidden;
+    background:#d50000;
+    color:white;
+    font-weight:bold;
+    padding:14px 0;
+    border-top:3px solid gold;
+    border-bottom:3px solid gold;
 }
 
-@media(max-width:767px){
+.promo-track{
+    display:flex;
+    width:max-content;
+    animation:promoMove 25s linear infinite;
+}
+
+.promo-slide{
+    min-width:500px;
+    text-align:center;
+    font-size:18px;
+}@media(max-width:767px){
     .desktop-category-filter{
         display:none;
     }
@@ -655,11 +641,15 @@ body{
 </div>
 <div class="promo-slider">
     <div class="promo-track">
-        <div class="promo-slide">🔥 50% Deals on All Arsenal Products </div>
-        <div class="promo-slide">🛒 Buy from you home & Save More</div>
+        <div class="promo-slide">🔥 50% OFF All Arsenal Products – Champions Celebration!</div>
+        <div class="promo-slide">🏆 Arsenal Premier League Champions Celebration Sale!</div>
+        <div class="promo-slide">⚽ Limited Time: Half Price on Arsenal Jerseys, Hoodies & Merchandise</div>
+        <div class="promo-slide">🎉 Celebrate with Online Luma — Arsenal Fan Deals Available Now!</div>
+        <div class="promo-slide">🚚 Free Delivery Available on Selected Orders</div>
+        <div class="promo-slide">🛒 Buy from the comfort of your home & Save More</div>
         <div class="promo-slide">🎉 Weekend Mega Deals</div>
-            </div>
-</div>    </div>
+            
+</div>    
 </div>
 
     <div class="container">
