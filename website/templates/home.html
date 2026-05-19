@@ -526,6 +526,42 @@ body{
     }
 }
 
+@media(max-width:767px){
+
+    .search-container{
+        position:sticky;
+        top:0;
+        z-index:999;
+        background:#74b5df;
+        padding:10px;
+    }
+
+    .search-container input{
+        width:70%;
+        padding:12px;
+        border-radius:8px;
+        border:none;
+    }
+
+    .search-container button{
+        width:25%;
+        padding:12px;
+        border-radius:8px;
+        border:none;
+        background:orange;
+        font-weight:bold;
+    }
+}s
+
+
+
+
+
+
+
+
+
+
 </style>
 
     </style>
@@ -536,12 +572,18 @@ body{
     <div class="navbar">
         <div class="logo">Online Luma</div>
 
-        <form method="GET" action="" class="search-box">
-            <input type="text" name="q" placeholder="Search products...">
-            <button type="submit">Search</button>
-        </form>
+   <div class="search-container">
+       <form method="GET">
+           <input type="text"
+               name="q"
+               value="{{ query }}"
+               placeholder="Search products...">
 
-        <div class="nav-links">
+         <button type="submit">
+            Search
+        </button>
+    </form>
+</div>        <div class="nav-links">
             <a href="/">Home</a>
             <a href="{% url 'products' %}">Products</a>
             <a href="{% url 'cart' %}">Cart</a>
