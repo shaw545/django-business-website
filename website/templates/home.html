@@ -25,6 +25,16 @@
     </a>
 </nav>
 
+<div class="mobile-menu">
+    ☰
+    <div class="mobile-dropdown">
+        <a href="{% url 'register_seller' %}">Become Seller</a>
+        <a href="{% url 'seller_dashboard' %}">Dashboard</a>
+        <a href="{% url 'orders' %}">Orders</a>
+        <a href="{% url 'profile' %}">Profile</a>
+    </div>
+</div>
+
 /* Mobile App Bottom Navigation */
 
 .mobile-bottom-nav{
@@ -145,15 +155,6 @@ color:orange;
         transform:translateX(-100%);
     }
 }
-
-
-
-
-
-
-
-
-
 
 
         body{
@@ -387,6 +388,42 @@ color:orange;
                 width:100%;
             }
         }
+
+
+
+
+@media(max-width:767px){
+
+.mobile-menu{
+    position:relative;
+    display:inline-block;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.mobile-dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    background:white;
+    min-width:180px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    border-radius:10px;
+    z-index:999;
+}
+
+.mobile-dropdown a{
+    display:block;
+    padding:12px;
+    text-decoration:none;
+    color:black;
+}
+
+.mobile-menu:hover .mobile-dropdown{
+    display:block;
+}
+
+}
 
         <style>
 
