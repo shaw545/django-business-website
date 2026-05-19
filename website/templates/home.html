@@ -446,18 +446,28 @@ color:orange;
     padding:14px 0;
     border-top:3px solid gold;
     border-bottom:3px solid gold;
+    white-space:nowrap;
 }
 
 .promo-track{
-    display:flex;
-    width:max-content;
-    animation:promoMove 25s linear infinite;
+    display:inline-block;
+    animation:promoMove 22s linear infinite;
 }
 
-.promo-slide{
-    min-width:500px;
-    text-align:center;
+.promo-track span{
+    display:inline-block;
+    padding:0 50px;
     font-size:18px;
+}
+
+@keyframes promoMove{
+    0%{
+        transform: translateX(100%);
+    }
+
+    100%{
+        transform: translateX(-100%);
+    }
 }
 /* ADD THIS HERE */
 @media(max-width:767px){
@@ -641,14 +651,13 @@ body{
 </div>
 <div class="promo-slider">
     <div class="promo-track">
-        <div class="promo-slide">🔥 50% OFF All Arsenal Products – Champions Celebration!</div>
-        <div class="promo-slide">🏆 Arsenal Premier League Champions Celebration Sale!</div>
-        <div class="promo-slide">⚽ Limited Time: Half Price on Arsenal Jerseys, Hoodies & Merchandise</div>
-        <div class="promo-slide">🎉 Celebrate with Online Luma — Arsenal Fan Deals Available Now!</div>
-        <div class="promo-slide">🚚 Free Delivery Available on Selected Orders</div>
-        <div class="promo-slide">🛒 Buy from the comfort of your home & Save More</div>
-        <div class="promo-slide">🎉 Weekend Mega Deals</div>
-            
+        <span>🔥 50% OFF All Arsenal Products – Champions Celebration!</span>
+        <span>🏆 Arsenal Champions Celebration Sale!</span>
+        <span>⚽ Half Price on Arsenal Jerseys, Hoodies & Merchandise!</span>
+        <span>🎉 Celebrate with Online Luma — Fan Deals Available Now!</span>
+        <span>🚚 Free Delivery on Selected Orders!</span>
+    </div>
+</div>            
 </div>    
 </div>
 
