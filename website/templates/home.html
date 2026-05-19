@@ -551,15 +551,13 @@ body{
         background:orange;
         font-weight:bold;
     }
-}s
+}
 
-
-
-
-
-
-
-
+@media(max-width:767px){
+    .desktop-category-filter{
+        display:none;
+    }
+}
 
 
 </style>
@@ -611,32 +609,21 @@ body{
 </div>
 </div>
 
-
-    <form method="GET" class="filter-section">
-       <select name="category">
-          <option value="">All Categories</option>
-
-         <option value="Electronics" {% if selected_category == "Electronics" %}selected{% endif %}>Electronics</option>
-
-        <option value="Fashion & Clothing" {% if selected_category == "Fashion & Clothing" %}selected{% endif %}>Fashion & Clothing</option>
-
-       <option value="Home & Living" {% if selected_category == "Home & Living" %}selected{% endif %}>Home & Living</option>
-
-       <option value="Beauty & Personal Care" {% if selected_category == "Beauty & Personal Care" %}selected{% endif %}>Beauty & Personal Care</option>
-
-       <option value="Sports" {% if selected_category == "Sports" %}selected{% endif %}>Sports</option>
-
-      <option value="Other" {% if selected_category == "Other" %}selected{% endif %}>Other</option>
-</select>
-
-            {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
+<div class="desktop-category-filter">
+    <form method="GET" action="{% url 'home' %}">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion & Clothing">Fashion & Clothing</option>
+            <option value="Home & Living">Home & Living</option>
+            <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+            <option value="Sports">Sports</option>
+            <option value="Other">Other</option>
         </select>
 
         <button type="submit">Filter</button>
     </form>
-
+</div>
 <div class="product-slider">
     <div class="slider-track">
 
