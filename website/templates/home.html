@@ -387,6 +387,49 @@ color:orange;
                 width:100%;
             }
         }
+
+        <style>
+
+/* existing CSS above */
+
+
+/* Desktop website */
+@media(min-width:768px){
+
+    .mobile-header{
+        padding:25px 60px;
+    }
+
+}
+
+
+/* ADD THIS HERE */
+@media(max-width:767px){
+
+    .products-grid,
+    .product-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:20px;
+        padding:15px;
+    }
+
+    .product-card{
+        width:100%;
+        max-width:100%;
+        box-sizing:border-box;
+    }
+
+    .product-card img{
+        width:100%;
+        height:auto;
+        object-fit:cover;
+    }
+
+}
+
+</style>
+
     </style>
 </head>
 
