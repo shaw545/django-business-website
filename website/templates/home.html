@@ -7,6 +7,65 @@
     <title>Welcome Online Luma</title>
 
     <style>
+<nav class="mobile-bottom-nav">
+    <a href="{% url 'home' %}">
+        🏠<br>Home
+    </a>
+
+    <a href="{% url 'products_view' %}">
+        🔍<br>Products
+    </a>
+
+    <a href="{% url 'cart_view' %}">
+        🛒<br>Cart
+    </a>
+
+    <a href="{% url 'seller_dashboard' %}">
+        👤<br>Account
+    </a>
+</nav>
+
+/* Mobile App Bottom Navigation */
+
+.mobile-bottom-nav{
+    display:none;
+}
+
+@media(max-width:767px){
+
+body{
+padding-bottom:70px;
+}
+
+.mobile-bottom-nav{
+display:flex;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+justify-content:space-around;
+padding:10px 0;
+border-top:1px solid #ddd;
+z-index:999;
+box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+}
+
+.mobile-bottom-nav a{
+text-decoration:none;
+color:black;
+font-size:12px;
+font-weight:bold;
+text-align:center;
+}
+
+.mobile-bottom-nav a:hover{
+color:orange;
+}
+
+}
+
+
 /* Mobile first */
 .mobile-header {
     padding: 12px 15px;
