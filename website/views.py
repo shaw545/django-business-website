@@ -63,7 +63,7 @@ def product_detail(request, product_id):
     ).aggregate(Avg("rating"))["rating__avg"]
 
     if average_rating:
-        average_rating = round(average_rating, 1)
+        average_rating = round(average_rating, 1afri_number = request.POST.get("afri_number"
 
     return render(request, "product_detail.html", {
         "product": product,
@@ -263,9 +263,8 @@ def register(request):
             business_address=request.POST.get("business_address", ""),
             business_logo=request.FILES.get("business_logo"),
             phone=request.POST.get("phone", ""),
-            orange_number=request.POST.get("orange_number", ""),
-            afri_number=request.POST.get("afri_number", ""),
-        )
+            
+      )
 
         messages.success(request, "Seller account created successfully.")
         return redirect("login")
