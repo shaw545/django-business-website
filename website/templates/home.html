@@ -492,6 +492,40 @@ body{
 
 }
 
+.mobile-category-icons{
+    display:none;
+}
+
+@media(max-width:767px){
+
+    .mobile-category-icons{
+        display:flex;
+        overflow-x:auto;
+        gap:12px;
+        padding:14px;
+        background:white;
+        border-bottom:1px solid #eee;
+    }
+
+    .mobile-category-icons a{
+        min-width:80px;
+        text-align:center;
+        text-decoration:none;
+        color:black;
+        font-size:24px;
+        background:#f7f7f7;
+        border-radius:14px;
+        padding:10px 8px;
+        font-weight:bold;
+    }
+
+    .mobile-category-icons span{
+        display:block;
+        font-size:12px;
+        margin-top:5px;
+    }
+}
+
 </style>
 
     </style>
@@ -525,6 +559,14 @@ body{
             🎉 New Seller Discounts Available
         </div>
     </div>
+   <div class="mobile-category-icons">
+    <a href="{% url 'products' %}?category=electronics">📱<span>Electronics</span></a>
+    <a href="{% url 'products' %}?category=fashion">👕<span>Fashion</span></a>
+    <a href="{% url 'products' %}?category=home">🏠<span>Home</span></a>
+    <a href="{% url 'products' %}?category=beauty">💄<span>Beauty</span></a>
+    <a href="{% url 'products' %}?category=food">🍲<span>Food</span></a>
+</div>
+
 
     <form method="GET" class="filter-section">
         <select name="category">
