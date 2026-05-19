@@ -25,7 +25,7 @@ def home(request):
         products = products.filter(name__icontains=query)
 
     if category:
-        products = products.filter(category=category)
+       products = products.filter(category__iexact=category)
 
     categories = [
         "Electronics",
