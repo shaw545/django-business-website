@@ -403,23 +403,7 @@ def seller_store(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)
     products = Product.objects.filter(seller=seller)
 
-    if request.method == "POST":
-        rating = request.POST.get("rating")
-        comment = request.POST.get("comment")
-        buyer_name = request.POST.get("buyer_name", "Anonymous")
-
-        ProductReview.objects.create(
-            product=products.first(),
-            seller=seller,
-            buyer=request.user if request.user.is_authenticated else seller,
-            rating=rating,
-            comment=comment
-        )
-
-    return redirect("seller_store", seller_id=seller.id)
-
     ratings = ProductReview.objects.filter(seller=seller)
-
     average_rating = ratings.aggregate(Avg("rating"))["rating__avg"]
 
     if average_rating:
