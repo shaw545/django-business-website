@@ -437,6 +437,35 @@ color:orange;
 
 }
 
+.promo-slider{
+    width:100%;
+    overflow:hidden;
+    background:#ff6600;
+    color:white;
+    font-weight:bold;
+    padding:12px 0;
+}
+
+.promo-track{
+    display:flex;
+    width:max-content;
+    animation:promoMove 25s linear infinite;
+}
+
+.promo-slide{
+    min-width:300px;
+    text-align:center;
+    font-size:18px;
+}
+
+@keyframes promoMove{
+    from{
+        transform:translateX(100%);
+    }
+    to{
+        transform:translateX(-100%);
+    }
+}
 
 /* ADD THIS HERE */
 @media(max-width:767px){
@@ -624,16 +653,13 @@ body{
         <button type="submit">Filter</button>
     </form>
 </div>
-<div class="product-slider">
-    <div class="slider-track">
-
-        {% for product in products %}
-            {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            {% endif %}
-        {% endfor %}
-
-    </div>
+<div class="promo-slider">
+    <div class="promo-track">
+        <div class="promo-slide">🔥 50% Deals on All Arsenal Products </div>
+        <div class="promo-slide">🛒 Buy from you home & Save More</div>
+        <div class="promo-slide">🎉 Weekend Mega Deals</div>
+            </div>
+</div>    </div>
 </div>
 
     <div class="container">
