@@ -645,7 +645,7 @@ body{
 
                 <div class="product-card">
                    <p class="seller-name">
-                       Seller: {{ product.seller.username }}
+                       Seller: {{ product.seller.sellerprofile.business_name|default:product.seller.username }}
                      </p>
 
                     {% if product.is_deal and product.discount_price %}
