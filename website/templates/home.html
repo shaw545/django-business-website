@@ -163,7 +163,6 @@ color:orange;
 
         .navbar{
             display:flex;
-            justify-content:space-between;
             align-items:center;
             padding:10px 25px;
             background:#6fb6dc;
@@ -472,13 +471,28 @@ color:orange;
 /* ADD THIS HERE */
 @media(max-width:767px){
 
-    .products-grid,
-    .product-grid{
-        display:grid;
-        grid-template-columns:1fr;
-        gap:20px;
-        padding:15px;
+   /* Desktop */
+.products-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap:20px;
+    padding:20px;
+}
+
+/* Product cards */
+.product-card{
+    width:100%;
+    margin:0;
+}
+
+/* Mobile remains separate */
+@media (max-width:767px){
+    .products-grid{
+        grid-template-columns: repeat(2,1fr);
+        gap:12px;
+        padding:10px;
     }
+}    }
 
     .product-card{
         width:100%;
@@ -656,7 +670,8 @@ body{
         <span>⚽ Half Price on Arsenal Jerseys, Hoodies & Merchandise!</span>
         <span>🎉 Celebrate with Online Luma — Fan Deals Available Now!</span>
         <span>🚚 Free Delivery on Selected Orders!</span>
-    </div>
+        <span>🛍️ Shop from the comfort of your home and save more!</span>
+        <span>🚦 Avoid stress and traffic wahala — shop online and feel happy!</span>    </div>
 </div>            
 </div>    
 </div>
