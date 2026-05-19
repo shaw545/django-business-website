@@ -91,25 +91,26 @@ def buy_now(request, product_id):
     request.session.modified = True
     return redirect("checkout")
 
-
 def cart_view(request):
     cart = request.session.get("cart", {})
     products = []
     total = 0
 
     for product_id, quantity in cart.items():
-        product = get_object_or_404(Product, id=product_id)
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            continue
+
         product.quantity = quantity
         product.subtotal = product.amount * quantity
-        total += product.subtotal
         products.append(product)
+        total += product.subtotal
 
     return render(request, "cart.html", {
         "products": products,
         "total": total,
     })
-
-
 def increase_cart_item(request, product_id):
     cart = request.session.get("cart", {})
     product_id = str(product_id)
@@ -159,18 +160,14 @@ def checkout_view(request):
     cart = request.session.get("cart", {})
     products = []
     total = 0
-    seller_profile = None
 
     for product_id, quantity in cart.items():
-        product = get_object_or_404(Product, id=product_id)
+        product = Product.objects.get(id=product_id)
         product.quantity = quantity
         product.subtotal = product.amount * quantity
-        total += product.subtotal
         products.append(product)
+        total += product.subtotal
 
-    if products:
-        first_product = products[0]
-        seller_profile = SellerProfile.objects.filter(user=first_product.seller).first()
     if request.method == "POST":
         order = Order.objects.create(
             buyer_name=request.POST.get("buyer_name"),
@@ -178,9 +175,7 @@ def checkout_view(request):
             buyer_email=request.POST.get("buyer_email"),
             buyer_address=request.POST.get("buyer_address"),
             payment_method=request.POST.get("payment_method"),
-            payment_proof=request.FILES.get("payment_proof"),
             total_amount=total,
-            status="payment_received" if request.FILES.get("payment_proof") else "pending"
         )
 
         for product in products:
@@ -194,7 +189,6 @@ def checkout_view(request):
 
         request.session["cart"] = {}
         request.session["last_order_id"] = order.id
-
         return redirect("order_confirmation")
 
     return render(request, "checkout.html", {
@@ -204,18 +198,18 @@ def checkout_view(request):
         "platform_afri_money": settings.PLATFORM_AFRI_MONEY,
         "platform_commission_percent": settings.PLATFORM_COMMISSION_PERCENT,
     })
+
+
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None
 
     if order_id:
-        order = get_object_or_404(Order, id=order_id)
+        order = Order.objects.filter(id=order_id).first()
 
     return render(request, "order_confirmation.html", {
-        "order": order,
+        "order": order
     })
-
-
 # =========================
 # AUTH
 # =========================
@@ -388,17 +382,6 @@ def edit_product(request, product_id):
         "product": product
     })
 
-
-
-
-
-
-
-
-
-
-
-
 @login_required
 def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, seller=request.user)
@@ -451,7 +434,10 @@ def seller_store(request, seller_id):
 
 @login_required
 def submit_review(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return redirect("products_view")
 
     if request.method == "POST":
         rating = request.POST.get("rating")
@@ -460,13 +446,14 @@ def submit_review(request, product_id):
         ProductReview.objects.create(
             product=product,
             seller=product.seller,
-            buyer=request.user,
+            user=request.user,
             rating=rating,
             comment=comment
         )
 
-    return redirect("product_detail", product_id=product.id)
+        return redirect("product_detail", product_id=product.id)
 
+    return redirect("product_detail", product_id=product.id)
 def terms_view(request):
     return render(request, "terms.html")
 
