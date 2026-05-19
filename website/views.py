@@ -63,8 +63,7 @@ def product_detail(request, product_id):
     ).aggregate(Avg("rating"))["rating__avg"]
 
     if average_rating:
-        average_rating = round(average_rating, 1afri_number = request.POST.get("afri_number"
-
+       average_rating = round(average_rating, 1)
     return render(request, "product_detail.html", {
         "product": product,
         "average_rating": average_rating,
