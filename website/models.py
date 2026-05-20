@@ -113,6 +113,7 @@ class ProductColor(models.Model):
 
 
 class ProductImage(models.Model):
+
     ANGLE_CHOICES = [
         ("front", "Front View"),
         ("back", "Back View"),
@@ -122,10 +123,21 @@ class ProductImage(models.Model):
         ("other", "Other"),
     ]
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="images", blank=True, null=True)
-    image = models.ImageField(upload_to="products/gallery/")
-    angle = models.CharField(max_length=20, choices=ANGLE_CHOICES, default="front")
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="extra_images"
+    )
+
+    image = models.ImageField(
+        upload_to="product_extra_images/"
+    )
+
+    angle = models.CharField(
+        max_length=20,
+        choices=ANGLE_CHOICES,
+        default="front"
+    )
 
     def __str__(self):
         return f"{self.product.name} - {self.angle}"
