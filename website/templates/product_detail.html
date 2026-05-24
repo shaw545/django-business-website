@@ -10,50 +10,46 @@
         <!-- LEFT: PRODUCT IMAGES -->
         <div class="image-section">
 
-            <div class="product-image-area">
+    <!-- LEFT: PRODUCT IMAGES -->
+<div class="image-section">
 
-                <button type="button" class="image-arrow left-arrow" onclick="changeImage(-1)">
-                    ‹
-                </button>
+<div class="product-slider-container">
 
-                {% if product.image %}
-                    <img
-                        id="mainProductImage"
-                        src="{{ product.image.url }}"
-                        alt="{{ product.name }}"
-                        class="main-product-image"
-                    >
-                {% else %}
-                    <div class="no-image-box">No Image</div>
-                {% endif %}
+    <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
 
-                <button type="button" class="image-arrow right-arrow" onclick="changeImage(1)">
-                    ›
-                </button>
+    <img id="sliderImage"
+         src="{{ product.image.url }}"
+         alt="{{ product.name }}"
+         class="main-slider-image">
 
-            </div>
+    <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
 
-            <div class="product-gallery">
+</div>
 
-                {% if product.image %}
-                    <img
-                        src="{{ product.image.url }}"
-                        class="thumb active-thumb"
-                        onclick="setImage(0)"
-                    >
-                {% endif %}
+<script>
+let images = [
+    "{{ product.image.url }}",
+    {% for img in product.extra_images.all %}
+        "{{ img.image.url }}",
+    {% endfor %}
+];
 
-                {% for img in product.images.all %}
-                    <img
-                        src="{{ img.image.url }}"
-                        class="thumb"
-                        onclick="setImage({{ forloop.counter }})"
-                    >
-                {% endfor %}
+let currentIndex = 0;
 
-            </div>
+function changeSlide(direction) {
+    currentIndex += direction;
 
-        </div>
+    if (currentIndex >= images.length) {
+        currentIndex = 0;
+    }
+
+    if (currentIndex < 0) {
+        currentIndex = images.length - 1;
+    }
+
+    document.getElementById("sliderImage").src = images[currentIndex];
+}
+</script>                         
 
         <!-- RIGHT: PRODUCT DETAILS -->
         <div class="details-section">
@@ -70,28 +66,69 @@
 
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-            {% if product.colors.all %}
-            <div class="color-box">
-                <label><strong>Color:</strong></label>
+          
+            {% if product.size %}
+            <div class="size-box">
+                <label><strong>Size:</strong></label>
 
-                <select id="colorSelect" name="selected_color">
-                    <option value="">Select Color</option>
 
-                    {% for color in product.colors.all %}
-                        {% with color.images.first as color_image %}
-                            <option
-                                value="{{ color.color_name }}"
-                                data-image="{% if color_image %}{{ color_image.image.url }}{% else %}{{ product.image.url }}{% endif %}"
-                            >
-                                {{ color.color_name }}
-                            </option>
-                        {% endwith %}
-                    {% endfor %}
-                </select>
-            </div>
-            {% endif %}
+                <select name="selected_size">
+                    <option value="">Select Size</option>
+                    <option value="{{ product.size }}">{{ product.size }}</option>
+               </select>
+          </div>
+          {% endif %}
 
-            <div class="seller-box">
+   {% if sizes %}
+<div class="size-box">
+    <label><strong>Size:</strong></label>
+
+    <select id="sizeSelect" name="selected_size">
+        <option value="">Select Size</option>
+
+        {% for size in sizes %}
+            <option value="{{ size }}">
+                {{ size }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+
+{% if sizes %}
+<div class="size-box">
+    <label><strong>Size:</strong></label>
+
+    <select id="sizeSelect" name="selected_size">
+        <option value="">Select Size</option>
+
+        {% for size in sizes %}
+            <option value="{{ size }}">
+                {{ size }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+            
+           {% if product.colors.all %}
+<div class="color-box">
+    <label><strong>Color:</strong></label>
+
+    <select name="selected_color"
+            style="width:auto; min-width:160px; padding:5px;">
+        <option>Select Color</option>
+
+        {% for color in product.colors.all %}
+            <option value="{{ color.color_name }}">
+                {{ color.color_name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+
+<div class="seller-box">
                 <p><strong>Seller:</strong></p>
 
                 <div class="seller-info">
@@ -143,6 +180,42 @@
 </div>
 
 <style>
+
+.product-slider-container{
+    position:relative;
+    width:420px;
+    height:420px;
+    margin:30px auto;
+    background:#f7f7f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.main-slider-image{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.slider-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:20;
+    background:white;
+    border:none;
+    border-radius:50%;
+    width:45px;
+    height:45px;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.prev{ left:10px; }
+.next{ right:10px; }
 .product-detail {
     max-width: 1250px;
     margin: 25px auto;
@@ -331,6 +404,28 @@
         flex-direction: column;
     }
 }
+
+.extra-product-image{
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:8px;
+    margin:5px;
+    cursor:pointer;
+}
+
+.details-section h1{
+    font-size:28px;
+}
+
+.details-section h2{
+    font-size:24px;
+}
+
+.details-section p{
+    font-size:16px;
+}
+
 </style>
 
 <script>
@@ -394,6 +489,58 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-</script>
 
+.product-gallery{
+    text-align:center;
+}
+
+.main-product-image{
+    width:100%;
+    max-width:400px;
+    height:350px;
+    object-fit:contain;
+}
+
+.thumbnail-container{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:10px;
+}
+
+.thumbnail{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    cursor:pointer;
+    border:2px solid #ddd;
+}
+<script>
+let currentSlide = 0;
+
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index) {
+    slides.forEach(slide => {
+        slide.style.display = "none";
+    });
+
+    if (index >= slides.length) {
+        currentSlide = 0;
+    }
+
+    if (index < 0) {
+        currentSlide = slides.length - 1;
+    }
+
+    slides[currentSlide].style.display = "block";
+}
+
+function moveSlide(direction) {
+    currentSlide += direction;
+    showSlide(currentSlide);
+}
+
+showSlide(currentSlide);
+</script>
 {% endblock %}

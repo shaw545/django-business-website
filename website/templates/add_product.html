@@ -10,69 +10,60 @@
             <div class="card shadow-sm">
                 <div class="card-body p-4">
 
-                    <h2 class="mb-4">Add Product</h2>
-
-                   <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
+
+    <h2 class="mb-4">Add Product</h2>
 
     <label>Product Name</label>
     <input type="text" name="name" required>
+
     <label>Product Image</label>
     <input type="file" name="image" accept="image/*">
+
     <label>Description</label>
     <textarea name="description" required></textarea>
 
     <label>Amount / Price</label>
     <input type="number" name="amount" step="0.01" required>
-<select name="category" required>
-    <option value="">Select Category</option>
-    <option value="Electronics">Electronics</option>
-    <option value="Fashion">Fashion</option>
-    <option value="Home Appliances">Home Appliances</option>
-    <option value="Beauty">Beauty</option>
-    <option value="Sports">Sports</option>
-    <option value="Other">Other</option>
-</select>    
+
+    <label>Category</label>
+    <select name="category" required>
+        <option value="">Select Category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Fashion">Fashion</option>
+        <option value="Home & Living">Home & Living</option>
+        <option value+" Sport">Sport</option>
+    </select>
+    <label>Size</label>
+    <select name="size">
+       <input type="text" name="size"
+       placeholder="Example: S, M, L, XL">
+       <option value="XS">XS</option>
+       <option value="S">S</option>
+       <option value="M">M</option>
+       <option value="L">L</option>
+       <option value="XL">XL</option>
+       <option value="XXL">XXL</option>
+     </select>
     <label>Condition</label>
-    <select name="condition" required>
-        <option value="">Select condition</option>
+    <select name="condition">
         <option value="Excellent">Excellent</option>
         <option value="Good">Good</option>
-        <option value="Fair/Damaged">Fair/Damaged</option>
+        <option value="Fair">Fair</option>
     </select>
-
-    <label>Main Product Image</label>
-    <input type="file" name="image" required>
-
     <label>Available Colors</label>
-    <input type="text" name="colors" placeholder="Example: Black, Silver, Blue">
+    <input type="text"
+           name="colors"
+           placeholder="Example: Black, White, Blue">
 
-    <label><strong>Extra Product Images</strong></label>
-
-<input
-    type="file"
-    name="extra_images"
-    multiple
-    accept="image/*"
-    style="
-        width:100%;
-        padding:12px;
-        border:1px solid #ccc;
-        border-radius:10px;
-        background:#fff;
-        margin-top:8px;
-        margin-bottom:15px;
-        font-size:15px;">
-<small>You can select up to 15 extra images.</small>
-
-<br><br>
-
-<small>
-    Upload front, back, side, and close-up images.
-</small>    
+    <label>Extra Product Images</label>
+    <input type="file" name="extra_images" multiple accept="image/*">
+    <p>You can upload up to 5 extra images.</p>
 
     <button type="submit">Add Product</button>
-</form>                       
+
+</form>
  <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary ms-2">
                             Back to Dashboard
                         </a>

@@ -10,7 +10,6 @@ from django.db.models import Avg
 from django.conf import settings
 
 
-
 # =========================
 # PUBLIC PAGES
 # =========================
@@ -67,6 +66,15 @@ def product_detail(request, product_id):
     return render(request, "product_detail.html", {
         "product": product,
         "average_rating": average_rating,
+    })
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    colors = product.colors.all()
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "colors": colors,
     })
 
 # =========================
@@ -295,17 +303,18 @@ def seller_dashboard(request):
         "order_items": order_items,
     })
 
-@login_required
+
 def add_product(request):
     if request.method == "POST":
+
         name = request.POST.get("name")
         description = request.POST.get("description")
         amount = request.POST.get("amount")
         category = request.POST.get("category")
         condition = request.POST.get("condition")
+        size = request.POST.get("size")
         image = request.FILES.get("image")
-        extra_images = request.FILES.getlist("extra_images")
-        extra_images = extra_images[:15]
+        colors = request.POST.get("colors")
 
         product = Product.objects.create(
             seller=request.user,
@@ -314,90 +323,67 @@ def add_product(request):
             amount=amount,
             category=category,
             condition=condition,
+            size=size,
             image=image,
         )
 
-    ProductImage.objects.create(
-        product=product,
-        image=img,
-        angle="other"
-    )
+        extra_images = request.FILES.getlist("extra_images")[:5]
 
-        # Save multiple gallery images
-   
-       # Save extra gallery images
-        # Save extra gallery images
-               # Save extra gallery images
- # Save extra gallery images
+        for img in extra_images:
+            ProductImage.objects.create(
+                product=product,
+                image=img
+            )
 
-    ProductImage.objects.create(
-        product=product,
-        image=img,
-        angle="other"
-    )
-
-
-@login_required
-def add_product(request):
-
-    if request.method == "POST":
-        # your product saving code here
-
+        # Save colors
+        if colors:
+            for color in colors.split(","):
+                ProductColor.objects.create(
+                    product=product,
+                    color_name=color.strip()
+                )
         return redirect("seller_dashboard")
 
     return render(request, "add_product.html")
-
-
-@login_required
-def add_product(request):
-    if request.method == "POST":
-        product = Product.objects.create(
-            seller=request.user,
-            name=request.POST.get("name"),
-            category=request.POST.get("category"),
-            amount=request.POST.get("amount") or 0,
-            description=request.POST.get("description"),
-            condition=request.POST.get("condition") or "Good",
-            image=request.FILES.get("image"),
-        )
-
-        return redirect("seller_dashboard")
-
-    return render(request, "add_product.html")
-
 
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, seller=request.user)
 
     if request.method == "POST":
-        product.name = request.POST.get("name")
-        product.category = request.POST.get("category")
-        product.amount = request.POST.get("amount") or 0
-        product.description = request.POST.get("description")
-        product.condition = request.POST.get("condition") or "Good"
+        product.name = request.POST.get("name") or product.name
+        product.description = request.POST.get("description") or product.description
+        product.amount = request.POST.get("amount") or product.amount
+        product.category = request.POST.get("category") or product.category
+        product.condition = request.POST.get("condition") or product.condition
+        product.size = request.POST.get("size") or product.size
 
         if request.FILES.get("image"):
             product.image = request.FILES.get("image")
 
         product.save()
+
         return redirect("seller_dashboard")
 
     return render(request, "edit_product.html", {
         "product": product
     })
-
 @login_required
 def delete_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    product = get_object_or_404(
+        Product,
+        id=product_id,
+        seller=request.user
+    )
 
     if request.method == "POST":
         product.delete()
         return redirect("seller_dashboard")
 
     return render(request, "delete_product.html", {
-        "product": product,
+        "product": product
     })
+
 
 def seller_store(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)

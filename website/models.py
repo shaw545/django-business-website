@@ -43,7 +43,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     category = models.CharField(max_length=100, blank=True, null=True)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-
+    size = models.CharField(max_length=100, blank=True, null=True)
     discount_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     is_deal = models.BooleanField(default=False)
     deal_label = models.CharField(max_length=50, blank=True, null=True)
