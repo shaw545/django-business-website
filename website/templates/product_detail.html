@@ -67,68 +67,43 @@ function changeSlide(direction) {
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
           
-            {% if product.size %}
-            <div class="size-box">
-                <label><strong>Size:</strong></label>
+      <form method="POST" action="{% url 'add_to_cart' product.id %}">
+{% csrf_token %}
 
-
-                <select name="selected_size">
-                    <option value="">Select Size</option>
-                    <option value="{{ product.size }}">{{ product.size }}</option>
-               </select>
-          </div>
-          {% endif %}
-
-   {% if sizes %}
-<div class="size-box">
+<div class="option-row">
     <label><strong>Size:</strong></label>
 
-    <select id="sizeSelect" name="selected_size">
+    <select name="selected_size" class="small-dropdown">
         <option value="">Select Size</option>
-
-        {% for size in sizes %}
-            <option value="{{ size }}">
-                {{ size }}
-            </option>
-        {% endfor %}
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
     </select>
 </div>
-{% endif %}
 
-{% if sizes %}
-<div class="size-box">
-    <label><strong>Size:</strong></label>
-
-    <select id="sizeSelect" name="selected_size">
-        <option value="">Select Size</option>
-
-        {% for size in sizes %}
-            <option value="{{ size }}">
-                {{ size }}
-            </option>
-        {% endfor %}
-    </select>
-</div>
-{% endif %}
-            
-           {% if product.colors.all %}
-<div class="color-box">
+<div class="option-row">
     <label><strong>Color:</strong></label>
 
-    <select name="selected_color"
-            style="width:auto; min-width:160px; padding:5px;">
-        <option>Select Color</option>
-
-        {% for color in product.colors.all %}
-            <option value="{{ color.color_name }}">
-                {{ color.color_name }}
-            </option>
-        {% endfor %}
+    <select name="selected_color" class="small-dropdown">
+        <option value="">Select Color</option>
+        <option value="White">White</option>
+        <option value="Black">Black</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
     </select>
 </div>
-{% endif %}
 
-<div class="seller-box">
+<button type="submit" class="buy-now-btn">
+    Buy It Now
+
+</button>
+
+<button type="submit" class="buy-now-btn">
+    Add to Cart
+</button>
+</form>
+
                 <p><strong>Seller:</strong></p>
 
                 <div class="seller-info">
@@ -161,25 +136,42 @@ function changeSlide(direction) {
         ⭐ Seller Review
     {% endif %}
 </div>
-<div class="button-row">
 
-                <a href="{% url 'checkout' %}" class="buy-now-btn">
-                    Buy It Now
-                </a>
 
-                <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
-                    Add to Cart
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
+        <input type="hidden" name="selected_size" id="cartSize">
+        <input type="hidden" name="selected_color" id="cartColor">
 </div>
-
 <style>
+.small-dropdown {
+    width: 135px;
+    height: 36px;
+    padding: 5px 8px;
+    font-size: 14px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+}
+
+.option-row {
+    margin-bottom: 10px;
+}
+
+.option-row{
+    margin:8px 0;
+}
+
+.option-row label{
+    display:inline-block;
+    width:55px;
+    font-size:13px;
+}
+
+.small-dropdown{
+    width:100px;
+    height:30px;
+    font-size:12px;
+    padding:3px;
+    border-radius:6px;
+}
 
 .product-slider-container{
     position:relative;
@@ -350,16 +342,29 @@ function changeSlide(direction) {
 }
 
 .buy-now-btn,
-.cart-btn {
-    flex: 1;
-    padding: 13px;
-    text-align: center;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 15px !important;
-    font-weight: 700;
-}
+.cart-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
 
+    width:80px;
+    height:30px;
+
+    padding:6px 8px;
+    border-radius:20px;
+
+    font-size:12px;
+    font-weight:bold;
+
+    text-decoration:none;
+    margin-right:8px;
+}
+.button-group{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:20px;
+}
 .buy-now-btn {
     background: #2563eb;
     color: white;
@@ -542,5 +547,32 @@ function moveSlide(direction) {
 }
 
 showSlide(currentSlide);
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sizeSelect = document.querySelector("select[name='selected_size']");
+    const colorSelect = document.querySelector("select[name='selected_color']");
+    const cartSize = document.getElementById("cartSize");
+    const cartColor = document.getElementById("cartColor");
+
+    const cartForm = document.querySelector("form[action*='add-to-cart']");
+
+    if (cartForm) {
+        cartForm.addEventListener("submit", function (e) {
+            if (sizeSelect && cartSize) {
+                cartSize.value = sizeSelect.value;
+            }
+
+            if (colorSelect && cartColor) {
+                cartColor.value = colorSelect.value;
+            }
+        });
+    }
+});
+
 </script>
 {% endblock %}
+
+
+
+

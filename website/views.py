@@ -67,6 +67,17 @@ def product_detail(request, product_id):
         "product": product,
         "average_rating": average_rating,
     })
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    sizes = []
+    if product.size:
+        sizes = [s.strip() for s in product.size.split(",")]
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "sizes": sizes,
+    })
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -82,35 +93,58 @@ def product_detail(request, product_id):
 # =========================
 
 def add_to_cart(request, product_id):
+    product = Product.objects.get(id=product_id)
+
     cart = request.session.get("cart", {})
+
+    # ADD THESE LINES HERE
+    selected_size = request.POST.get("selected_size", "")
+    selected_color = request.POST.get("selected_color", "")
+
     product_id = str(product_id)
 
-    cart[product_id] = cart.get(product_id, 0) + 1
+    if product_id in cart:
+        cart[product_id]["quantity"] += 1
+    else:
+        cart[product_id] = {
+            "name": product.name,
+            "amount": str(product.amount),
+            "quantity": 1,
+            "selected_size": selected_size,
+            "selected_color": selected_color,
+        }
 
     request.session["cart"] = cart
     request.session.modified = True
 
     return redirect("cart")
-
-
 def buy_now(request, product_id):
     request.session["cart"] = {str(product_id): 1}
     request.session.modified = True
     return redirect("checkout")
-
 def cart_view(request):
     cart = request.session.get("cart", {})
     products = []
     total = 0
 
-    for product_id, quantity in cart.items():
+    for product_id, item in cart.items():
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
             continue
 
+        if isinstance(item, dict):
+            quantity = int(item.get("quantity", 1))
+            product.selected_color = item.get("color", item.get("selected_color", ""))
+            product.selected_size = item.get("size", item.get("selected_size", ""))
+        else:
+            quantity = int(item)
+            product.selected_color = ""
+            product.selected_size = ""
+
         product.quantity = quantity
         product.subtotal = product.amount * quantity
+
         products.append(product)
         total += product.subtotal
 
@@ -163,17 +197,31 @@ def remove_cart_item(request, product_id):
 # CHECKOUT / ORDER
 # =========================
 
+from django.conf import settings
+from django.shortcuts import render, redirect
+from .models import Product, Order, OrderItem
+
+
 def checkout_view(request):
     cart = request.session.get("cart", {})
+    print("CART DATA:", cart)
     products = []
     total = 0
 
-    for product_id, quantity in cart.items():
+    for product_id, item in cart.items():
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
             continue
 
+        if isinstance(item, dict):
+            quantity = int(item.get("quantity", 1))
+            product.selected_color = item.get("color", item.get("selected_color", ""))
+            product.selected_size = item.get("size", item.get("selected_size", ""))
+        else:
+            quantity = int(item)
+            product.selected_color = ""
+            product.selected_size = ""
         product.quantity = quantity
         product.subtotal = product.amount * quantity
         products.append(product)
@@ -200,20 +248,21 @@ def checkout_view(request):
                 seller=product.seller,
                 quantity=product.quantity,
                 price=product.amount,
+                color=getattr(product, "selected_color", ""),
+                size=getattr(product, "selected_size", ""),
+                amount=product.amount,
+                subtotal=product.subtotal,
             )
 
         request.session["cart"] = {}
-        request.session["last_order_id"] = order.id
         return redirect("order_confirmation")
 
     return render(request, "checkout.html", {
         "products": products,
         "total": total,
         "platform_orange_money": settings.PLATFORM_ORANGE_MONEY,
-        "platform_afri_money": settings.PLATFORM_AFRI_MONEY,
-        "platform_commission_percent": settings.PLATFORM_COMMISSION_PERCENT,
+        "platform_africell_money": settings.PLATFORM_AFRICELL_MONEY,
     })
-
 def order_confirmation(request):
     order_id = request.session.get("last_order_id")
     order = None

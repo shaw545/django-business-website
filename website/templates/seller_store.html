@@ -112,6 +112,13 @@
     <p><strong>Total:</strong> SLE {{ order.total_amount }}</p>
 
     <p><strong>Status:</strong> {{ order.status }}</p>
+    {% if item.selected_size %}
+    <p><strong>Size:</strong> {{ item.selected_size }}</p>
+    {% endif %}
+
+    {% if item.selected_color %}
+   <p><strong>Color:</strong> {{ item.selected_color }}</p>
+   {% endif %}
 
     {% if order.payment_proof %}
         <p><strong>Payment Proof:</strong></p>

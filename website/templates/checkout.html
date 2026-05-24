@@ -2,169 +2,52 @@
 
 {% block content %}
 
-<style>
-@media(max-width:767px){
+<h2>Order Summary</h2>
 
-    .checkout-container{
-        padding:15px;
-    }
+{% for product in products %}
+    <h3>{{ product.name }}</h3>
 
-    .checkout-form input,
-    .checkout-form select,
-    .checkout-form textarea{
-        width:100%;
-        padding:12px;
-        margin-bottom:12px;
-        border-radius:8px;
-        border:1px solid #ccc;
-        font-size:16px;
-    }
+    <p>Quantity: {{ product.quantity }}</p>
 
-    .checkout-btn{
-        width:100%;
-        padding:14px;
-        background:orange;
-        border:none;
-        border-radius:10px;
-        font-weight:bold;
-        font-size:17px;
-    }
+    {% if product.selected_color %}
+    <p><strong>Color:</strong> {{ product.selected_color }}</p>
+    {% endif %}
 
-    .order-summary{
-        background:white;
-        padding:15px;
-        border-radius:12px;
-        margin-bottom:15px;
-    }
-}
-</style>
+   {% if product.selected_size %}
+   <p><strong>Size:</strong> {{ product.selected_size }}</p>
+   {% endif %}
+    <p>Price: SLE {{ product.amount }}</p>
+    <p>Subtotal: SLE {{ product.subtotal }}</p>
+    <hr>
+{% endfor %}
 
-<div class="checkout-container" style="max-width:800px; margin:auto; padding:20px;">
+<h2>Total: SLE {{ total }}</h2>
 
-    <h2 style="margin-bottom:20px;">Checkout</h2></style>
+<h2>Buyer Information</h2>
 
-    <!-- CART SUMMARY -->
-    <div style="background:#f5f7fa; padding:20px; border-radius:10px; margin-bottom:20px;">
-        <h3>Order Summary</h3>
+<form method="POST">
+    {% csrf_token %}
 
-        {% for product in products %}
-            <div style="margin-bottom:10px;">
-                <strong>{{ product.name }}</strong><br>
-                Quantity: {{ product.quantity }}<br>
-                Price: SLE {{ product.amount }}<br>
-                Subtotal: SLE {{ product.subtotal }}
-            </div>
-            <hr>
-        {% endfor %}
+    <label>Full Name</label><br>
+    <input type="text" name="buyer_name" required><br><br>
 
-        <h3>Total: SLE {{ total }}</h3>
-    </div>
+    <label>Phone Number</label><br>
+    <input type="text" name="buyer_phone" required><br><br>
 
-    <!-- PAYMENT SECTION -->
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-<h3>Buyer Information</h3>
+    <label>Email</label><br>
+    <input type="email" name="buyer_email"><br><br>
 
-<label>Full Name</label>
-<input type="text" name="buyer_name" required style="width:100%; padding:12px; margin-bottom:12px;">
+    <label>Address</label><br>
+    <textarea name="buyer_address" required></textarea><br><br>
 
-<label>Phone Number</label>
-<input type="text" name="buyer_phone" required style="width:100%; padding:12px; margin-bottom:12px;">
+    <label>Payment Method</label><br>
+    <select name="payment_method">
+        <option value="Orange Money">Orange Money</option>
+        <option value="Africell Money">Africell Money</option>
+        <option value="Pay on Delivery">Pay on Delivery</option>
+    </select><br><br>
 
-<label>Email (optional)</label>
-<input type="email" name="buyer_email" style="width:100%; padding:12px; margin-bottom:12px;">
-
-<label>Delivery Address</label>
-<textarea name="buyer_address" required style="width:100%; padding:12px; margin-bottom:20px;"></textarea>
-
-        <label style="font-weight:bold;">Payment Method</label>
-
-        <select name="payment_method" id="paymentMethod" required style="
-            width:100%;
-            padding:12px;
-            margin-top:8px;
-            border-radius:8px;
-            border:1px solid #ccc;
-        ">
-            <option value="pay_on_delivery">Pay on Delivery</option>
-            <option value="mobile_money">Mobile Money</option>
-        </select>
-
-        <!-- MOBILE MONEY DETAILS -->
-       <div style="background:#f8f9fa; padding:20px; border-radius:12px; margin-top:20px;">
-    <h3>Payment Instructions</h3>
-
-    <p>
-        Please send payment to <strong>MarketHub / Online Luma</strong>.
-        Your payment will be verified before the seller is notified for delivery.
-    </p>
-
-    <p><strong>Orange Money:</strong> {{ platform_orange_money }}</p>
-    <p><strong>Afri Money:</strong> {{ platform_afri_money }}</p>
-
-    <p style="color:#555;">
-        Platform commission: {{ platform_commission_percent }}%
-    </p>
-
-    <p style="color:red; font-weight:bold;">
-        Pay through MarketHub / Online Luma.
-    </p>
-</div>
-</div>  
-
-<div class="form-group">
-    <label>Upload Proof of Payment</label>
-    <input type="file" name="payment_proof" accept="image/*" required>
-</div> 
-     <!-- BUTTON -->
-        <button type="submit" style="
-            width:100%;
-            background:orange;
-            padding:14px;
-            border:none;
-            border-radius:10px;
-            font-weight:bold;
-            margin-top:20px;
-            cursor:pointer;
-        ">
-            Place Order
-        </button>
-
-    </form>
-
-</div>
-
-<!-- SCRIPT -->
-<script>
-    const paymentMethod = document.getElementById("paymentMethod");
-    const mobileMoneyDetails = document.getElementById("mobileMoneyDetails");
-
-    function toggleMobileMoneyDetails() {
-        if (paymentMethod.value === "mobile_money") {
-            mobileMoneyDetails.style.display = "block";
-        } else {
-            mobileMoneyDetails.style.display = "none";
-        }
-    }
-
-    paymentMethod.addEventListener("change", toggleMobileMoneyDetails);
-
-    // Run on load
-    toggleMobileMoneyDetails();
-</script>
+    <button type="submit">Place Order</button>
+</form>
 
 {% endblock %}
-<script>
-function showPaymentDetails() {
-    const paymentMethod = document.getElementById("paymentMethod").value;
-    const mobileMoneyDetails = document.getElementById("mobileMoneyDetails");
-
-    if (paymentMethod === "Mobile Money") {
-        mobileMoneyDetails.style.display = "block";
-    } else {
-        mobileMoneyDetails.style.display = "none";
-    }
-}
-
-document.addEventListener("DOMContentLoaded", showPaymentDetails);
-</script>

@@ -9,6 +9,7 @@
     <div style="background:white; padding:25px; border-radius:12px;">
 
         {% for product in products %}
+        
         <div style="display:flex; gap:20px; margin-bottom:20px; align-items:center;">
 
             {% if product.image %}
@@ -21,7 +22,15 @@
 
             <div style="flex:1;">
                 <h3>{{ product.name }}</h3>
-                <p>Amount: SLE {{ product.amount|floatformat:2 }}</p>
+                {% if product.selected_color %}
+               <p>Color: {{ product.selected_color }}</p>
+               {% endif %}
+
+              {% if product.selected_size %}
+             <p>Size: {{ product.selected_size }}</p>
+             {% endif %}
+                
+             <p>Amount: SLE {{ product.amount|floatformat:2 }}</p>
 
                 <div style="display:flex; align-items:center; gap:10px;">
                     <a href="{% url 'decrease_cart_item' product.id %}" style="padding:6px 12px; background:#ddd; text-decoration:none; color:black; border-radius:6px;">−</a>
