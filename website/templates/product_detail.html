@@ -130,31 +130,32 @@
 
             <form method="POST" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
+         {% if size_options %}
+  <p>
+    <strong>Size:</strong>
+    <select name="selected_size" class="small-dropdown">
+        <option value="">Select Size</option>
 
-                <p>
-                    <select name="selected_size" class="small-dropdown">
-    <option value="">Select Size</option>
-    <option value="S">S</option>
-    <option value="M">M</option>
-    <option value="L">L</option>
-    <option value="XL">XL</option>
-</select>
-                </p>
+        {% for size in size_options %}
+            <option value="{{ size }}">{{ size }}</option>
+        {% endfor %}
+    </select>
+</p>
+{% endif %}
 
-               <p>
+   {% if color_options %}
+<p>
     <strong>Color:</strong>
     <select name="selected_color" class="small-dropdown">
         <option value="">Select Color</option>
 
         {% for color in color_options %}
-            <option value="{{ color }}">
-                {{ color }}
-            </option>
+            <option value="{{ color }}">{{ color }}</option>
         {% endfor %}
-
     </select>
 </p>
-                <button type="submit" class="buy-now-btn">Buy It Now</button>
+{% endif %}
+  <button type="submit" class="buy-now-btn">Buy It Now</button>
                 <button type="submit" class="buy-now-btn">Add to Cart</button>
             </form>
 
