@@ -132,27 +132,28 @@
                 {% csrf_token %}
 
                 <p>
-                    <strong>Size:</strong>
                     <select name="selected_size" class="small-dropdown">
-                        <option value="">Select Size</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                    </select>
+    <option value="">Select Size</option>
+    <option value="S">S</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+    <option value="XL">XL</option>
+</select>
                 </p>
 
-                <p>
-                    <strong>Color:</strong>
-                    <select name="selected_color" class="small-dropdown">
-                        <option value="">Select Color</option>
-                        <option value="White">White</option>
-                        <option value="Black">Black</option>
-                        <option value="Red">Red</option>
-                        <option value="Blue">Blue</option>
-                    </select>
-                </p>
+               <p>
+    <strong>Color:</strong>
+    <select name="selected_color" class="small-dropdown">
+        <option value="">Select Color</option>
 
+        {% for color in color_options %}
+            <option value="{{ color }}">
+                {{ color }}
+            </option>
+        {% endfor %}
+
+    </select>
+</p>
                 <button type="submit" class="buy-now-btn">Buy It Now</button>
                 <button type="submit" class="buy-now-btn">Add to Cart</button>
             </form>
