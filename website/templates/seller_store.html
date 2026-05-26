@@ -109,16 +109,33 @@
 
     <p><strong>Buyer:</strong> {{ order.buyer_name }}</p>
 
-    <p><strong>Total:</strong> SLE {{ order.total_amount }}</p>
+<p><strong>Address:</strong> {{ order.address }}</p>
 
-    <p><strong>Status:</strong> {{ order.status }}</p>
-    {% if item.selected_size %}
-    <p><strong>Size:</strong> {{ item.selected_size }}</p>
-    {% endif %}
+<p><strong>Phone:</strong> {{ order.phone }}</p>
 
-    {% if item.selected_color %}
-   <p><strong>Color:</strong> {{ item.selected_color }}</p>
-   {% endif %}
+<p><strong>Total:</strong> SLE {{ order.total_amount }}</p>
+
+<p><strong>Status:</strong> {{ order.status }}</p>
+
+<h4>Products Ordered:</h4>
+
+{% for item in order.items.all %}
+
+<p><strong>Product:</strong> {{ item.product.name }}</p>
+
+{% if item.color %}
+<p><strong>Color:</strong> {{ item.color }}</p>
+{% endif %}
+
+{% if item.size %}
+<p><strong>Size:</strong> {{ item.size }}</p>
+{% endif %}
+
+<p><strong>Quantity:</strong> {{ item.quantity }}</p>
+
+<hr>
+
+{% endfor %}
 
     {% if order.payment_proof %}
         <p><strong>Payment Proof:</strong></p>

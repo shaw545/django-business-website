@@ -47,6 +47,12 @@ class Product(models.Model):
     discount_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     is_deal = models.BooleanField(default=False)
     deal_label = models.CharField(max_length=50, blank=True, null=True)
+    payment_proof = models.ImageField(upload_to="payment_proofs/", blank=True, null=True)
+    image = models.ImageField(upload_to="products/", blank=True, null=True)
+    image_2 = models.ImageField(upload_to="products/", blank=True, null=True)
+    image_3 = models.ImageField(upload_to="products/", blank=True, null=True)
+    image_4 = models.ImageField(upload_to="products/", blank=True, null=True)
+    image_5 = models.ImageField(upload_to="products/", blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -3,576 +3,212 @@
 
 {% block content %}
 
+<style>
+.product-detail {
+    padding: 30px;
+}
+
+.product-layout {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.image-section {
+    width: 45%;
+    text-align: center;
+}
+
+.details-section {
+    width: 45%;
+}
+
+.product-slider {
+    position: relative;
+    max-width: 380px;
+    margin: auto;
+}
+
+#mainProductImage {
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.slide-btn {
+    position: absolute;
+    top: 45%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 22px;
+    border-radius: 6px;
+}
+
+.slide-btn.left {
+    left: -35px;
+}
+
+.slide-btn.right {
+    right: -35px;
+}
+
+.small-dropdown {
+    width: 135px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.buy-now-btn {
+    background: #2563eb;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.seller-info {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.seller-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .product-layout {
+        flex-direction: column;
+    }
+
+    .image-section,
+    .details-section {
+        width: 100%;
+    }
+}
+</style>
+
 <div class="product-detail">
 
     <div class="product-layout">
 
-        <!-- LEFT: PRODUCT IMAGES -->
         <div class="image-section">
+            <div class="product-slider">
+                <button type="button" onclick="prevSlide()" class="slide-btn left">&#10094;</button>
 
-    <!-- LEFT: PRODUCT IMAGES -->
-<div class="image-section">
+                <img id="mainProductImage"
+                     src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
+                     alt="{{ product.name }}">
 
-<div class="product-slider-container">
+                <button type="button" onclick="nextSlide()" class="slide-btn right">&#10095;</button>
+            </div>
+        </div>
 
-    <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
-
-    <img id="sliderImage"
-         src="{{ product.image.url }}"
-         alt="{{ product.name }}"
-         class="main-slider-image">
-
-    <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
-
-</div>
-
-<script>
-let images = [
-    "{{ product.image.url }}",
-    {% for img in product.extra_images.all %}
-        "{{ img.image.url }}",
-    {% endfor %}
-];
-
-let currentIndex = 0;
-
-function changeSlide(direction) {
-    currentIndex += direction;
-
-    if (currentIndex >= images.length) {
-        currentIndex = 0;
-    }
-
-    if (currentIndex < 0) {
-        currentIndex = images.length - 1;
-    }
-
-    document.getElementById("sliderImage").src = images[currentIndex];
-}
-</script>                         
-
-        <!-- RIGHT: PRODUCT DETAILS -->
         <div class="details-section">
-
             <h1>{{ product.name }}</h1>
-
             <h2>SLE {{ product.amount }}</h2>
 
             {% if product.description %}
-                <p class="description">{{ product.description }}</p>
+                <p>{{ product.description }}</p>
             {% endif %}
 
             <p><strong>Category:</strong> {{ product.category }}</p>
-
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-          
-      <form method="POST" action="{% url 'add_to_cart' product.id %}">
-{% csrf_token %}
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
 
-<div class="option-row">
-    <label><strong>Size:</strong></label>
+                <p>
+                    <strong>Size:</strong>
+                    <select name="selected_size" class="small-dropdown">
+                        <option value="">Select Size</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </p>
 
-    <select name="selected_size" class="small-dropdown">
-        <option value="">Select Size</option>
-        <option value="S">S</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-        <option value="XL">XL</option>
-    </select>
+                <p>
+                    <strong>Color:</strong>
+                    <select name="selected_color" class="small-dropdown">
+                        <option value="">Select Color</option>
+                        <option value="White">White</option>
+                        <option value="Black">Black</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                    </select>
+                </p>
+
+                <button type="submit" class="buy-now-btn">Buy It Now</button>
+                <button type="submit" class="buy-now-btn">Add to Cart</button>
+            </form>
+
+            <p><strong>Seller:</strong></p>
+
+            <div class="seller-info">
+                {% if product.seller.sellerprofile.logo %}
+                    <img src="{{ product.seller.sellerprofile.logo.url }}" class="seller-logo">
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" class="seller-logo">
+                {% endif %}
+
+                <div>
+                    <a href="{% url 'seller_store' product.seller.id %}">
+                        {% if product.seller.sellerprofile.business_name %}
+                            {{ product.seller.sellerprofile.business_name }}
+                        {% else %}
+                            {{ product.seller.username }}
+                        {% endif %}
+                    </a>
+                    <br>
+                    ⭐ <strong>Seller Review</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
-
-<div class="option-row">
-    <label><strong>Color:</strong></label>
-
-    <select name="selected_color" class="small-dropdown">
-        <option value="">Select Color</option>
-        <option value="White">White</option>
-        <option value="Black">Black</option>
-        <option value="Red">Red</option>
-        <option value="Blue">Blue</option>
-    </select>
-</div>
-
-<button type="submit" class="buy-now-btn">
-    Buy It Now
-
-</button>
-
-<button type="submit" class="buy-now-btn">
-    Add to Cart
-</button>
-</form>
-
-                <p><strong>Seller:</strong></p>
-
-                <div class="seller-info">
-
-                    {% if product.seller.sellerprofile.logo %}
-                        <img src="{{ product.seller.sellerprofile.logo.url }}" class="seller-logo">
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" class="seller-logo">
-                    {% endif %}
-
-                    <span>
-                      
- {% if product.seller %}
-      <a href="{% url 'seller_store' product.seller.id %}" class="seller-link">
-         {% if product.seller.sellerprofile.business_name %}
-            {{ product.seller.sellerprofile.business_name }}
-         {% else %}
-            {{ product.seller.username }}
-         {% endif %}
-    </a>
-{% else %}
-    <span class="seller-link">
-        Seller not available
-    </span>
-{% endif %}
-      <div class="seller-rating">
-    {% if average_rating %}
-        ⭐ {{ average_rating|floatformat:1 }}★ Seller Review
-    {% else %}
-        ⭐ Seller Review
-    {% endif %}
-</div>
-
-
-        <input type="hidden" name="selected_size" id="cartSize">
-        <input type="hidden" name="selected_color" id="cartColor">
-</div>
-<style>
-.small-dropdown {
-    width: 135px;
-    height: 36px;
-    padding: 5px 8px;
-    font-size: 14px;
-    border: 1px solid #aaa;
-    border-radius: 8px;
-}
-
-.option-row {
-    margin-bottom: 10px;
-}
-
-.option-row{
-    margin:8px 0;
-}
-
-.option-row label{
-    display:inline-block;
-    width:55px;
-    font-size:13px;
-}
-
-.small-dropdown{
-    width:100px;
-    height:30px;
-    font-size:12px;
-    padding:3px;
-    border-radius:6px;
-}
-
-.product-slider-container{
-    position:relative;
-    width:420px;
-    height:420px;
-    margin:30px auto;
-    background:#f7f7f7;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:14px;
-    overflow:hidden;
-}
-
-.main-slider-image{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-.slider-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    z-index:20;
-    background:white;
-    border:none;
-    border-radius:50%;
-    width:45px;
-    height:45px;
-    font-size:28px;
-    cursor:pointer;
-}
-
-.prev{ left:10px; }
-.next{ right:10px; }
-.product-detail {
-    max-width: 1250px;
-    margin: 25px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 22px;
-}
-
-.product-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 35px;
-    align-items: start;
-}
-
-.main-product-image {
-    width: 100%;
-    max-height: 420px;
-    object-fit: contain;
-    border-radius: 18px;
-    background: #f5f5f5;
-}
-
-.product-image-area {
-    position: relative;
-}
-
-.image-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    background: white;
-    font-size: 30px;
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.left-arrow {
-    left: 10px;
-}
-
-.right-arrow {
-    right: 10px;
-}
-
-.product-gallery {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-}
-
-.thumb {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.active-thumb {
-    border: 2px solid #2563eb;
-}
-
-.details-section h1 {
-    font-size: 30px !important;
-    color: #0b1f52;
-    margin-bottom: 12px;
-    font-weight: 800;
-}
-
-.details-section h2 {
-    font-size: 24px !important;
-    color: #0b1f52;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.details-section p,
-.details-section strong,
-.details-section label,
-.details-section select,
-.description {
-    font-size: 15px !important;
-    line-height: 1.5;
-}
-
-.color-box {
-    margin: 18px 0;
-}
-
-.color-box select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 9px;
-    border: 1px solid #ccc;
-    font-size: 15px !important;
-}
-
-.seller-box {
-    margin-top: 20px;
-}
-
-.seller-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.seller-logo {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.seller-info span {
-    font-size: 15px;
-    font-weight: 700;
-}
-
-.button-row {
-    margin-top: 28px;
-    display: flex;
-    gap: 14px;
-}
-
-.buy-now-btn,
-.cart-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    width:80px;
-    height:30px;
-
-    padding:6px 8px;
-    border-radius:20px;
-
-    font-size:12px;
-    font-weight:bold;
-
-    text-decoration:none;
-    margin-right:8px;
-}
-.button-group{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    margin-top:20px;
-}
-.buy-now-btn {
-    background: #2563eb;
-    color: white;
-}
-
-.cart-btn {
-    background: white;
-    color: #2563eb;
-    border: 2px solid #2563eb;
-}
-
-.buy-now-btn:hover,
-.cart-btn:hover {
-    opacity: 0.9;
-}
-
-.no-image-box {
-    width: 100%;
-    height: 350px;
-    background: #eee;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-}
-
-@media(max-width: 900px) {
-    .product-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .details-section h1 {
-        font-size: 24px !important;
-    }
-
-    .details-section h2 {
-        font-size: 20px !important;
-    }
-
-    .button-row {
-        flex-direction: column;
-    }
-}
-
-.extra-product-image{
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:8px;
-    margin:5px;
-    cursor:pointer;
-}
-
-.details-section h1{
-    font-size:28px;
-}
-
-.details-section h2{
-    font-size:24px;
-}
-
-.details-section p{
-    font-size:16px;
-}
-
-</style>
 
 <script>
-let images = [];
-
-{% if product.image %}
-images.push("{{ product.image.url }}");
-{% endif %}
-
-{% for img in product.images.all %}
-images.push("{{ img.image.url }}");
-{% endfor %}
+const productImages = [
+    {% if product.image %}"{{ product.image.url }}",{% endif %}
+    {% if product.image_2 %}"{{ product.image_2.url }}",{% endif %}
+    {% if product.image_3 %}"{{ product.image_3.url }}",{% endif %}
+    {% if product.image_4 %}"{{ product.image_4.url }}",{% endif %}
+    {% if product.image_5 %}"{{ product.image_5.url }}"{% endif %}
+];
 
 let currentImageIndex = 0;
 
-function setImage(index) {
-    currentImageIndex = index;
+function showImage(index) {
+    if (productImages.length === 0) return;
 
-    const mainImage = document.getElementById("mainProductImage");
-
-    if (mainImage && images[index]) {
-        mainImage.src = images[index];
-    }
-
-    const thumbs = document.querySelectorAll(".thumb");
-    thumbs.forEach(t => t.classList.remove("active-thumb"));
-
-    if (thumbs[index]) {
-        thumbs[index].classList.add("active-thumb");
-    }
+    currentImageIndex = (index + productImages.length) % productImages.length;
+    document.getElementById("mainProductImage").src = productImages[currentImageIndex];
 }
 
-function changeImage(direction) {
-    if (images.length === 0) return;
-
-    currentImageIndex += direction;
-
-    if (currentImageIndex < 0) {
-        currentImageIndex = images.length - 1;
-    }
-
-    if (currentImageIndex >= images.length) {
-        currentImageIndex = 0;
-    }
-
-    setImage(currentImageIndex);
+function nextSlide() {
+    showImage(currentImageIndex + 1);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const colorSelect = document.getElementById("colorSelect");
-    const mainImage = document.getElementById("mainProductImage");
-
-    if (colorSelect && mainImage) {
-        colorSelect.addEventListener("change", function () {
-            const selectedOption = colorSelect.options[colorSelect.selectedIndex];
-            const colorImage = selectedOption.getAttribute("data-image");
-
-            if (colorImage) {
-                mainImage.src = colorImage;
-            }
-        });
-    }
-});
-
-.product-gallery{
-    text-align:center;
+function prevSlide() {
+    showImage(currentImageIndex - 1);
 }
-
-.main-product-image{
-    width:100%;
-    max-width:400px;
-    height:350px;
-    object-fit:contain;
-}
-
-.thumbnail-container{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    margin-top:10px;
-}
-
-.thumbnail{
-    width:70px;
-    height:70px;
-    object-fit:cover;
-    cursor:pointer;
-    border:2px solid #ddd;
-}
-<script>
-let currentSlide = 0;
-
-const slides = document.querySelectorAll(".slide");
-
-function showSlide(index) {
-    slides.forEach(slide => {
-        slide.style.display = "none";
-    });
-
-    if (index >= slides.length) {
-        currentSlide = 0;
-    }
-
-    if (index < 0) {
-        currentSlide = slides.length - 1;
-    }
-
-    slides[currentSlide].style.display = "block";
-}
-
-function moveSlide(direction) {
-    currentSlide += direction;
-    showSlide(currentSlide);
-}
-
-showSlide(currentSlide);
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const sizeSelect = document.querySelector("select[name='selected_size']");
-    const colorSelect = document.querySelector("select[name='selected_color']");
-    const cartSize = document.getElementById("cartSize");
-    const cartColor = document.getElementById("cartColor");
-
-    const cartForm = document.querySelector("form[action*='add-to-cart']");
-
-    if (cartForm) {
-        cartForm.addEventListener("submit", function (e) {
-            if (sizeSelect && cartSize) {
-                cartSize.value = sizeSelect.value;
-            }
-
-            if (colorSelect && cartColor) {
-                cartColor.value = colorSelect.value;
-            }
-        });
-    }
-});
-
 </script>
+
 {% endblock %}
-
-
-
-

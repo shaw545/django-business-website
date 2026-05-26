@@ -14,6 +14,18 @@ from django.conf import settings
 # PUBLIC PAGES
 # =========================
 
+
+def update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        if new_status in ["pending", "paid", "shipped", "delivered"]:
+            order.status = new_status
+            order.save()
+
+    return redirect("seller_dashboard")
+
 def home(request):
     query = request.GET.get("q", "")
     category = request.GET.get("category", "")
@@ -236,8 +248,9 @@ def checkout_view(request):
             buyer_name=request.POST.get("buyer_name"),
             buyer_phone=request.POST.get("buyer_phone"),
             buyer_email=request.POST.get("buyer_email"),
-            buyer_address=request.POST.get("buyer_address"),
+            buyer_address=request.POST.get("buyer_address"),     
             payment_method=request.POST.get("payment_method"),
+            payment_proof=request.FILES.get("payment_proof"),
             total_amount=total,
         )
 
@@ -337,64 +350,44 @@ def logout_view(request):
 @login_required
 def seller_dashboard(request):
     products = Product.objects.filter(seller=request.user)
+    order_items = OrderItem.objects.filter(seller=request.user).order_by("-order__created_at")
 
-    total_products = products.count()
-    total_value = sum(product.amount for product in products)
-
-    order_items = OrderItem.objects.filter(
-        seller=request.user
-    ).select_related("order", "product").order_by("-order__created_at")
+    total_orders = order_items.count()
+    pending_orders = order_items.filter(order__status="pending").count()
+    paid_orders = order_items.filter(order__status="paid").count()
+    shipped_orders = order_items.filter(order__status="shipped").count()
+    delivered_orders = order_items.filter(order__status="delivered").count()
 
     return render(request, "dashboard.html", {
         "products": products,
-        "total_products": total_products,
-        "total_value": total_value,
         "order_items": order_items,
+        "total_orders": total_orders,
+        "pending_orders": pending_orders,
+        "paid_orders": paid_orders,
+        "shipped_orders": shipped_orders,
+        "delivered_orders": delivered_orders,
     })
-
-
 def add_product(request):
     if request.method == "POST":
-
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        amount = request.POST.get("amount")
-        category = request.POST.get("category")
-        condition = request.POST.get("condition")
-        size = request.POST.get("size")
-        image = request.FILES.get("image")
-        colors = request.POST.get("colors")
-
         product = Product.objects.create(
             seller=request.user,
-            name=name,
-            description=description,
-            amount=amount,
-            category=category,
-            condition=condition,
-            size=size,
-            image=image,
+            name=request.POST.get("name"),
+            description=request.POST.get("description"),
+            amount=request.POST.get("amount"),
+            category=request.POST.get("category"),
+            condition=request.POST.get("condition"),
+            image=request.FILES.get("image"),
+            image_2=request.FILES.get("image_2"),
+            image_3=request.FILES.get("image_3"),
+            image_4=request.FILES.get("image_4"),
+            image_5=request.FILES.get("image_5"),
         )
 
-        extra_images = request.FILES.getlist("extra_images")[:5]
-
-        for img in extra_images:
-            ProductImage.objects.create(
-                product=product,
-                image=img
-            )
-
-        # Save colors
-        if colors:
-            for color in colors.split(","):
-                ProductColor.objects.create(
-                    product=product,
-                    color_name=color.strip()
-                )
         return redirect("seller_dashboard")
 
-    return render(request, "add_product.html")
-
+    return render(request, "add_product.html")       
+     
+            
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, seller=request.user)

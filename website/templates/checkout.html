@@ -25,7 +25,7 @@
 
 <h2>Buyer Information</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
     <label>Full Name</label><br>
@@ -46,7 +46,8 @@
         <option value="Africell Money">Africell Money</option>
         <option value="Pay on Delivery">Pay on Delivery</option>
     </select><br><br>
-
+     <label>Upload Proof of Payment</label><br>
+    <input type="file" name="payment_proof" accept="image/*,.pdf"><br><br>
     <button type="submit">Place Order</button>
 </form>
 
