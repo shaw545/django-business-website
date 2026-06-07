@@ -253,10 +253,11 @@
              src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
              alt="{{ product.name }}"
              class="main-product-img">
-    </div>
+   </div>
+   </div>
 
-</div>
-        <div class="details-section">
+      <div class="details-section">
+
             <h1>{{ product.name }}</h1>
             <h2>SLE {{ product.amount }}</h2>
 
