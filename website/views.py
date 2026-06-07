@@ -85,15 +85,14 @@ def product_detail(request, product_id):
     size_options = []
     color_options = []
 
-    try:
-        size_options = [getattr(s, "name", str(s)) for s in product.sizes.all()]
-    except:
-        size_options = []
+    if product.size:
+        size_options = [s.strip() for s in product.size.split(",") if s.strip()]
 
-    try:
-        color_options = [getattr(c, "name", str(c)) for c in product.colors.all()]
-    except:
-        color_options = []
+    color_options = [
+        c.color_name.strip()
+        for c in product.colors.all()
+        if c.color_name and c.color_name.strip()
+    ]
 
     return render(request, "product_detail.html", {
         "product": product,
