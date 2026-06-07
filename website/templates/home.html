@@ -4,782 +4,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Online Luma</title>
+    <title>Online Luma</title>
 
     <style>
-<nav class="mobile-bottom-nav">
-    <a href="{% url 'home' %}">
-        🏠<br>Home
-    </a>
-
-    <a href="{% url 'products' %}">
-        🔍<br>Products
-    </a>
-
-    <a href="{% url 'cart' %}">
-        🛒<br>Cart
-    </a>
-
-    <a href="{% url 'seller_dashboard' %}">
-        👤<br>Account
-    </a>
-</nav>
-
-<div class="mobile-menu">
-    ☰
-    <div class="mobile-dropdown">
-        <a href="{% url 'seller_dashboard' %}">Dashboard</a>
-     
-    </div>
-</div>
-
-/* Mobile App Bottom Navigation */
-
-.mobile-bottom-nav{
-    display:none;
-}
-
-@media(max-width:767px){
-
-body{
-padding-bottom:70px;
-}
-
-.mobile-bottom-nav{
-display:flex;
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-justify-content:space-around;
-padding:10px 0;
-border-top:1px solid #ddd;
-z-index:999;
-box-shadow:0 -2px 8px rgba(0,0,0,0.1);
-}
-
-.mobile-bottom-nav a{
-text-decoration:none;
-color:black;
-font-size:12px;
-font-weight:bold;
-text-align:center;
-}
-
-.mobile-bottom-nav a:hover{
-color:orange;
-}
-
-}
-
-.product-card{
-    width:48%;
-    background:white;
-    border-radius:10px;
-    padding:10px;
-    margin-bottom:15px;
-}
-
-.product-card img{
-    width:100%;
-    height:150px;
-    object-fit:cover;
-}
-
-.product-name{
-    font-size:14px;
-    font-weight:bold;
-}
-
-.product-price{
-    color:orange;
-    font-weight:bold;
-}
-
-/* Mobile first */
-.mobile-header {
-    padding: 12px 15px;
-}
-
-/* Desktop website */
-@media (min-width:768px) {
-
-    .mobile-header {
-        padding:25px 60px;
-    }
-
-    .logo {
-        font-size:40px;
-    }
-
-    .search-box {
-        max-width:800px;
-        margin:0 auto 20px;
-    }
-
-}
-
-.product-slider{
-    width:100%;
-    overflow:hidden;
-    background:white;
-    margin:20px 30px;
-    border-radius:12px;
-    padding:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
-}
-
-.slider-track{
-    display:flex;
-    gap:20px;
-    animation:slideProducts 25s linear infinite;
-}
-
-.slider-track img{
-    width:180px;
-    height:140px;
-    object-fit:cover;
-    border-radius:10px;
-    flex-shrink:0;
-}
-
-@keyframes slideProducts{
-    0%{
-        transform:translateX(100%);
-    }
-
-    100%{
-        transform:translateX(-100%);
-    }
-}
-
-
-        body{
-            margin:0;
-            font-family:Arial, sans-serif;
-            background:#f5f5f5;
+        * {
+            box-sizing: border-box;
         }
 
-        .navbar{
-            display:flex;
-            align-items:center;
-            padding:10px 25px;
-            background:#6fb6dc;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #111;
+            padding-bottom: 70px;
         }
 
-        .logo{
-            font-size:22px;
-            font-weight:bold;
-            color:black;
+        /* TOP HEADER */
+        .top-header {
+            background: white;
+            padding: 8px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            border-bottom: 1px solid #eee;
         }
 
-        .search-box{
-            display:flex;
-            gap:10px;
+        .top-header a {
+            text-decoration: none;
+            color: #111;
+            margin-right: 15px;
         }
 
-        .search-box input{
-            padding:8px;
-            width:300px;
-            border-radius:8px;
-            border:none;
-            font-size:13px;
+        /* MAIN NAVBAR */
+        .navbar {
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding: 18px 35px;
+            border-bottom: 1px solid #ddd;
         }
 
-        .search-box button{
-            padding:8px 14px;
-            background:orange;
-            border:none;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:bold;
-            font-size:13px;
+        .logo {
+            font-size: 42px;
+            font-weight: 900;
+            color: #0064d2;
+            white-space: nowrap;
         }
 
-        .nav-links{
-            display:flex;
-            align-items:center;
-            gap:12px;
+        .search-section {
+            flex: 1;
         }
 
-        .nav-links a{
-            text-decoration:none;
-            color:black;
-            font-weight:bold;
-            font-size:12px;
+        .search-section form {
+            display: flex;
+            width: 100%;
         }
 
-        .dashboard-btn{
-            background:orange;
-            padding:7px 12px;
-            border-radius:8px;
-            font-size:12px;
+        .search-section input {
+            flex: 1;
+            padding: 13px;
+            border: 2px solid #111;
+            font-size: 16px;
+            border-radius: 25px 0 0 25px;
         }
 
-        .seller-btn{
-            background:white;
-            padding:7px 12px;
-            border-radius:8px;
-            border:2px solid black;
-            font-size:12px;
+        .search-section select {
+            padding: 13px;
+            border: 2px solid #111;
+            border-left: none;
+            font-size: 15px;
+            background: white;
         }
 
-        .promo-banner{
-            width:100%;
-            overflow:hidden;
-            background:#ff6600;
-            color:white;
-            padding:10px 0;
-            font-size:13px;
-            font-weight:bold;
-            white-space:nowrap;
+        .search-section button {
+            padding: 13px 35px;
+            border: none;
+            background: #3665f3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            margin-left: 12px;
+            cursor: pointer;
         }
 
-        .promo-track{
-            display:inline-block;
-            padding-left:100%;
-            animation:scrollPromo 22s linear infinite;
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            white-space: nowrap;
         }
 
-        @keyframes scrollPromo{
-            0%{
-                transform:translateX(0);
+        .header-right a {
+            text-decoration: none;
+            color: #111;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .dashboard-btn {
+            background: orange;
+            padding: 12px 20px;
+            border-radius: 12px;
+        }
+
+        /* CATEGORY ROW */
+        .category-row {
+            background: white;
+            display: flex;
+            gap: 30px;
+            padding: 14px 35px;
+            border-bottom: 1px solid #eee;
+            overflow-x: auto;
+        }
+
+        .category-row a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* PROMO SLIDER */
+        .promo-slider {
+            width: 100%;
+            overflow: hidden;
+            background: #d50000;
+            color: white;
+            font-weight: bold;
+            padding: 13px 0;
+            white-space: nowrap;
+        }
+
+        .promo-track {
+            display: inline-block;
+            padding-left: 100%;
+            animation: promoMove 35s linear infinite;
+        }
+
+        .promo-track span {
+            padding: 0 40px;
+        }
+
+        @keyframes promoMove {
+            from {
+                transform: translateX(0);
             }
-
-            100%{
-                transform:translateX(-100%);
+            to {
+                transform: translateX(-100%);
             }
         }
 
-        .filter-section{
-            padding:20px;
-            display:flex;
-            gap:10px;
+        /* MAIN PAGE */
+        .page-container {
+            padding: 30px;
         }
 
-        .filter-section select{
-            padding:10px;
-            border-radius:8px;
-            width:250px;
+        /* EBAY STYLE DEALS SECTION */
+        .deals-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 35px;
         }
 
-        .filter-section button{
-            padding:10px 20px;
-            border:none;
-            background:orange;
-            border-radius:8px;
-            font-weight:bold;
-            cursor:pointer;
+        .deal-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            min-height: 330px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-        .container{
-            padding:20px;
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
         }
 
-        .section-title{
-            font-size:24px;
-            font-weight:bold;
-            margin-bottom:20px;
+        .deal-header h2 {
+            margin: 0;
+            font-size: 28px;
         }
 
-        .product-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-            gap:20px;
+        .deal-header a {
+            color: #111;
+            font-weight: bold;
         }
 
-        .product-card{
-            background:white;
-            border-radius:10px;
-            padding:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.08);
-            transition:transform 0.3s ease, box-shadow 0.3s ease;
-            position:relative;
+        .mini-deal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
         }
 
-        .product-card:hover{
-            transform:translateY(-10px) scale(1.03) rotate(1deg);
-            box-shadow:0 15px 30px rgba(0,0,0,0.2);
+        .mini-deal {
+            position: relative;
+            background: #f1f1f1;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
         }
 
-        .product-card img{
-            width:100%;
-            height:180px;
-            object-fit:cover;
-            border-radius:8px;
+        .mini-deal img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
         }
 
-        .product-card h3{
-            font-size:18px;
-            margin-top:10px;
-            margin-bottom:5px;
+        .heart {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: white;
+            border-radius: 50%;
+            padding: 6px;
         }
 
-        .product-card p{
-            margin:5px 0;
+        .live-box img {
+            width: 100%;
+            height: 230px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: #f5f5f5;
         }
 
-        .discount-badge{
-            position:absolute;
-            top:10px;
-            left:10px;
-            background:red;
-            color:white;
-            padding:4px 9px;
-            border-radius:20px;
-            font-size:11px;
-            font-weight:bold;
-            z-index:5;
+        .black-card {
+            background: #111;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .old-price{
-            text-decoration:line-through;
-            color:gray;
-            font-size:13px;
+        .black-card h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
         }
 
-        .new-price{
-            color:red;
-            font-weight:bold;
-            font-size:18px;
+        .black-card p {
+            font-size: 18px;
+            line-height: 1.4;
         }
 
-        .view-btn{
-            display:block;
-            text-align:center;
-            background:orange;
-            color:black;
-            padding:8px;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:bold;
-            margin-top:10px;
+        .shop-now-btn {
+            background: white;
+            color: black;
+            padding: 12px 22px;
+            border-radius: 25px;
+            width: fit-content;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
         }
 
-        @media(max-width:768px){
-            .navbar{
-                flex-direction:column;
-                gap:10px;
-                align-items:stretch;
+        /* FEATURED PRODUCTS */
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 25px 0 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            transition: 0.25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #f7f7f7;
+        }
+
+        .product-card h3 {
+            font-size: 16px;
+            margin: 10px 0 5px;
+        }
+
+        .product-card p {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        .seller-name {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 13px;
+        }
+
+        .new-price {
+            color: red;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .view-btn {
+            display: block;
+            text-align: center;
+            background: #3665f3;
+            color: white;
+            padding: 9px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* MOBILE BOTTOM NAV */
+        .mobile-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                display: none;
             }
 
-            .logo{
-                text-align:center;
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+                gap: 12px;
             }
 
-            .search-box input{
-                width:100%;
+            .logo {
+                font-size: 32px;
             }
 
-            .nav-links{
-                justify-content:center;
-                flex-wrap:wrap;
+            .search-section form {
+                flex-direction: column;
+                gap: 8px;
             }
 
-            .filter-section{
-                flex-direction:column;
+            .search-section input,
+            .search-section select,
+            .search-section button {
+                width: 100%;
+                border-radius: 12px;
+                border: 1px solid #ccc;
+                margin-left: 0;
             }
 
-            .filter-section select{
-                width:100%;
+            .header-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .category-row {
+                padding: 12px;
+                gap: 18px;
+            }
+
+            .page-container {
+                padding: 12px;
+            }
+
+            .deals-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .deal-header h2 {
+                font-size: 22px;
+            }
+
+            .black-card h2 {
+                font-size: 26px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .product-card {
+                padding: 10px;
+            }
+
+            .product-card img {
+                height: 140px;
+            }
+
+            .product-card h3 {
+                font-size: 14px;
+            }
+
+            .product-card p {
+                font-size: 13px;
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                justify-content: space-around;
+                padding: 10px 0;
+                border-top: 1px solid #ddd;
+                z-index: 1000;
+            }
+
+            .mobile-nav a {
+                text-decoration: none;
+                color: black;
+                font-size: 12px;
+                text-align: center;
+                font-weight: bold;
             }
         }
-
-
-
-
-@media(max-width:767px){
-
-.mobile-menu{
-    position:relative;
-    display:inline-block;
-    font-size:28px;
-    cursor:pointer;
-}
-
-.mobile-dropdown{
-    display:none;
-    position:absolute;
-    right:0;
-    background:white;
-    min-width:180px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-    border-radius:10px;
-    z-index:999;
-}
-
-.mobile-dropdown a{
-    display:block;
-    padding:12px;
-    text-decoration:none;
-    color:black;
-}
-
-.mobile-menu:hover .mobile-dropdown{
-    display:block;
-}
-
-}
-
-        <style>
-
-/* existing CSS above */
-
-
-/* Desktop website */
-@media(min-width:768px){
-
-    .mobile-header{
-        padding:25px 60px;
-    }
-
-}
-
-.promo-slider{
-    width:100%;
-    overflow:hidden;
-    background:#d50000;
-    color:white;
-    font-weight:bold;
-    padding:14px 0;
-    border-top:3px solid gold;
-    border-bottom:3px solid gold;
-    white-space:nowrap;
-}
-
-.promo-track{
-    display:inline-block;
-    animation:promoMove 90s linear infinite;
-}
-
-.promo-track span{
-    display:inline-block;
-    padding:0 50px;
-    font-size:18px;
-}
-
-@keyframes promoMove{
-    0%{
-        transform: translateX(100%);
-    }
-
-    100%{
-        transform: translateX(-100%);
-    }
-}
-/* ADD THIS HERE */
-@media(max-width:767px){
-
-   /* Desktop */
-.products-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap:20px;
-    padding:20px;
-}
-
-/* Product cards */
-.product-card{
-    width:100%;
-    margin:0;
-}
-
-/* Mobile remains separate */
-@media (max-width:767px){
-    .products-grid{
-        grid-template-columns: repeat(2,1fr);
-        gap:12px;
-        padding:10px;
-    }
-}    }
-
-    .product-card{
-        width:100%;
-        max-width:100%;
-        box-sizing:border-box;
-    }
-
-    .product-card img{
-        width:100%;
-        height:auto;
-        object-fit:cover;
-    }
-
-}
-
-
-@media(max-width:767px){
-
-.mobile-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:white;
-    display:flex;
-    justify-content:space-around;
-    padding:10px;
-    border-top:1px solid #ddd;
-    z-index:1000;
-}
-
-.mobile-nav a{
-    text-decoration:none;
-    color:black;
-    font-size:14px;
-    text-align:center;
-}
-
-body{
-    padding-bottom:70px;
-}
-
-}
-
-.mobile-category-icons{
-    display:none;
-}
-
-@media(max-width:767px){
-
-    .mobile-category-icons{
-        display:flex;
-        overflow-x:auto;
-        gap:12px;
-        padding:14px;
-        background:white;
-        border-bottom:1px solid #eee;
-    }
-
-    .mobile-category-icons a{
-        min-width:80px;
-        text-align:center;
-        text-decoration:none;
-        color:black;
-        font-size:24px;
-        background:#f7f7f7;
-        border-radius:14px;
-        padding:10px 8px;
-        font-weight:bold;
-    }
-
-    .mobile-category-icons span{
-        display:block;
-        font-size:12px;
-        margin-top:5px;
-    }
-}
-
-.promo-slider{
-    width:100%;
-    overflow:hidden;
-    background:#d50000;
-    color:white;
-    font-weight:bold;
-    padding:14px 0;
-    border-top:3px solid gold;
-    border-bottom:3px solid gold;
-}
-
-.promo-track{
-    display:flex;
-    width:max-content;
-    animation:promoMove 25s linear infinite;
-}
-
-.promo-slide{
-    min-width:500px;
-    text-align:center;
-    font-size:18px;
-}@media(max-width:767px){
-    .desktop-category-filter{
-        display:none;
-    }
-}
-
-/* Smaller desktop product cards */
-@media(min-width:768px){
-
-    .products-grid{
-        display:grid;
-        grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
-        gap:16px;
-        padding:16px;
-    }
-
-    .product-card{
-        min-height:auto;
-        padding:12px;
-    }
-
-    .product-card img{
-        width:100%;
-        height:180px;
-        object-fit:contain;
-    }
-
-    .product-card h3{
-        font-size:16px;
-        margin:8px 0 4px;
-    }
-
-    .product-card p{
-        font-size:15px;
-        margin:4px 0;
-    }
-
-    .product-card .view-btn,
-    .product-card a{
-        padding:8px 12px;
-        font-size:15px;
-    }
-}
-
-/* Mobile product cards */
-@media(max-width:767px){
-
-    .products-grid{
-        display:grid;
-        grid-template-columns:repeat(2, 1fr);
-        gap:12px;
-        padding:12px;
-    }
-
-    .product-card{
-        width:100%;
-        padding:10px;
-        border-radius:12px;
-        min-height:auto;
-    }
-
-    .product-card img{
-        width:100%;
-        height:140px;
-        object-fit:contain;
-    }
-
-    .product-card h3{
-        font-size:14px;
-        margin:6px 0 4px;
-        line-height:1.2;
-    }
-
-    .product-card p{
-        font-size:13px;
-        margin:3px 0;
-    }
-
-    .product-card .seller-name{
-        font-size:11px;
-        color:#555;
-    }
-
-    .product-card .view-btn,
-    .product-card a{
-        display:block;
-        width:100%;
-        padding:8px;
-        font-size:13px;
-        text-align:center;
-        border-radius:8px;
-    }
-}
-</style>
-
     </style>
 </head>
 
 <body>
 
+    <!-- TOP SMALL HEADER -->
+    <div class="top-header">
+        <div>
+            Hi! <a href="{% url 'login' %}">Sign in</a> or
+            <a href="{% url 'register' %}">register</a>
+        </div>
+
+        <div>
+            <a href="{% url 'register' %}">Sell</a>
+            <a href="{% url 'cart' %}">Cart</a>
+            <a href="{% url 'seller_dashboard' %}">My Online Luma</a>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
     <div class="navbar">
+
         <div class="logo">Online Luma</div>
 
-   <div class="search-container">
-       <form method="GET">
-           <input type="text"
-               name="q"
-               value="{{ query }}"
-               placeholder="Search products...">
+        <div class="search-section">
+            <form method="GET" action="{% url 'home' %}">
+                <input type="text"
+                       name="q"
+                       value="{{ query }}"
+                       placeholder="Search for anything">
 
-         <button type="submit">
-            Search
-        </button>
-    </form>
-</div>        <div class="nav-links">
-            <a href="/">Home</a>
+                <select name="category">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion & Clothing">Fashion & Clothing</option>
+                    <option value="Home & Living">Home & Living</option>
+                    <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="header-right">
+            <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'products' %}">Products</a>
-            <a href="{% url 'cart' %}">Cart</a>
-            <a href="{% url 'register' %}" class="seller-btn">Become a Seller</a>
+            <a href="{% url 'cart' %}">🛒 Cart</a>
             <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
         </div>
+
     </div>
 
-    <div class="promo-banner">
+    <!-- CATEGORY ROW -->
+    <div class="category-row">
+        <a href="{% url 'home' %}">All</a>
+        <a href="{% url 'home' %}?category=Electronics">Electronics</a>
+        <a href="{% url 'home' %}?category=Fashion%20%26%20Clothing">Fashion</a>
+        <a href="{% url 'home' %}?category=Home%20%26%20Living">Home and Garden</a>
+        <a href="{% url 'home' %}?category=Beauty%20%26%20Personal%20Care">Beauty</a>
+        <a href="{% url 'home' %}?category=Sports">Sporting Goods</a>
+        <a href="{% url 'home' %}?category=Other">More</a>
+    </div>
+
+    <!-- PROMO SLIDER -->
+    <div class="promo-slider">
         <div class="promo-track">
-            🔥 Hot Deals Available &nbsp;&nbsp; • &nbsp;&nbsp;
-            🚚 Free Delivery in Selected Areas &nbsp;&nbsp; • &nbsp;&nbsp;
-            🛒 Buy More, Save More &nbsp;&nbsp; • &nbsp;&nbsp;
-            💥 Weekend Mega Deals &nbsp;&nbsp; • &nbsp;&nbsp;
-            🎉 New Seller Discounts Available
+            <span>🔥 Hot Deals Available</span>
+            <span>🚚 Free Delivery in Selected Areas</span>
+            <span>🛒 Buy More, Save More</span>
+            <span>💥 Weekend Mega Deals</span>
+            <span>🎉 New Seller Discounts Available</span>
+            <span>⚽ Arsenal Fan Deals Available Now</span>
         </div>
     </div>
-   <div 
-     <div class="mobile-category-icons">
-       <a href="{% url 'home' %}?category=Electronics">📱<span>Electronics</span></a>
-       <a href="{% url 'home' %}?category=Fashion%20%26%20Clothing">👕<span>Fashion</span></a>
-       <a href="{% url 'home' %}?category=Home%20%26%20Living">🏠<span>Home</span></a>
-       <a href="{% url 'home' %}?category=Beauty%20%26%20Personal%20Care">💄<span>Beauty</span></a>
-       <a href="{% url 'home' %}?category=Sports">⚽<span>Sports</span></a>
-       <a href="{% url 'home' %}?category=Other">📦<span>Other</span></a></div>
-</div>
 
-<div class="desktop-category-filter">
-    <form method="GET" action="{% url 'home' %}">
-        <select name="category">
-            <option value="">All Categories</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Fashion & Clothing">Fashion & Clothing</option>
-            <option value="Home & Living">Home & Living</option>
-            <option value="Beauty & Personal Care">Beauty & Personal Care</option>
-            <option value="Sports">Sports</option>
-            <option value="Other">Other</option>
-        </select>
+    <div class="page-container">
 
-        <button type="submit">Filter</button>
-    </form>
-</div>
-<div class="promo-slider">
-    <div class="promo-track">
-        <span>🔥 50% OFF All Arsenal Products – Champions Celebration!</span>
-        <span>🏆 Arsenal Champions Celebration Sale!</span>
-        <span>⚽ Half Price on Arsenal Jerseys, Hoodies & Merchandise!</span>
-        <span>🎉 Celebrate with Online Luma — Fan Deals Available Now!</span>
-        <span>🚚 Free Delivery on Selected Orders!</span>
-        <span>🛍️ Shop from the comfort of your home and save more!</span>
-        <span>🚦 Avoid stress and traffic wahala — shop online and feel happy!</span>    </div>
-</div>            
-</div>    
-</div>
+        <!-- TODAY'S DEALS SECTION -->
+        <div class="deals-layout">
 
-    <div class="container">
+            <div class="deal-card">
+                <div class="deal-header">
+                    <h2>Today's Deals</h2>
+                    <a href="{% url 'products' %}">Shop now</a>
+                </div>
+
+                <div class="mini-deal-grid">
+                    {% for product in products|slice:":4" %}
+                        <a href="{% url 'product_detail' product.id %}" class="mini-deal">
+                            <span class="heart">♡</span>
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+                            {% endif %}
+                        </a>
+                    {% empty %}
+                        <p>No deal products yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="deal-card">
+                <div class="deal-header">
+                    <h2>Online Luma Live</h2>
+                    <a href="{% url 'products' %}">See all</a>
+                </div>
+
+                <div class="live-box">
+                    {% if products %}
+                        {% for product in products|slice:":1" %}
+                            <a href="{% url 'product_detail' product.id %}">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="Online Luma">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="deal-card black-card">
+                <h2>Your collection starts here</h2>
+                <p>Browse trusted sellers, discover new products, and shop safely from Online Luma.</p>
+                <a href="{% url 'products' %}" class="shop-now-btn">Shop now</a>
+            </div>
+
+        </div>
+
+        <!-- FEATURED PRODUCTS -->
         <div class="section-title">Featured Products</div>
 
-        <div class="product-grid">
+        <div class="products-grid">
 
             {% for product in products %}
 
                 <div class="product-card">
-                   <p class="seller-name">
-                       Seller:
-{% if product.seller and product.seller.sellerprofile and product.seller.sellerprofile.business_name %}
-    {{ product.seller.sellerprofile.business_name }}
-{% elif product.seller %}
-    {{ product.seller.username }}
-{% else %}
-    Unknown Seller
-{% endif %}
-                     </p>
 
                     {% if product.is_deal and product.discount_price %}
                         <div class="discount-badge">
@@ -791,16 +602,27 @@ body{
                         </div>
                     {% endif %}
 
-                   {% if product.image %}
-                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                  {% else %}
-                    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-                  {% endif %}                    
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+                    {% endif %}
 
-              <h3>{{ product.name }}</h3>
+                    <p class="seller-name">
+                        Seller:
+                        {% if product.seller and product.seller.sellerprofile and product.seller.sellerprofile.business_name %}
+                            {{ product.seller.sellerprofile.business_name }}
+                        {% elif product.seller %}
+                            {{ product.seller.username }}
+                        {% else %}
+                            Unknown Seller
+                        {% endif %}
+                    </p>
+
+                    <h3>{{ product.name }}</h3>
 
                     {% if product.category %}
-                        <p>{{ product.category.name }}</p>
+                        <p>{{ product.category }}</p>
                     {% endif %}
 
                     {% if product.is_deal and product.discount_price %}
@@ -813,7 +635,7 @@ body{
                     {% endif %}
 
                     <a href="{% url 'product_detail' product.id %}" class="view-btn">
-                        View
+                        View Product
                     </a>
 
                 </div>
@@ -825,14 +647,16 @@ body{
             {% endfor %}
 
         </div>
+
     </div>
 
-<div class="mobile-nav">
-    <a href="{% url 'home' %}">🏠<br>Home</a>
-    <a href="{% url 'products' %}">📦<br>Products</a>
-    <a href="{% url 'cart' %}">🛒<br>Cart</a>
-   
-</div>
+    <!-- MOBILE BOTTOM NAV -->
+    <div class="mobile-nav">
+        <a href="{% url 'home' %}">🏠<br>Home</a>
+        <a href="{% url 'products' %}">📦<br>Products</a>
+        <a href="{% url 'cart' %}">🛒<br>Cart</a>
+        <a href="{% url 'seller_dashboard' %}">👤<br>Account</a>
+    </div>
 
 </body>
 </html>
