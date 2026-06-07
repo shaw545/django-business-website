@@ -275,7 +275,7 @@
             <p><strong>Category:</strong> {{ product.category }}</p>
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
-            <!-- KEEP YOUR SIZE/COLOR/BUY/ADD TO CART FORM BELOW HERE -->s
+            <!-- KEEP YOUR SIZE/COLOR/BUY/ADD TO CART FORM BELOW HERE -->
             <form method="POST" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
          {% if size_options %}
