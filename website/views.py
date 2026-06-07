@@ -85,11 +85,11 @@ def product_detail(request, product_id):
     size_options = []
     color_options = []
 
-    if product.size:
-        size_options = [s.strip() for s in product.size.split(",") if s.strip()]
+    if hasattr(product, "sizes") and product.sizes:
+        size_options = [s.strip() for s in product.sizes.split(",") if s.strip()]
 
-    if product.color:
-        color_options = [c.strip() for c in product.color.split(",") if c.strip()]
+    if hasattr(product, "colors") and product.colors:
+        color_options = [c.strip() for c in product.colors.split(",") if c.strip()]
 
     return render(request, "product_detail.html", {
         "product": product,
