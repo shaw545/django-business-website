@@ -82,24 +82,20 @@ def product_detail(request, product_id):
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    sizes = []
-    if product.size:
-        sizes = [s.strip() for s in product.size.split(",")]
+    size_options = []
+    color_options = []
+
+    if product.sizes:
+        size_options = [s.strip() for s in product.sizes.split(",") if s.strip()]
+
+    if product.colors:
+        color_options = [c.strip() for c in product.colors.split(",") if c.strip()]
 
     return render(request, "product_detail.html", {
         "product": product,
-        "sizes": sizes,
+        "size_options": size_options,
+        "color_options": color_options,
     })
-
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    colors = product.colors.all()
-
-    return render(request, "product_detail.html", {
-        "product": product,
-        "colors": colors,
-    })
-
 # =========================
 # CART
 # =========================
