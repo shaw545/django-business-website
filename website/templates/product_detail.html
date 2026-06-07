@@ -207,56 +207,63 @@
 }
 </style>
 
+
 <div class="product-detail">
 
     <div class="product-layout">
 
+        <!-- LEFT SIDE: PRODUCT IMAGES -->
         <div class="image-section">
-<div class="product-gallery">
 
-    <div class="thumbnail-list">
+            <div class="product-gallery">
 
-        {% if product.image %}
-        <img src="{{ product.image.url }}"
-             class="thumb-img active-thumb"
-             onclick="changeMainImage(this.src)">
-        {% endif %}
+                <div class="thumbnail-list">
 
-        {% if product.image_2 %}
-        <img src="{{ product.image_2.url }}"
-             class="thumb-img"
-             onclick="changeMainImage(this.src)">
-        {% endif %}
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}"
+                         class="thumb-img active-thumb"
+                         onclick="changeMainImage(this.src)">
+                    {% endif %}
 
-        {% if product.image_3 %}
-        <img src="{{ product.image_3.url }}"
-             class="thumb-img"
-             onclick="changeMainImage(this.src)">
-        {% endif %}
+                    {% if product.image_2 %}
+                    <img src="{{ product.image_2.url }}"
+                         class="thumb-img"
+                         onclick="changeMainImage(this.src)">
+                    {% endif %}
 
-        {% if product.image_4 %}
-        <img src="{{ product.image_4.url }}"
-             class="thumb-img"
-             onclick="changeMainImage(this.src)">
-        {% endif %}
+                    {% if product.image_3 %}
+                    <img src="{{ product.image_3.url }}"
+                         class="thumb-img"
+                         onclick="changeMainImage(this.src)">
+                    {% endif %}
 
-        {% if product.image_5 %}
-        <img src="{{ product.image_5.url }}"
-             class="thumb-img"
-             onclick="changeMainImage(this.src)">
-        {% endif %}
+                    {% if product.image_4 %}
+                    <img src="{{ product.image_4.url }}"
+                         class="thumb-img"
+                         onclick="changeMainImage(this.src)">
+                    {% endif %}
 
-    </div>
+                    {% if product.image_5 %}
+                    <img src="{{ product.image_5.url }}"
+                         class="thumb-img"
+                         onclick="changeMainImage(this.src)">
+                    {% endif %}
 
-    <div class="main-image-box">
-        <img id="mainProductImage"
-             src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
-             alt="{{ product.name }}"
-             class="main-product-img">
-   </div>
-   </div>
+                </div>
 
-      <div class="details-section">
+                <div class="main-image-box">
+                    <img id="mainProductImage"
+                         src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
+                         alt="{{ product.name }}"
+                         class="main-product-img">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE: PRODUCT DETAILS -->
+        <div class="details-section">
 
             <h1>{{ product.name }}</h1>
             <h2>SLE {{ product.amount }}</h2>
@@ -268,6 +275,7 @@
             <p><strong>Category:</strong> {{ product.category }}</p>
             <p><strong>Condition:</strong> {{ product.condition }}</p>
 
+            <!-- KEEP YOUR SIZE/COLOR/BUY/ADD TO CART FORM BELOW HERE -->s
             <form method="POST" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
          {% if size_options %}
