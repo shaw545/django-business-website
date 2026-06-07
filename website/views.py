@@ -83,27 +83,23 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     size_options = []
-color_options = []
+    color_options = []
 
-# Sizes
-if hasattr(product, "sizes"):
     try:
-        size_options = [
-            getattr(s, "name", getattr(s, "size", str(s))).strip()
-            for s in product.sizes.all()
-        ]
+        size_options = [getattr(s, "name", str(s)) for s in product.sizes.all()]
     except:
         size_options = []
 
-# Colors
-if hasattr(product, "colors"):
     try:
-        color_options = [
-            getattr(c, "name", getattr(c, "color", str(c))).strip()
-            for c in product.colors.all()
-        ]
+        color_options = [getattr(c, "name", str(c)) for c in product.colors.all()]
     except:
         color_options = []
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "size_options": size_options,
+        "color_options": color_options,
+    })
 # =========================
 # CART
 # =========================
