@@ -672,24 +672,134 @@
         font-size: 12px;
     }
 }
+.worldcup-banner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#0033a0,#009739,#fcd116,#d52b1e);
+    padding:30px;
+    border-radius:20px;
+    margin:20px;
+    color:white;
+    overflow:hidden;
+}
+
+.worldcup-content{
+    flex:1;
+}
+
+.worldcup-content h1{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.worldcup-content p{
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+.worldcup-btn{
+    background:white;
+    color:#0033a0;
+    padding:12px 25px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.worldcup-images{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.worldcup-images img{
+    width:100px;
+    height:120px;
+    object-fit:cover;
+    border-radius:12px;
+    background:white;
+    padding:4px;
+    transition:0.3s;
+}
+
+.worldcup-images img:hover{
+    transform:scale(1.08);
+}
+
+@media(max-width:768px){
+    .worldcup-banner{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .worldcup-images{
+        margin-top:20px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .worldcup-images img{
+        width:70px;
+        height:90px;
+    }
+}
+
+.worldcup-banner {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.worldcup-content {
+    flex: 1 !important;
+}
+
+.worldcup-images {
+    flex: 1 !important;
+    display: flex !important;
+    gap: 12px !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+.worldcup-images img {
+    width: 95px !important;
+    height: 120px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+    background: white !important;
+    padding: 5px !important;
+    display: block !important;
+}
 </style>
     <!-- FIFA WORLD CUP PROMOTION BANNER -->
-<div class="worldcup-hero-banner">
-    <div class="worldcup-overlay">
-        <div class="worldcup-text">
-            <div class="worldcup-badge">🇺🇸 USA • 🇨🇦 Canada • 🇲🇽 Mexico 2026</div>
+<div class="worldcup-banner">
 
-            <h1>FIFA World Cup Deals</h1>
+    <div class="worldcup-content">
+        <h1>⚽ FIFA World Cup 2026 Jerseys</h1>
 
-            <p>Shop jerseys, boots, balls, and fan gear on Online Luma.</p>
+        <p>
+            Support your favorite nation with authentic World Cup jerseys.
+            Argentina, Brazil, France, Spain and Portugal kits available now.
+        </p>
 
-            <h2>Up to 30% OFF selected jerseys</h2>
+        <a href="{% url 'products' %}" class="worldcup-btn">
+            Shop Jerseys
+        </a>
 
-            <a href="{% url 'home' %}?category=Sports" class="worldcup-shop-btn">
-                Shop Now →
-            </a>
-        </div>
     </div>
+
+    {% load static %}
+
+<div class="worldcup-images">
+    <img src="{% static 'Images/Argentina.jpg' %}" alt="Argentina">
+    <img src="{% static 'Images/Brazil.jpg' %}" alt="Brazil">
+    <img src="{% static 'Images/France.jpg' %}" alt="France">
+    <img src="{% static 'Images/England.jpg' %}" alt="England">
+    <img src="{% static 'Images/Senegal.png' %}" alt="Senegal">
+</div>
 </div>
     <div class="page-container">
 
