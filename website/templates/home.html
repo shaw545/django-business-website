@@ -127,16 +127,6 @@
         }
 
 
-<!-- WORLD CUP PROMOTION BANNER -->
-<div class="worldcup-banner">
-    <div class="worldcup-content">
-        <div>
-            <h1>⚽ World Cup Deals Are Here!</h1>
-            <p>Shop jerseys, football boots, balls, fan gear, and more on Online Luma.</p>
-            <a href="{% url 'home' %}?category=Sports" class="worldcup-btn">Shop World Cup Deals</a>
-        </div>
-    </div>
-</div>
         /* PROMO SLIDER */
         .promo-slider {
             width: 100%;
@@ -579,19 +569,128 @@
         transform: translateX(-100%);
     }
 }
+
+.worldcup-hero-banner {
+    margin: 20px 30px;
+    min-height: 330px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0033a0, #009739, #fcd116, #d50000);
+    background-size: 300% 300%;
+    animation: worldcupGradient 8s ease infinite;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+}
+
+.worldcup-overlay {
+    min-height: 330px;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    background: rgba(0,0,0,0.22);
+}
+
+.worldcup-text {
+    color: white;
+    max-width: 700px;
+}
+
+.worldcup-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.95);
+    color: #0033a0;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
+
+.worldcup-text h1 {
+    font-size: 52px;
+    margin: 0 0 12px;
+    font-weight: 900;
+}
+
+.worldcup-text p {
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.worldcup-text h2 {
+    font-size: 30px;
+    margin-bottom: 25px;
+    color: #fff700;
+}
+
+.worldcup-shop-btn {
+    display: inline-block;
+    background: white;
+    color: #0033a0;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    animation: pulseBtn 1.5s infinite;
+}
+
+@keyframes worldcupGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseBtn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+@media(max-width: 768px) {
+    .worldcup-hero-banner {
+        margin: 12px;
+        min-height: 240px;
+        border-radius: 16px;
+    }
+
+    .worldcup-overlay {
+        min-height: 240px;
+        padding: 24px;
+    }
+
+    .worldcup-text h1 {
+        font-size: 30px;
+    }
+
+    .worldcup-text p {
+        font-size: 15px;
+    }
+
+    .worldcup-text h2 {
+        font-size: 20px;
+    }
+
+    .worldcup-badge {
+        font-size: 12px;
+    }
+}
 </style>
-    <!-- PROMO SLIDER -->
-    <div class="promo-slider">
-        <div class="promo-track">
-            <span>🔥 Hot Deals Available</span>
-            <span>🚚 Free Delivery in Selected Areas</span>
-            <span>🛒 Buy More, Save More</span>
-            <span>💥 Weekend Mega Deals</span>
-            <span>🎉 New Seller Discounts Available</span>
-            <span>⚽ Arsenal Fan Deals Available Now</span>
+    <!-- FIFA WORLD CUP PROMOTION BANNER -->
+<div class="worldcup-hero-banner">
+    <div class="worldcup-overlay">
+        <div class="worldcup-text">
+            <div class="worldcup-badge">🇺🇸 USA • 🇨🇦 Canada • 🇲🇽 Mexico 2026</div>
+
+            <h1>FIFA World Cup Deals</h1>
+
+            <p>Shop jerseys, boots, balls, and fan gear on Online Luma.</p>
+
+            <h2>Up to 30% OFF selected jerseys</h2>
+
+            <a href="{% url 'home' %}?category=Sports" class="worldcup-shop-btn">
+                Shop Now →
+            </a>
         </div>
     </div>
-
+</div>
     <div class="page-container">
 
         <!-- TODAY'S DEALS SECTION -->
