@@ -126,6 +126,17 @@
             white-space: nowrap;
         }
 
+
+<!-- WORLD CUP PROMOTION BANNER -->
+<div class="worldcup-banner">
+    <div class="worldcup-content">
+        <div>
+            <h1>⚽ World Cup Deals Are Here!</h1>
+            <p>Shop jerseys, football boots, balls, fan gear, and more on Online Luma.</p>
+            <a href="{% url 'home' %}?category=Sports" class="worldcup-btn">Shop World Cup Deals</a>
+        </div>
+    </div>
+</div>
         /* PROMO SLIDER */
         .promo-slider {
             width: 100%;
@@ -513,6 +524,31 @@
         <a href="{% url 'home' %}?category=Other">More</a>
     </div>
 
+<style>
+.worldcup-banner {
+    margin: 20px 30px;
+    min-height: 260px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #0033a0, #fcd116);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 35px;
+}
+
+.worldcup-content h1 {
+    font-size: 42px;
+    font-weight: 900;
+}
+
+.worldcup-btn {
+    background: white;
+    color: #0033a0;
+    padding: 13px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+}
+</style>
     <!-- PROMO SLIDER -->
     <div class="promo-slider">
         <div class="promo-track">
