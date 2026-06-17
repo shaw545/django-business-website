@@ -773,6 +773,67 @@
     padding: 5px !important;
     display: block !important;
 }
+#chatbot-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+#chatbot-box {
+    display: none;
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    width: 330px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+#chatbot-header {
+    background: #2563eb;
+    color: white;
+    padding: 14px;
+    font-weight: bold;
+}
+
+#chatbot-messages {
+    height: 260px;
+    overflow-y: auto;
+    padding: 12px;
+    font-size: 14px;
+}
+
+#chatbot-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#chatbot-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+}
+
+#chatbot-input-area button {
+    background: orange;
+    border: none;
+    padding: 10px 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 </style>
     <!-- FIFA WORLD CUP PROMOTION BANNER -->
 <div class="worldcup-banner">
@@ -931,5 +992,55 @@
         <a href="{% url 'seller_dashboard' %}">👤<br>Account</a>
     </div>
 
+
+<div id="chatbot-box">
+    <div id="chatbot-header">💬 Online Luma Assistant</div>
+    <div id="chatbot-messages"></div>
+
+    <div id="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Ask about orders, payment, delivery...">
+        <button onclick="sendChatMessage()">Send</button>
+    </div>
+</div>
+
+<button id="chatbot-button" onclick="toggleChatbot()">💬</button>
+
+<script>
+function toggleChatbot() {
+    const box = document.getElementById("chatbot-box");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function addMessage(sender, text) {
+    const messages = document.getElementById("chatbot-messages");
+    messages.innerHTML += `<div><strong>${sender}:</strong> ${text}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function sendChatMessage() {
+    const input = document.getElementById("chatbot-input");
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    addMessage("You", message);
+    input.value = "";
+
+    fetch("{% url 'chatbot_response' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({message: message})
+    })
+    .then(response => response.json())
+    .then(data => {
+        addMessage("Online Luma AI", data.reply);
+    })
+    .catch(() => {
+        addMessage("Online Luma AI", "Sorry, I could not respond right now.");
+    });
+}
+</script>
 </body>
 </html>

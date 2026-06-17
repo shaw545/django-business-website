@@ -7,3 +7,4 @@ cloudinary
 django-cloudinary-storage
 Pillow
 python-dotenv
+openai

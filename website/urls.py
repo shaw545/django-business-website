@@ -28,4 +28,5 @@ urlpatterns = [path("logout/", auth_views.LogoutView.as_view(next_page="home"), 
     path("cart/decrease/<int:product_id>/", views.decrease_cart_item, name="decrease_cart_item"),
     path("cart/remove/<int:product_id>/", views.remove_cart_item, name="remove_cart_item"),
     path("order-confirmation/", views.order_confirmation, name="order_confirmation"),
+    path("chatbot/", views.chatbot_response, name="chatbot_response"),
 ]

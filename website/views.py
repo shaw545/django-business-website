@@ -8,6 +8,11 @@ from .models import Product, ProductColor, ProductImage
 from .models import Product, ProductReview
 from django.db.models import Avg
 from django.conf import settings
+import os
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from openai import OpenAI
 
 
 # =========================
@@ -476,3 +481,37 @@ def terms_view(request):
 
 def privacy_view(request):
     return render(request, "privacy.html")
+
+@csrf_exempt
+def chatbot_response(request):
+    if request.method != "POST":
+        return JsonResponse({"reply": "Invalid request."})
+
+    data = json.loads(request.body)
+    user_message = data.get("message", "")
+
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=f"""
+You are Online Luma AI Assistant.
+
+Answer customers politely and briefly.
+
+Online Luma is an online marketplace where customers can buy products from sellers.
+
+Important answers:
+- Customers can pay using Orange Money or Afri Money and also can pay on delivery.s
+- Customers should upload proof of payment during checkout.
+- Delivery usually takes 1–3 business days in Freetown and 3–7 business days outside Freetown.
+- If a customer asks when their order will be delivered, tell them delivery depends on seller location and order status.
+- If they have an order number, advise them to contact the seller or check their order confirmation.
+- Sellers can register, add products, and manage orders from the dashboard.
+- Be helpful about products, cart, checkout, payment, delivery, and seller registration.
+
+Customer message: {user_message}
+"""
+    )
+
+    return JsonResponse({"reply": response.output_text})
