@@ -487,31 +487,34 @@ def chatbot_response(request):
     if request.method != "POST":
         return JsonResponse({"reply": "Invalid request."})
 
-    data = json.loads(request.body)
-    user_message = data.get("message", "")
+    try:
+        data = json.loads(request.body)
+        user_message = data.get("message", "").lower()
+    except:
+        return JsonResponse({"reply": "Sorry, I did not understand that."})
 
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    if "delivery" in user_message or "delivered" in user_message or "when will my order" in user_message:
+        reply = "Orders are usually delivered within 1–3 business days in Freetown and 3–7 business days outside Freetown. Delivery time may depend on the seller location and item availability."
 
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=f"""
-You are Online Luma AI Assistant.
+    elif "pay" in user_message or "payment" in user_message or "orange" in user_message or "afri" in user_message:
+        reply = "You can pay using Orange Money or Afri Money. After payment, upload your proof of payment during checkout so the seller can verify it."
 
-Answer customers politely and briefly.
+    elif "cart" in user_message:
+        reply = "To view your cart, click the cart icon at the top of the page or the Cart button in the bottom menu on mobile."
 
-Online Luma is an online marketplace where customers can buy products from sellers.
+    elif "seller" in user_message or "sell" in user_message or "register" in user_message:
+        reply = "To become a seller, click Register or Become a Seller, complete your seller profile, agree to the terms and privacy policy, then start adding products."
 
-Important answers:
-- Customers can pay using Orange Money or Afri Money and also can pay on delivery.s
-- Customers should upload proof of payment during checkout.
-- Delivery usually takes 1–3 business days in Freetown and 3–7 business days outside Freetown.
-- If a customer asks when their order will be delivered, tell them delivery depends on seller location and order status.
-- If they have an order number, advise them to contact the seller or check their order confirmation.
-- Sellers can register, add products, and manage orders from the dashboard.
-- Be helpful about products, cart, checkout, payment, delivery, and seller registration.
+    elif "order" in user_message or "status" in user_message or "track" in user_message:
+        reply = "To check your order status, please contact the seller or check your order confirmation. Order status may show Pending, Paid, Shipped, or Delivered."
 
-Customer message: {user_message}
-"""
-    )
+    elif "refund" in user_message or "return" in user_message:
+        reply = "For returns or refunds, please contact the seller first. Online Luma recommends resolving product issues directly with the seller and keeping proof of payment."
 
-    return JsonResponse({"reply": response.output_text})
+    elif "hello" in user_message or "hi" in user_message:
+        reply = "Hello! Welcome to Online Luma. I can help with orders, payment, delivery, seller registration, and shopping questions."
+
+    else:
+        reply = "I can help with Online Luma orders, delivery, payment, cart, seller registration, and product questions. Please ask your question again."
+
+    return JsonResponse({"reply": reply})
