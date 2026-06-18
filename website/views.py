@@ -579,12 +579,12 @@ def chatbot_response(request):
     elif "hello" in user_message or "hi" in user_message or "hey" in user_message:
         reply = "Hello! Welcome to Online Luma. How can I help you today?"
 
-    else:
-       reply = (
+   else:
+     reply = (
         "Sorry, I am unable to help with that request. "
         "Please contact Online Luma Customer Support:\n\n"
         "📱 WhatsApp: +1 3013790483\n"
         "A support representative will assist you."
-      )
+    )
 
-   return JsonResponse({"reply": reply})  
+return JsonResponse({"reply": reply})
