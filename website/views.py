@@ -493,72 +493,66 @@ def chatbot_response(request):
     except:
         return JsonResponse({"reply": "Sorry, I did not understand that."})
 
-    if "delivery" in user_message or "delivered" in user_message or "when will my order" in user_message:
+    if "size" in user_message or "available size" in user_message:
         reply = (
-            "Orders are usually delivered within 1–3 business days in Freetown "
-            "and 3–7 business days outside Freetown. Delivery time may depend "
-            "on the seller location and item availability."
+            "Available sizes are shown on the product page. "
+            "Please select your preferred size before adding the item to cart."
         )
 
-    elif "pay" in user_message or "payment" in user_message or "orange" in user_message or "afri" in user_message:
+    elif "replacement" in user_message or "replace" in user_message:
         reply = (
-            "You can pay using Orange Money or Afri Money. After payment, "
-            "please upload your proof of payment during checkout so the seller "
-            "can verify it."
+            "For replacement requests, please provide your Order Number, Phone Number, "
+            "and Product Name. Online Luma support will review your request."
         )
 
-    elif "cart" in user_message:
+    elif "refund" in user_message or "return" in user_message:
         reply = (
-            "To view your cart, click the cart icon at the top of the page "
-            "or the Cart button in the bottom menu on mobile."
+            "For returns or refunds, please provide your Order Number, Phone Number, "
+            "and Product Name. Online Luma support will review your request."
+        )
+
+    elif "original" in user_message or "authentic" in user_message or "real" in user_message:
+        reply = (
+            "Product condition and details are shown on the product page. "
+            "If you are unsure, please contact the seller before placing your order."
+        )
+
+    elif "payment" in user_message or "pay" in user_message or "orange" in user_message or "afri" in user_message:
+        reply = (
+            "Online Luma accepts Orange Money and Afri Money. "
+            "After payment, please upload your proof of payment at checkout."
+        )
+
+    elif "delivery" in user_message or "delivered" in user_message or "when will my order" in user_message:
+        reply = (
+            "Delivery usually takes 1–3 business days in Freetown and 3–7 business days outside Freetown, "
+            "depending on seller location and item availability."
+        )
+
+    elif "order" in user_message or "track" in user_message or "status" in user_message:
+        reply = (
+            "To check your order status, please provide your Order Number and Phone Number."
         )
 
     elif "seller" in user_message or "sell" in user_message or "register" in user_message:
         reply = (
-            "To become a seller, click Register or Become a Seller, complete "
-            "your seller profile, agree to the terms and privacy policy, then "
-            "start adding your products."
+            "To become a seller, register on Online Luma, complete your seller profile, "
+            "and start adding your products from the dashboard."
         )
 
-    elif "refund" in user_message or "return" in user_message or "wrong item" in user_message or "damaged" in user_message or "broken" in user_message:
+    elif "cart" in user_message:
         reply = (
-            "I’m sorry about that. Online Luma can help you with returns and refunds. "
-            "Please provide details for return                        "
-            "After receiving these details, Online Luma support will review the issue "
-            "with the seller and help with a replacement, return, or refund."
-        )
-
-    elif "order" in user_message and "phone" in user_message and "address" in user_message:
-        reply = (
-            "Thank you for providing your order details. "
-            "Your return/refund request has been received by Online Luma support. "
-            "Our team will review the information and contact you about the next step."
-        )
-
-    elif "order" in user_message or "status" in user_message or "track" in user_message:
-        reply = (
-            "To check your order status, please provide your order number, phone number, "
-            "and delivery address. Online Luma support will review it and help you."
-        )
-
-    elif "support" in user_message or "help" in user_message or "complaint" in user_message:
-        reply = (
-            "Online Luma support can help with orders, payments, returns, refunds, "
-            "and seller issues. Please provide your order number, phone number, "
-            "product name, and a short explanation of the issue."
+            "To view your cart, click the cart icon at the top of the page."
         )
 
     elif "hello" in user_message or "hi" in user_message:
         reply = (
-            "Hello! Welcome to Online Luma. I can help with orders, payment, "
-            "delivery, seller registration, returns, refunds, and shopping questions."
+            "Hello! Welcome to Online Luma. I can help with size, payment, delivery, refunds, replacements, and order questions."
         )
 
     else:
         reply = (
-            "I can help with Online Luma orders, delivery, payment, cart, seller "
-            "registration, returns, refunds, and product questions. Please ask your "
-            "question again."
+            "I can help with size availability, payment method, delivery, refund, replacement, product authenticity, and order status."
         )
 
     return JsonResponse({"reply": reply})
