@@ -13,6 +13,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
+from .models import Order
 
 
 # =========================
@@ -529,11 +530,22 @@ def chatbot_response(request):
             "depending on seller location and item availability."
         )
 
-    elif "order" in user_message or "track" in user_message or "status" in user_message:
+    elif "order" in user_message and any(char.isdigit() for char in user_message):
+
+    order_number = ''.join(filter(str.isdigit, user_message))
+
+    try:
+        order = Order.objects.get(id=order_number)
+
         reply = (
-            "To check your order status, please provide your Order Number and Phone Number."
+            f"Order #{order.id}\n"
+            f"Status: {order.status}\n"
+            f"Customer: {order.buyer_name}\n"
+            f"Total Amount: SLE {order.total_amount}"
         )
 
+    except Order.DoesNotExist:
+        reply = "Sorry, I could not find that order number."
     elif "seller" in user_message or "sell" in user_message or "register" in user_message:
         reply = (
             "To become a seller, register on Online Luma, complete your seller profile, "
@@ -552,6 +564,9 @@ def chatbot_response(request):
 
     elif "how are you" in user_message:
         reply = "I am doing well, thank you! How can I help you with Online Luma today?"
+
+    elif "track" in user_message:
+        reply = "Please provide your order number. Example: Order 125"
 
     elif "i am fine" in user_message or "i'm fine" in user_message or "am fine" in user_message:
        reply = "That is great to hear! How can I help you today?"
