@@ -546,6 +546,7 @@ def chatbot_response(request):
 
     except Order.DoesNotExist:
         reply = "Sorry, I could not find that order number."
+
     elif "seller" in user_message or "sell" in user_message or "register" in user_message:
         reply = (
             "To become a seller, register on Online Luma, complete your seller profile, "
