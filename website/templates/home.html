@@ -833,7 +833,90 @@
     font-weight: bold;
     cursor: pointer;
 }
+#chatbot-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 9999;
+}
 
+#chatbot-box {
+    display: none;
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    width: 340px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+#chatbot-header {
+    background: #2563eb;
+    color: white;
+    padding: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.chatbot-controls button {
+    background: white;
+    color: #2563eb;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#chatbot-messages {
+    height: 260px;
+    overflow-y: auto;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+}
+
+#chatbot-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#chatbot-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+#chatbot-input-area button {
+    background: orange;
+    border: none;
+    padding: 10px 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
 </style>
     <!-- FIFA WORLD CUP PROMOTION BANNER -->
 <div class="worldcup-banner">
@@ -993,27 +1076,52 @@
     </div>
 
 
+<!-- ONLINE LUMA CHATBOT -->
 <div id="chatbot-box">
-    <div id="chatbot-header">💬 Online Luma Assistant</div>
+    <div id="chatbot-header">
+        <span>💬 Online Luma Assistant</span>
+
+        <div class="chatbot-controls">
+            <button type="button" onclick="minimizeChat()">−</button>
+            <button type="button" onclick="closeChat()">×</button>
+        </div>
+    </div>
+
     <div id="chatbot-messages"></div>
 
     <div id="chatbot-input-area">
         <input type="text" id="chatbot-input" placeholder="Ask about orders, payment, delivery...">
-        <button onclick="sendChatMessage()">Send</button>
+        <button type="button" onclick="sendChatMessage()">Send</button>
     </div>
 </div>
 
-<button id="chatbot-button" onclick="toggleChatbot()">💬</button>
+<button id="chatbot-button" onclick="openChat()">💬</button>
 
 <script>
-function toggleChatbot() {
-    const box = document.getElementById("chatbot-box");
-    box.style.display = box.style.display === "block" ? "none" : "block";
+function openChat() {
+    document.getElementById("chatbot-box").style.display = "block";
+}
+
+function closeChat() {
+    document.getElementById("chatbot-box").style.display = "none";
+}
+
+function minimizeChat() {
+    const messages = document.getElementById("chatbot-messages");
+    const inputArea = document.getElementById("chatbot-input-area");
+
+    if (messages.style.display === "none") {
+        messages.style.display = "block";
+        inputArea.style.display = "flex";
+    } else {
+        messages.style.display = "none";
+        inputArea.style.display = "none";
+    }
 }
 
 function addMessage(sender, text) {
     const messages = document.getElementById("chatbot-messages");
-    messages.innerHTML += `<div><strong>${sender}:</strong> ${text}</div>`;
+    messages.innerHTML += `<div class="chat-message"><strong>${sender}:</strong> ${text}</div>`;
     messages.scrollTop = messages.scrollHeight;
 }
 
@@ -1031,16 +1139,14 @@ function sendChatMessage() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({message: message})
+        body: JSON.stringify({ message: message })
     })
     .then(response => response.json())
     .then(data => {
         addMessage("Online Luma AI", data.reply);
     })
-    .catch(() => {
+    .catch(error => {
         addMessage("Online Luma AI", "Sorry, I could not respond right now.");
     });
 }
 </script>
-</body>
-</html>
