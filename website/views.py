@@ -523,12 +523,7 @@ def chatbot_response(request):
     elif "refund" in user_message or "return" in user_message or "wrong item" in user_message or "damaged" in user_message or "broken" in user_message:
         reply = (
             "I’m sorry about that. Online Luma can help you with returns and refunds. "
-            "Please send the following details here:\n\n"
-            "1. Order number\n"
-            "2. Phone number\n"
-            "3. Delivery address\n"
-            "4. Product name\n"
-            "5. Reason for refund or return\n\n"
+            "Please provide details for return                        "
             "After receiving these details, Online Luma support will review the issue "
             "with the seller and help with a replacement, return, or refund."
         )
