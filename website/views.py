@@ -550,6 +550,18 @@ def chatbot_response(request):
             "Hello! Welcome to Online Luma. I can help with size, payment, delivery, refunds, replacements, and order questions."
         )
 
+    elif "how are you" in user_message:
+        reply = "I am doing well, thank you! How can I help you with Online Luma today?"
+
+    elif "i am fine" in user_message or "i'm fine" in user_message or "am fine" in user_message:
+       reply = "That is great to hear! How can I help you today?"
+
+    elif "thank you" in user_message or "thanks" in user_message:
+      reply = "You are welcome! I am here to help with Online Luma orders, payment, delivery, returns, and products."
+
+    elif "hello" in user_message or "hi" in user_message or "hey" in user_message:
+      reply = "Hello! Welcome to Online Luma. How can I help you today?"
+
     else:
         reply = (
             "I can help with size availability, payment method, delivery, refund, replacement, product authenticity, and order status."
