@@ -520,7 +520,7 @@ def chatbot_response(request):
 
     elif "order" in user_message and any(char.isdigit() for char in user_message):
 
-    reply = (
+       reply = (
         "Thank you. Online Luma received your order information.\n"
         "A support representative will verify your order and assist with delivery, refund, replacement, or payment issues."
     )
