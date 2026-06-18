@@ -542,19 +542,21 @@ def chatbot_response(request):
                     if item.seller
                 ]))
 
-                reply = (
-                    f"Order Found ✅\n"
-                    f"Order Number: {order.id}\n"
-                    f"Status: {order.status}\n"
-                    f"Product: {product_names}\n"
-                    f"Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
-                )
+         reply = (
+             f"Order Found ✅\n"
+             f"Order Number: {order.id}\n"
+             f"Status: {order.status}\n"
+             f"Product: {product_names}.\n"
+             f"How can I help you with this order?\n\n"
+             f"Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
+        )
 
-            except Order.DoesNotExist:
+
+                except Order.DoesNotExist:
                 reply = "Sorry, I could not find an order matching that Order Number and Phone Number."
 
         else:
-            reply = "Please enter details like: Order #21 Phone 3013790483"
+            reply = "Please enter details like: Order #21"
 
     elif "refund" in user_message:
 
@@ -644,7 +646,7 @@ def chatbot_response(request):
         reply = (
             "Sorry, I cannot help with that request.\n\n"
             "Please contact Online Luma Support:\n"
-            "WhatsApp: +1 3013790483"
+            "WhatsApp: +13013790483"
         )
 
     return JsonResponse({"reply": reply})
