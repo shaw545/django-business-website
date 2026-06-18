@@ -486,105 +486,165 @@ def privacy_view(request):
 
 @csrf_exempt
 def chatbot_response(request):
+    import json
+    import re
+    from django.http import JsonResponse
+    from .models import Order
+
     if request.method != "POST":
         return JsonResponse({"reply": "Invalid request."})
 
     try:
         data = json.loads(request.body)
         user_message = data.get("message", "").lower()
-    except:
-        return JsonResponse({"reply": "Sorry, I did not understand that."})
+    except Exception:
+        return JsonResponse({"reply": "Sorry, I could not understand your message."})
 
-    # ORDER LOOKUP
-    if "order" in user_message and "phone" in user_message:
+    # Greeting
+    if "hello" in user_message or "hi" in user_message or "hey" in user_message:
+        reply = "Hello! Welcome to Online Luma. How can I help you today?"
+
+    elif "how are you" in user_message:
+        reply = "I am fine, thank you. How can I help you with Online Luma today?"
+
+    # Order issue
+    elif "order issue" in user_message or "problem with my order" in user_message:
+        reply = "Please provide your Order Number and Phone Number."
+
+    # Order lookup
+    elif "order" in user_message and "phone" in user_message:
+
         order_match = re.search(r"order\s*#?\s*(\d+)", user_message)
         phone_match = re.search(r"phone\s*[:#]?\s*(\d+)", user_message)
 
         if order_match and phone_match:
+
             order_id = order_match.group(1)
             phone = phone_match.group(1)
 
             try:
-                order = Order.objects.get(id=order_id, buyer_phone__icontains=phone)
+                order = Order.objects.get(
+                    id=order_id,
+                    buyer_phone__icontains=phone
+                )
 
                 request.session["last_order_id"] = order.id
 
-                items = order.items.all()
-                product_names = ", ".join([item.product.name for item in items if item.product])
-                seller_names = ", ".join(set([item.seller.username for item in items if item.seller]))
+                product_names = ", ".join([
+                    item.product.name
+                    for item in order.items.all()
+                    if item.product
+                ])
+
+                seller_names = ", ".join(set([
+                    item.seller.username
+                    for item in order.items.all()
+                    if item.seller
+                ]))
 
                 reply = (
                     f"Order Found ✅\n"
                     f"Order Number: {order.id}\n"
                     f"Status: {order.status}\n"
-                    f"Product: {product_names or 'Not available'}\n"
-                    f"How can I help you with this order? Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
+                    f"Product: {product_names}\n"
+                    f"Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
                 )
 
             except Order.DoesNotExist:
                 reply = "Sorry, I could not find an order matching that Order Number and Phone Number."
+
         else:
-            reply = "Please provide your order details like this: Order #123 Phone 23276123456"
+            reply = "Please enter details like: Order #21 Phone 3013790483"
 
-    elif "order issue" in user_message or "problem with my order" in user_message:
-        reply = "Please provide your Order Number and Phone Number."
-
-    # DIFFERENT ORDER ISSUE RESPONSES
     elif "refund" in user_message:
+
         order_id = request.session.get("last_order_id")
+
         if order_id:
-            reply = f"Refund request received for Order #{order_id}. Online Luma support will review your payment and contact you."
+            reply = (
+                f"Refund request received for Order #{order_id}. "
+                f"Online Luma support will review your request and contact you shortly."
+            )
         else:
-            reply = "Please provide your Order Number and Phone Number first so we can help with your refund."
+            reply = "Please provide your Order Number and Phone Number first."
 
     elif "replacement" in user_message or "replace" in user_message:
+
         order_id = request.session.get("last_order_id")
+
         if order_id:
-            reply = f"Replacement request received for Order #{order_id}. Online Luma support will review the item and contact you."
+            reply = (
+                f"Replacement request received for Order #{order_id}. "
+                f"Our support team will review the request and contact you."
+            )
         else:
-            reply = "Please provide your Order Number and Phone Number first so we can help with replacement."
+            reply = "Please provide your Order Number and Phone Number first."
 
     elif "wrong item" in user_message or "wrong product" in user_message:
+
         order_id = request.session.get("last_order_id")
+
         if order_id:
-            reply = f"Sorry about the wrong item. Online Luma has received your complaint for Order #{order_id}. Support will review it with the seller."
+            reply = (
+                f"Wrong item complaint received for Order #{order_id}. "
+                f"Our team will investigate and contact you."
+            )
         else:
-            reply = "Please provide your Order Number and Phone Number first so we can check the wrong item issue."
+            reply = "Please provide your Order Number and Phone Number first."
 
     elif "damaged" in user_message or "broken" in user_message:
+
         order_id = request.session.get("last_order_id")
+
         if order_id:
-            reply = f"Sorry your item was damaged. Online Luma has received your damaged item complaint for Order #{order_id}. Support will review it."
+            reply = (
+                f"Damaged item complaint received for Order #{order_id}. "
+                f"Our team will review the issue and contact you."
+            )
         else:
-            reply = "Please provide your Order Number and Phone Number first so we can check the damaged item issue."
+            reply = "Please provide your Order Number and Phone Number first."
 
     elif "delivery" in user_message or "delivered" in user_message:
-        reply = "Delivery usually takes 1–3 business days in Freetown and 3–7 business days outside Freetown."
+        reply = (
+            "Delivery usually takes 1-3 business days in Freetown "
+            "and 3-7 business days outside Freetown."
+        )
 
-    elif "payment" in user_message or "pay" in user_message or "orange" in user_message or "afri" in user_message:
-        reply = "Online Luma accepts Orange Money and Afri Money. Please upload proof of payment at checkout."
+    elif "payment" in user_message or "pay" in user_message:
+        reply = (
+            "Online Luma accepts Orange Money and Afri Money. "
+            "Please upload proof of payment at checkout."
+        )
 
     elif "size" in user_message:
-        reply = "Available sizes are shown on the product page. Please select your size before adding to cart."
+        reply = (
+            "Available sizes are shown on the product page. "
+            "Please select your size before adding to cart."
+        )
 
     elif "original" in user_message or "authentic" in user_message:
-        reply = "Product details are provided by the seller. Please check the product description before ordering."
+        reply = (
+            "Product details are provided by the seller. "
+            "Please check the description before ordering."
+        )
 
-    elif "seller" in user_message or "sell" in user_message or "register" in user_message:
-        reply = "To become a seller, register on Online Luma and complete your seller profile from the dashboard."
+    elif "seller" in user_message or "register" in user_message:
+        reply = (
+            "To become a seller, register on Online Luma and complete "
+            "your seller profile from the dashboard."
+        )
 
-    elif "how are you" in user_message:
-        reply = "I am fine, thank you. How can I help you with Online Luma today?"
+    elif "thank you" in user_message or "thanks" in user_message:
+        reply = "You're welcome. Thank you for shopping with Online Luma."
 
-    elif "hello" in user_message or "hi" in user_message or "hey" in user_message:
-       reply = "Hello! Welcome to Online Luma. How can I help you today?"
+    elif "bye" in user_message:
+        reply = "Thank you for visiting Online Luma. Have a great day."
 
-   else:
-      reply = (
-        "Sorry, I am unable to help with that request. "
-        "Please contact Online Luma Customer Support:\n\n"
-        "📱 WhatsApp: +1 3013790483\n"
-        "A support representative will assist you."
-     )
+    else:
+        reply = (
+            "Sorry, I cannot help with that request.\n\n"
+            "Please contact Online Luma Support:\n"
+            "WhatsApp: +1 3013790483"
+        )
 
-return JsonResponse({"reply": reply})
+    return JsonResponse({"reply": reply})
