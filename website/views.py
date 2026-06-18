@@ -523,6 +523,11 @@ def chatbot_response(request):
 
     elif "cart" in user_message:
         reply = "To view your cart, click the cart icon at the top of the page."
+    elif "order issue" in user_message or "problem with my order" in user_message or "issue with my order" in user_message:
+        reply = "I’m sorry about that. Please tell me more about the order issue so Online Luma can help you."
+
+    elif "i have an order issue" in user_message or "i have order issue" in user_message:
+        reply = "Please tell me more about the order issue. Is it about delivery, payment, refund, replacement, or the product received?"   
 
     else:
         reply = "I can help with size, payment, delivery, refund, replacement, seller registration, and product questions."
