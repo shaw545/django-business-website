@@ -507,7 +507,6 @@ def chatbot_response(request):
 
     elif "order" in user_message or "status" in user_message or "track" in user_message:
         reply = "To check your order status, please contact the seller or check your order confirmation. Order status may show Pending, Paid, Shipped, or Delivered."
-
     elif (
     "refund" in user_message
     or "return" in user_message
@@ -532,11 +531,11 @@ def chatbot_response(request):
         "Please provide your order number, phone number, product name, and a short explanation of the issue."
     )
    elif "order" in user_message and "phone" in user_message and "address" in user_message:
-    reply = (
+       reply = (
         "Thank you for providing your order details. "
         "Your return/refund request has been received by Online Luma support. "
         "Our team will review the information and contact you about the next step."
-    )
+      )
     else:
         reply = "I can help with Online Luma orders, delivery, payment, cart, seller registration, and product questions. Please ask your question again."
 
