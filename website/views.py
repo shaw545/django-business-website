@@ -580,11 +580,11 @@ def chatbot_response(request):
         reply = "Hello! Welcome to Online Luma. How can I help you today?"
 
     else:
-        else:
-    reply = (
+       reply = (
         "Sorry, I am unable to help with that request. "
         "Please contact Online Luma Customer Support:\n\n"
-        "📱 WhatsApp: +1 301-379-0483"
+        "📱 WhatsApp: +1 3013790483\n"
         "A support representative will assist you."
-    )
-    return JsonResponse({"reply": reply})
+      )
+
+   return JsonResponse({"reply": reply})  
