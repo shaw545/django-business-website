@@ -532,7 +532,7 @@ def chatbot_response(request):
 
     elif "order" in user_message and any(char.isdigit() for char in user_message):
 
-    order_number = ''.join(filter(str.isdigit, user_message))
+        order_number = ''.join(filter(str.isdigit, user_message))
 
     try:
         order = Order.objects.get(id=order_number)
