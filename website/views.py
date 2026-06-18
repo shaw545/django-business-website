@@ -518,6 +518,13 @@ def chatbot_response(request):
     elif "delivery" in user_message or "delivered" in user_message:
         reply = "Delivery usually takes 1–3 business days in Freetown and 3–7 business days outside Freetown."
 
+    elif "order" in user_message and any(char.isdigit() for char in user_message):
+
+    reply = (
+        "Thank you. Online Luma received your order information.\n"
+        "A support representative will verify your order and assist with delivery, refund, replacement, or payment issues."
+    )
+
     elif "seller" in user_message or "sell" in user_message or "register" in user_message:
         reply = "To become a seller, register on Online Luma and complete your seller profile from the dashboard."
 
@@ -528,6 +535,12 @@ def chatbot_response(request):
 
     elif "i have an order issue" in user_message or "i have order issue" in user_message:
         reply = "Please tell me more about the order issue. Is it about delivery, payment, refund, replacement, or the product received?"   
+
+    elif "order" in user_message and "phone" in user_message:
+         reply = (
+        "Please provide your order number in this format:\n"
+        "Order 123 Phone 23276123456"
+    )
 
     else:
         reply = "I can help with size, payment, delivery, refund, replacement, seller registration, and product questions."
