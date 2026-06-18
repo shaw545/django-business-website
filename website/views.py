@@ -507,146 +507,130 @@ def chatbot_response(request):
     elif "how are you" in user_message:
         reply = "I am fine, thank you. How can I help you with Online Luma today?"
 
-    # Order issue
-    elif "order issue" in user_message or "problem with my order" in user_message:
-        reply = "Please provide your Order Number and Phone Number."
+   elif "order issue" in user_message or "problem with order" in user_message:
+    reply = (
+        "I'm sorry about that.\n\n"
+        "Please provide your Order Number so I can check your order."
+    )
 
-    # Order lookup
-    elif "order" in user_message and "phone" in user_message:
+elif "order" in user_message and any(char.isdigit() for char in user_message):
 
-        order_match = re.search(r"order\s*#?\s*(\d+)", user_message)
-        phone_match = re.search(r"phone\s*[:#]?\s*(\d+)", user_message)
+    import re
 
-        if order_match and phone_match:
+    match = re.search(r'(\d+)', user_message)
 
-            order_id = order_match.group(1)
-            phone = phone_match.group(1)
+    if match:
+        order_number = match.group(1)
 
-            try:
-                order = Order.objects.get(
-                    id=order_id,
-                    buyer_phone__icontains=phone
-                )
+        try:
+            order = Order.objects.get(id=order_number)
 
-                request.session["last_order_id"] = order.id
+            product_names = ", ".join([
+                item.product.name
+                for item in order.items.all()
+                if item.product
+            ])
 
-                product_names = ", ".join([
-                    item.product.name
-                    for item in order.items.all()
-                    if item.product
-                ])
+            # Save order for refund/replacement follow-up
+            request.session["last_order_id"] = order.id
 
-                seller_names = ", ".join(set([
-                    item.seller.username
-                    for item in order.items.all()
-                    if item.seller
-                ]))
-
-         reply = (
-             f"Order Found ✅\n"
-             f"Order Number: {order.id}\n"
-             f"Status: {order.status}\n"
-             f"Product: {product_names}.\n"
-             f"How can I help you with this order?\n\n"
-             f"Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
-        )
-
-
-                except Order.DoesNotExist:
-                reply = "Sorry, I could not find an order matching that Order Number and Phone Number."
-
-        else:
-            reply = "Please enter details like: Order #21"
-
-    elif "refund" in user_message:
-
-        order_id = request.session.get("last_order_id")
-
-        if order_id:
             reply = (
-                f"Refund request received for Order #{order_id}. "
-                f"Online Luma support will review your request and contact you shortly."
+                f"Order Found ✅\n"
+                f"Order Number: {order.id}\n"
+                f"Status: {order.status}\n"
+                f"Product: {product_names}.\n\n"
+                f"How can I help you with this order?\n\n"
+                f"Delivery, Refund, Replacement, Wrong Item, or Damaged Item?"
             )
-        else:
-            reply = "Please provide your Order Number and Phone Number first."
 
-    elif "replacement" in user_message or "replace" in user_message:
-
-        order_id = request.session.get("last_order_id")
-
-        if order_id:
+        except Order.DoesNotExist:
             reply = (
-                f"Replacement request received for Order #{order_id}. "
-                f"Our support team will review the request and contact you."
+                "Sorry, I could not find that Order Number.\n"
+                "Please check the number and try again."
             )
-        else:
-            reply = "Please provide your Order Number and Phone Number first."
-
-    elif "wrong item" in user_message or "wrong product" in user_message:
-
-        order_id = request.session.get("last_order_id")
-
-        if order_id:
-            reply = (
-                f"Wrong item complaint received for Order #{order_id}. "
-                f"Our team will investigate and contact you."
-            )
-        else:
-            reply = "Please provide your Order Number and Phone Number first."
-
-    elif "damaged" in user_message or "broken" in user_message:
-
-        order_id = request.session.get("last_order_id")
-
-        if order_id:
-            reply = (
-                f"Damaged item complaint received for Order #{order_id}. "
-                f"Our team will review the issue and contact you."
-            )
-        else:
-            reply = "Please provide your Order Number and Phone Number first."
-
-    elif "delivery" in user_message or "delivered" in user_message:
-        reply = (
-            "Delivery usually takes 1-3 business days in Freetown "
-            "and 3-7 business days outside Freetown."
-        )
-
-    elif "payment" in user_message or "pay" in user_message:
-        reply = (
-            "Online Luma accepts Orange Money and Afri Money. "
-            "Please upload proof of payment at checkout."
-        )
-
-    elif "size" in user_message:
-        reply = (
-            "Available sizes are shown on the product page. "
-            "Please select your size before adding to cart."
-        )
-
-    elif "original" in user_message or "authentic" in user_message:
-        reply = (
-            "Product details are provided by the seller. "
-            "Please check the description before ordering."
-        )
-
-    elif "seller" in user_message or "register" in user_message:
-        reply = (
-            "To become a seller, register on Online Luma and complete "
-            "your seller profile from the dashboard."
-        )
-
-    elif "thank you" in user_message or "thanks" in user_message:
-        reply = "You're welcome. Thank you for shopping with Online Luma."
-
-    elif "bye" in user_message:
-        reply = "Thank you for visiting Online Luma. Have a great day."
 
     else:
         reply = (
-            "Sorry, I cannot help with that request.\n\n"
-            "Please contact Online Luma Support:\n"
-            "WhatsApp: +13013790483"
+            "Please enter a valid Order Number.\n"
+            "Example: Order #21"
         )
 
-    return JsonResponse({"reply": reply})
+elif "refund" in user_message:
+
+    order_id = request.session.get("last_order_id")
+
+    if order_id:
+        reply = (
+            "Refund Request Received ✅\n\n"
+            "Online Luma support will review your refund request "
+            "and contact you shortly."
+        )
+    else:
+        reply = (
+            "Please provide your Order Number first."
+        )
+
+elif "replacement" in user_message:
+
+    order_id = request.session.get("last_order_id")
+
+    if order_id:
+        reply = (
+            "Replacement Request Received ✅\n\n"
+            "Online Luma support will review your replacement request "
+            "and contact you shortly."
+        )
+    else:
+        reply = (
+            "Please provide your Order Number first."
+        )
+
+elif "wrong item" in user_message:
+
+    order_id = request.session.get("last_order_id")
+
+    if order_id:
+        reply = (
+            "Wrong Item Report Received ✅\n\n"
+            "Online Luma support will investigate the issue "
+            "and contact you shortly."
+        )
+    else:
+        reply = (
+            "Please provide your Order Number first."
+        )
+
+elif "damaged item" in user_message or "damaged" in user_message:
+
+    order_id = request.session.get("last_order_id")
+
+    if order_id:
+        reply = (
+            "Damaged Item Report Received ✅\n\n"
+            "Online Luma support will review the issue "
+            "and contact you shortly."
+        )
+    else:
+        reply = (
+            "Please provide your Order Number first."
+        )
+
+elif "delivery" in user_message:
+
+    order_id = request.session.get("last_order_id")
+
+    if order_id:
+        try:
+            order = Order.objects.get(id=order_id)
+
+            reply = (
+                f"Order Status: {order.status}\n\n"
+                "Your order is currently being processed."
+            )
+
+        except Order.DoesNotExist:
+            reply = "Sorry, I could not find that order."
+    else:
+        reply = (
+            "Please provide your Order Number first."
+        )
