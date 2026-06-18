@@ -523,9 +523,10 @@ def chatbot_response(request):
         "4. Product name\n"
         "5. Reason for refund or return\n\n"
         "After receiving these details, Online Luma support will review the issue with the seller and help with a replacement, return, or refund."
-    )    elif "hello" in user_message or "hi" in user_message:
-        reply = "Hello! Welcome to Online Luma. I can help with orders, payment, delivery, seller registration, and shopping questions."
-    elif "support" in user_message or "help" in user_message or "complaint" in user_message:
+   )
+
+   elif "hello" in user_message or "hi" in user_message:
+      reply = "Hello! Welcome to Online Luma. I can help with orders, payment, delivery, seller registration, and shopping questions."    elif "support" in   user_message or "help" in user_message or "complaint" in user_message:
     reply = (
         "Online Luma support can help with orders, payments, returns, refunds, and seller issues. "
         "Please provide your order number, phone number, product name, and a short explanation of the issue."
@@ -536,7 +537,7 @@ def chatbot_response(request):
         "Your return/refund request has been received by Online Luma support. "
         "Our team will review the information and contact you about the next step."
       )
-    else:
+   else:
         reply = "I can help with Online Luma orders, delivery, payment, cart, seller registration, and product questions. Please ask your question again."
 
     return JsonResponse({"reply": reply})
