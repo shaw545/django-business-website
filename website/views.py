@@ -358,6 +358,9 @@ def logout_view(request):
 def seller_dashboard(request):
     products = Product.objects.filter(seller=request.user)
     order_items = OrderItem.objects.filter(seller=request.user).order_by("-order__created_at")
+support_tickets = SupportTicket.objects.filter(
+    order__items__seller=request.user
+).distinct().order_by("-created_at")
 
     total_orders = order_items.count()
     pending_orders = order_items.filter(order__status="pending").count()
@@ -394,11 +397,6 @@ def add_product(request):
         return redirect("seller_dashboard")
 
     return render(request, "add_product.html") 
-
-support_tickets = SupportTicket.objects.filter(
-    order__items__seller=request.user
-).distinct().order_by("-created_at")      
-     
             
 @login_required
 def edit_product(request, product_id):
