@@ -505,10 +505,13 @@ def chatbot_response(request):
     if request.method != "POST":
         return JsonResponse({"reply": "Invalid request."})
 
-    try:
-        data = json.loads(request.body)
-        user_message = data.get("message", "").lower().strip()
-    if request.session.get("awaiting_refund_reason"):
+try:
+   data = json.loads(request.body)
+   user_message = data.get("message", "").lower().strip()
+except Exception:
+    return JsonResponse({"reply": "Sorry, I could not understand your message."})
+
+if request.session.get("awaiting_refund_reason"):
     request.session["refund_reason"] = user_message
     request.session["awaiting_refund_reason"] = False
     request.session["awaiting_refund_choice"] = True
