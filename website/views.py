@@ -395,9 +395,9 @@ def add_product(request):
 
     return render(request, "add_product.html") 
 
-  support_tickets = SupportTicket.objects.filter(
-      order__items__seller=request.user
-  ).distinct().order_by("-created_at")      
+support_tickets = SupportTicket.objects.filter(
+    order__items__seller=request.user
+).distinct().order_by("-created_at")      
      
             
 @login_required
