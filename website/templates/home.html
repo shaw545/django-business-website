@@ -1,1086 +1,545 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Luma</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f5f6f8;
-            color: #111;
-            padding-bottom: 70px;
+            background: #f5f7fb;
+            color: #111827;
         }
 
-        /* TOP HEADER */
-        .top-header {
-            background: white;
-            padding: 8px 30px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            border-bottom: 1px solid #eee;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        .top-header a {
-            text-decoration: none;
-            color: #111;
-            margin-right: 15px;
-        }
-
-        /* MAIN NAVBAR */
-        .navbar {
-            background: white;
+        .main-header {
+            background: #FF6F00;
+            color: white;
+            padding: 16px 28px;
             display: flex;
             align-items: center;
-            gap: 25px;
-            padding: 18px 35px;
-            border-bottom: 1px solid #ddd;
+            gap: 22px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 900;
-            color: #0064d2;
             white-space: nowrap;
         }
 
-        .search-section {
-            flex: 1;
-        }
+        .logo span { color: #ffffff; }
 
-        .search-section form {
+        .search-box {
+            flex: 1;
             display: flex;
-            width: 100%;
-        }
-
-        .search-section input {
-            flex: 1;
-            padding: 13px;
-            border: 2px solid #111;
-            font-size: 16px;
-            border-radius: 25px 0 0 25px;
-        }
-
-        .search-section select {
-            padding: 13px;
-            border: 2px solid #111;
-            border-left: none;
-            font-size: 15px;
             background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            max-width: 760px;
         }
 
-        .search-section button {
-            padding: 13px 35px;
+        .search-box input {
+            flex: 1;
+            padding: 13px 18px;
             border: none;
-            background: #3665f3;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-box button {
+            background: #0053E2;
             color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 25px;
-            margin-left: 12px;
+            border: none;
+            padding: 0 22px;
+            font-size: 18px;
             cursor: pointer;
         }
 
-        .header-right {
+        .header-links {
             display: flex;
+            gap: 16px;
             align-items: center;
-            gap: 15px;
-            white-space: nowrap;
-        }
-
-        .header-right a {
-            text-decoration: none;
-            color: #111;
             font-weight: bold;
             font-size: 15px;
         }
 
-        .dashboard-btn {
-            background: orange;
-            padding: 12px 20px;
-            border-radius: 12px;
-        }
-
-        /* CATEGORY ROW */
-        .category-row {
+        .nav-bar {
             background: white;
+            padding: 13px 28px;
             display: flex;
             gap: 30px;
-            padding: 14px 35px;
-            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            border-bottom: 1px solid #e5e7eb;
             overflow-x: auto;
         }
 
-        .category-row a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            white-space: nowrap;
+        .hero-wrap {
+            padding: 22px 28px;
         }
 
-
-        /* PROMO SLIDER */
-        .promo-slider {
-            width: 100%;
-            overflow: hidden;
-            background: #d50000;
+        .worldcup-banner {
+            background: linear-gradient(120deg, #004aad, #009b4d, #ffd51a, #ef3b1d);
             color: white;
-            font-weight: bold;
-            padding: 13px 0;
-            white-space: nowrap;
-        }
-
-        .promo-track {
-            display: inline-block;
-            padding-left: 100%;
-            animation: promoMove 35s linear infinite;
-        }
-
-        .promo-track span {
-            padding: 0 40px;
-        }
-
-        @keyframes promoMove {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-100%);
-            }
-        }
-
-        /* MAIN PAGE */
-        .page-container {
-            padding: 30px;
-        }
-
-        /* EBAY STYLE DEALS SECTION */
-        .deals-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 22px;
-            margin-bottom: 35px;
-        }
-
-        .deal-card {
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            min-height: 330px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .deal-header {
+            border-radius: 22px;
+            min-height: 250px;
+            padding: 35px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-        .deal-header h2 {
-            margin: 0;
-            font-size: 28px;
+        .worldcup-content h1 {
+            font-size: 42px;
+            margin: 0 0 15px;
+            line-height: 1.2;
         }
 
-        .deal-header a {
-            color: #111;
-            font-weight: bold;
+        .worldcup-content p {
+            font-size: 20px;
+            margin-bottom: 20px;
         }
 
-        .mini-deal-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-
-        .mini-deal {
-            position: relative;
-            background: #f1f1f1;
-            border-radius: 14px;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .mini-deal img {
-            width: 100%;
-            height: 120px;
-            object-fit: contain;
-        }
-
-        .heart {
-            position: absolute;
-            right: 8px;
-            top: 8px;
+        .worldcup-btn {
             background: white;
-            border-radius: 50%;
+            color: #0053E2;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .worldcup-images {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .worldcup-images img {
+            width: 95px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 14px;
+            background: white;
             padding: 6px;
         }
 
-        .live-box img {
-            width: 100%;
-            height: 230px;
-            object-fit: contain;
-            border-radius: 14px;
-            background: #f5f5f5;
-        }
-
-        .black-card {
-            background: #111;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .black-card h2 {
-            font-size: 34px;
-            margin-bottom: 15px;
-        }
-
-        .black-card p {
-            font-size: 18px;
-            line-height: 1.4;
-        }
-
-        .shop-now-btn {
-            background: white;
-            color: black;
-            padding: 12px 22px;
-            border-radius: 25px;
-            width: fit-content;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        /* FEATURED PRODUCTS */
-        .section-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 25px 0 20px;
-        }
-
-        .products-grid {
+        .home-cards {
+            padding: 0 28px 25px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 18px;
+        }
+
+        .home-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            min-height: 170px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .home-card h2 {
+            margin: 0 0 12px;
+            font-size: 24px;
+        }
+
+        .home-card a {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+       .content {
+           width: 100%;
+           padding: 0 28px 35px;
+
+      }       
+      .sidebar {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 0;
+            font-size: 15px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
         }
 
         .product-card {
             background: white;
+            border: 1px solid #e5e7eb;
             border-radius: 14px;
-            padding: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 12px;
             position: relative;
-            transition: 0.25s ease;
+            min-height: 300px;
+            transition: 0.2s;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
         }
 
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            border-radius: 10px;
-            background: #f7f7f7;
-        }
-
-        .product-card h3 {
-            font-size: 16px;
-            margin: 10px 0 5px;
-        }
-
-        .product-card p {
-            font-size: 14px;
-            margin: 4px 0;
-        }
-
-        .seller-name {
-            font-size: 12px;
-            color: #555;
-        }
-
-        .discount-badge {
+        .heart {
             position: absolute;
             top: 10px;
-            left: 10px;
-            background: red;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
+            right: 12px;
+            font-size: 20px;
+            color: #111827;
         }
 
-        .old-price {
-            text-decoration: line-through;
-            color: gray;
-            font-size: 13px;
+        .product-img-wrap {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
-        .new-price {
-            color: red;
-            font-weight: bold;
-            font-size: 17px;
+        .product-img-wrap img {
+            max-width: 100%;
+            max-height: 135px;
+            object-fit: contain;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 36px;
+            line-height: 1.3;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #008060;
+            margin: 5px 0;
+        }
+
+        .condition {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .rating {
+            font-size: 12px;
+            color: #f59e0b;
+            margin-bottom: 10px;
+        }
+
+        .rating span {
+            color: #6b7280;
         }
 
         .view-btn {
             display: block;
+            width: 90px;
+            margin: 8px auto 0;
+            padding: 7px 0;
             text-align: center;
-            background: #3665f3;
-            color: white;
-            padding: 9px;
-            border-radius: 20px;
-            text-decoration: none;
+            background: white;
+            color: #111827;
+            border: 2px solid #111827;
+            border-radius: 22px;
+            font-size: 13px;
             font-weight: bold;
-            margin-top: 10px;
         }
 
-        /* MOBILE BOTTOM NAV */
-        .mobile-nav {
+        .view-btn:hover {
+            background: #3FA9F5;
+            color: white;
+            border-color: #3FA9F5;
+        }
+
+        #chatbot-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0053E2;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 26px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        #chatbot-box {
             display: none;
+            position: fixed;
+            bottom: 95px;
+            right: 25px;
+            width: 340px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+            z-index: 9999;
+            overflow: hidden;
         }
 
-        @media (max-width: 768px) {
-            .top-header {
-                display: none;
+        #chatbot-header {
+            background: #0053E2;
+            color: white;
+            padding: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-controls button {
+            background: white;
+            color: #0053E2;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #chatbot-messages {
+            height: 260px;
+            overflow-y: auto;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .chat-message { margin-bottom: 10px; }
+
+        #chatbot-input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        #chatbot-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+
+        #chatbot-input-area button {
+            background: #FF8C00;
+            border: none;
+            padding: 10px 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media(max-width: 1000px) {
+            .content { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .home-cards { grid-template-columns: 1fr; }
+            .main-header { flex-wrap: wrap; }
+            .search-box { order: 3; flex-basis: 100%; }
+        }
+
+        @media(max-width: 600px) {
+            .main-header, .nav-bar, .hero-wrap, .content, .home-cards {
+                padding-left: 12px;
+                padding-right: 12px;
             }
 
-            .navbar {
+            .logo { font-size: 26px; }
+
+            .worldcup-banner {
+                padding: 22px;
                 flex-direction: column;
-                padding: 15px;
-                gap: 12px;
+                align-items: flex-start;
             }
 
-            .logo {
-                font-size: 32px;
+            .worldcup-content h1 { font-size: 28px; }
+            .worldcup-content p { font-size: 15px; }
+
+            .worldcup-images img {
+                width: 65px;
+                height: 85px;
             }
 
-            .search-section form {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .search-section input,
-            .search-section select,
-            .search-section button {
-                width: 100%;
-                border-radius: 12px;
-                border: 1px solid #ccc;
-                margin-left: 0;
-            }
-
-            .header-right {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .category-row {
-                padding: 12px;
-                gap: 18px;
-            }
-
-            .page-container {
-                padding: 12px;
-            }
-
-            .deals-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .deal-header h2 {
-                font-size: 22px;
-            }
-
-            .black-card h2 {
-                font-size: 26px;
-            }
-
-            .products-grid {
+            .product-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
             }
 
             .product-card {
+                min-height: 260px;
                 padding: 10px;
             }
 
-            .product-card img {
-                height: 140px;
+            .product-img-wrap { height: 110px; }
+
+            .product-img-wrap img { max-height: 105px; }
+
+            .product-name { font-size: 13px; }
+            .price { font-size: 15px; }
+
+            #chatbot-box {
+                width: 92%;
+                right: 4%;
             }
 
-            .product-card h3 {
-                font-size: 14px;
-            }
+           .product-description {
+               font-size: 12px;
+               color: #4b5563;
+               line-height: 1.3;
+               min-height: 32px;
+               margin: 4px 0 6px;
+           }
 
-            .product-card p {
-                font-size: 13px;
-            }
-
-            .mobile-nav {
-                display: flex;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                justify-content: space-around;
-                padding: 10px 0;
-                border-top: 1px solid #ddd;
-                z-index: 1000;
-            }
-
-            .mobile-nav a {
-                text-decoration: none;
-                color: black;
-                font-size: 12px;
-                text-align: center;
-                font-weight: bold;
-            }
-        }
+       }
     </style>
 </head>
 
 <body>
 
-    <!-- TOP SMALL HEADER -->
-    <div class="top-header">
-        <div>
-            Hi! <a href="{% url 'login' %}">Sign in</a> or
-            <a href="{% url 'register' %}">register</a>
+<header class="main-header">
+    <a href="{% url 'home' %}" class="logo">Online <span>Luma</span></a>
+
+    <form method="GET" action="{% url 'home' %}" class="search-box">
+        <input type="text" name="q" placeholder="Search for products, brands and more...">
+        <button type="submit">🔍</button>
+    </form>
+
+    <div class="header-links">
+        <a href="{% url 'register' %}">Sell</a>
+        <a href="{% url 'login' %}">Sign In</a>
+        <a href="{% url 'cart' %}">🛒 Cart</a>
+    </div>
+</header>
+
+<nav class="nav-bar">
+    <a href="{% url 'home' %}">Categories</a>
+    <a href="{% url 'home' %}?category=Electronics">Electronics</a>
+    <a href="{% url 'home' %}?category=Fashion">Fashion</a>
+    <a href="{% url 'home' %}?category=Beauty">Beauty</a>
+    <a href="{% url 'home' %}?category=Sport">Sports</a>
+    <a href="{% url 'home' %}?category=Home and Garden">Home and Garden</a>
+    <a href="{% url 'products' %}">Products</a>
+    <a href="{% url 'seller_dashboard' %}">Dashboard</a>
+</nav>
+
+<section class="hero-wrap">
+    <div class="worldcup-banner">
+        <div class="worldcup-content">
+            <h1>⚽ FIFA World Cup 2026<br>Jerseys</h1>
+            <p>Support your favorite nation with authentic World Cup jerseys.</p>
+            <a href="{% url 'products' %}" class="worldcup-btn">Shop now</a>
         </div>
 
-        <div>
-            <a href="{% url 'register' %}">Sell</a>
-            <a href="{% url 'cart' %}">Cart</a>
-            <a href="{% url 'seller_dashboard' %}">My Online Luma</a>
+        <div class="worldcup-images">
+            <img src="{% static 'Images/Argentina.jpg' %}" alt="Argentina">
+            <img src="{% static 'Images/Brazil.jpg' %}" alt="Brazil">
+            <img src="{% static 'Images/France.jpg' %}" alt="France">
+            <img src="{% static 'Images/England.jpg' %}" alt="England">
+            <img src="{% static 'Images/Senegal.png' %}" alt="Senegal">
         </div>
     </div>
+</section>
 
-    <!-- MAIN NAVBAR -->
-    <div class="navbar">
-
-        <div class="logo">Online Luma</div>
-
-        <div class="search-section">
-            <form method="GET" action="{% url 'home' %}">
-                <input type="text"
-                       name="q"
-                       value="{{ query }}"
-                       placeholder="Search for anything">
-
-                <select name="category">
-                    <option value="">All Categories</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Fashion & Clothing">Fashion & Clothing</option>
-                    <option value="Home & Living">Home & Living</option>
-                    <option value="Beauty & Personal Care">Beauty & Personal Care</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Other">Other</option>
-                </select>
-
-                <button type="submit">Search</button>
-            </form>
-        </div>
-
-        <div class="header-right">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'products' %}">Products</a>
-            <a href="{% url 'cart' %}">🛒 Cart</a>
-            <a href="{% url 'seller_dashboard' %}" class="dashboard-btn">Dashboard</a>
-        </div>
-
+<section class="home-cards">
+    <div class="home-card">
+        <h2>Today's Deals</h2>
+        <a href="{% url 'products' %}">Shop now</a>
     </div>
 
-    <!-- CATEGORY ROW -->
-    <div class="category-row">
-        <a href="{% url 'home' %}">All</a>
-        <a href="{% url 'home' %}?category=Electronics">Electronics</a>
-        <a href="{% url 'home' %}?category=Fashion%20%26%20Clothing">Fashion</a>
-        <a href="{% url 'home' %}?category=Home%20%26%20Living">Home and Garden</a>
-        <a href="{% url 'home' %}?category=Beauty%20%26%20Personal%20Care">Beauty</a>
-        <a href="{% url 'home' %}?category=Sports">Sporting Goods</a>
-        <a href="{% url 'home' %}?category=Other">More</a>
+    <div class="home-card">
+        <h2>Online Luma Live</h2>
+        <a href="{% url 'products' %}">See all</a>
     </div>
 
-<style>
-.worldcup-banner {
-    margin: 20px 30px;
-    min-height: 260px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #0033a0, #fcd116);
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 35px;
-}
-
-.worldcup-content h1 {
-    font-size: 42px;
-    font-weight: 900;
-}
-
-.worldcup-btn {
-    background: white;
-    color: #0033a0;
-    padding: 13px 25px;
-    border-radius: 30px;
-    text-decoration: none;
-}
-
-.promo-slider {
-    background: linear-gradient(90deg, #0033a0, #0057d9);
-    color: white;
-    overflow: hidden;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
-
-.promo-track {
-    display: flex;
-    white-space: nowrap;
-    animation: promoScroll 25s linear infinite;
-}
-
-.promo-track span {
-    margin-right: 80px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-@keyframes promoScroll {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(-100%);
-    }
-}
-
-.worldcup-hero-banner {
-    margin: 20px 30px;
-    min-height: 330px;
-    border-radius: 24px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #0033a0, #009739, #fcd116, #d50000);
-    background-size: 300% 300%;
-    animation: worldcupGradient 8s ease infinite;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
-}
-
-.worldcup-overlay {
-    min-height: 330px;
-    display: flex;
-    align-items: center;
-    padding: 40px;
-    background: rgba(0,0,0,0.22);
-}
-
-.worldcup-text {
-    color: white;
-    max-width: 700px;
-}
-
-.worldcup-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.95);
-    color: #0033a0;
-    font-weight: bold;
-    padding: 10px 18px;
-    border-radius: 30px;
-    margin-bottom: 15px;
-}
-
-.worldcup-text h1 {
-    font-size: 52px;
-    margin: 0 0 12px;
-    font-weight: 900;
-}
-
-.worldcup-text p {
-    font-size: 21px;
-    margin-bottom: 12px;
-}
-
-.worldcup-text h2 {
-    font-size: 30px;
-    margin-bottom: 25px;
-    color: #fff700;
-}
-
-.worldcup-shop-btn {
-    display: inline-block;
-    background: white;
-    color: #0033a0;
-    padding: 14px 28px;
-    border-radius: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    animation: pulseBtn 1.5s infinite;
-}
-
-@keyframes worldcupGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes pulseBtn {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-    100% { transform: scale(1); }
-}
-
-@media(max-width: 768px) {
-    .worldcup-hero-banner {
-        margin: 12px;
-        min-height: 240px;
-        border-radius: 16px;
-    }
-
-    .worldcup-overlay {
-        min-height: 240px;
-        padding: 24px;
-    }
-
-    .worldcup-text h1 {
-        font-size: 30px;
-    }
-
-    .worldcup-text p {
-        font-size: 15px;
-    }
-
-    .worldcup-text h2 {
-        font-size: 20px;
-    }
-
-    .worldcup-badge {
-        font-size: 12px;
-    }
-}
-.worldcup-banner{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:linear-gradient(135deg,#0033a0,#009739,#fcd116,#d52b1e);
-    padding:30px;
-    border-radius:20px;
-    margin:20px;
-    color:white;
-    overflow:hidden;
-}
-
-.worldcup-content{
-    flex:1;
-}
-
-.worldcup-content h1{
-    font-size:42px;
-    margin-bottom:15px;
-}
-
-.worldcup-content p{
-    font-size:18px;
-    margin-bottom:20px;
-}
-
-.worldcup-btn{
-    background:white;
-    color:#0033a0;
-    padding:12px 25px;
-    border-radius:30px;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.worldcup-images{
-    display:flex;
-    gap:12px;
-    align-items:center;
-}
-
-.worldcup-images img{
-    width:100px;
-    height:120px;
-    object-fit:cover;
-    border-radius:12px;
-    background:white;
-    padding:4px;
-    transition:0.3s;
-}
-
-.worldcup-images img:hover{
-    transform:scale(1.08);
-}
-
-@media(max-width:768px){
-    .worldcup-banner{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .worldcup-images{
-        margin-top:20px;
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-
-    .worldcup-images img{
-        width:70px;
-        height:90px;
-    }
-}
-
-.worldcup-banner {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-}
-
-.worldcup-content {
-    flex: 1 !important;
-}
-
-.worldcup-images {
-    flex: 1 !important;
-    display: flex !important;
-    gap: 12px !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-}
-
-.worldcup-images img {
-    width: 95px !important;
-    height: 120px !important;
-    object-fit: cover !important;
-    border-radius: 12px !important;
-    background: white !important;
-    padding: 5px !important;
-    display: block !important;
-}
-#chatbot-button {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 26px;
-    cursor: pointer;
-    z-index: 9999;
-}
-
-#chatbot-box {
-    display: none;
-    position: fixed;
-    bottom: 95px;
-    right: 25px;
-    width: 330px;
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-    z-index: 9999;
-    overflow: hidden;
-}
-
-#chatbot-header {
-    background: #2563eb;
-    color: white;
-    padding: 14px;
-    font-weight: bold;
-}
-
-#chatbot-messages {
-    height: 260px;
-    overflow-y: auto;
-    padding: 12px;
-    font-size: 14px;
-}
-
-#chatbot-input-area {
-    display: flex;
-    border-top: 1px solid #ddd;
-}
-
-#chatbot-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-}
-
-#chatbot-input-area button {
-    background: orange;
-    border: none;
-    padding: 10px 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-#chatbot-button {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 26px;
-    cursor: pointer;
-    z-index: 9999;
-}
-
-#chatbot-box {
-    display: none;
-    position: fixed;
-    bottom: 95px;
-    right: 25px;
-    width: 340px;
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-    z-index: 9999;
-    overflow: hidden;
-}
-
-#chatbot-header {
-    background: #2563eb;
-    color: white;
-    padding: 14px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chatbot-controls {
-    display: flex;
-    gap: 6px;
-}
-
-.chatbot-controls button {
-    background: white;
-    color: #2563eb;
-    border: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-#chatbot-messages {
-    height: 260px;
-    overflow-y: auto;
-    padding: 12px;
-    font-size: 14px;
-}
-
-.chat-message {
-    margin-bottom: 10px;
-}
-
-#chatbot-input-area {
-    display: flex;
-    border-top: 1px solid #ddd;
-}
-
-#chatbot-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-}
-
-#chatbot-input-area button {
-    background: orange;
-    border: none;
-    padding: 10px 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-</style>
-    <!-- FIFA WORLD CUP PROMOTION BANNER -->
-<div class="worldcup-banner">
-
-    <div class="worldcup-content">
-        <h1>⚽ FIFA World Cup 2026 Jerseys</h1>
-
-        <p>
-            Support your favorite nation with authentic World Cup jerseys.
-            Argentina, Brazil, France, Spain and Portugal kits available now.
-        </p>
-
-        <a href="{% url 'products' %}" class="worldcup-btn">
-            Shop now
-        </a>
-
+    <div class="home-card" style="background:#111827; color:white;">
+        <h2>Your collection starts here</h2>
+        <a href="{% url 'products' %}" style="color:white;">Shop now</a>
     </div>
+</section>
 
-    {% load static %}
-<div class="worldcup-images">
-
-    <img src="https://res.cloudinary.com/dwqqbgb7s/image/upload/v1234567890/France_yej0zw.jpg">
-
-</div>
-</div>
-    <div class="page-container">
-
-        <!-- TODAY'S DEALS SECTION -->
-        <div class="deals-layout">
-
-            <div class="deal-card">
-                <div class="deal-header">
-                    <h2>Today's Deals</h2>
-                    <a href="{% url 'products' %}">Shop now</a>
-                </div>
-
-                <div class="mini-deal-grid">
-                    {% for product in products|slice:":4" %}
-                        <a href="{% url 'product_detail' product.id %}" class="mini-deal">
-                            <span class="heart">♡</span>
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                            {% else %}
-                                <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-                            {% endif %}
-                        </a>
-                    {% empty %}
-                        <p>No deal products yet.</p>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="deal-card">
-                <div class="deal-header">
-                    <h2>Online Luma Live</h2>
-                    <a href="{% url 'products' %}">See all</a>
-                </div>
-
-                <div class="live-box">
-                    {% if products %}
-                        {% for product in products|slice:":1" %}
-                            <a href="{% url 'product_detail' product.id %}">
-                                {% if product.image %}
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                                {% else %}
-                                    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-                                {% endif %}
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" alt="Online Luma">
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="deal-card black-card">
-                <h2>Your collection starts here</h2>
-                <p>Browse trusted sellers, discover new products, and shop safely from Online Luma.</p>
-                <a href="{% url 'products' %}" class="shop-now-btn">Shop now</a>
-            </div>
-
+<main class="content">
+    
+    <section class="products-area">
+        <div class="section-title">
+            <h2>Popular Products</h2>
+            <a href="{% url 'products' %}">View all</a>
         </div>
 
-        <!-- FEATURED PRODUCTS -->
-        <div class="section-title">Featured Products</div>
-
-        <div class="products-grid">
-
+        <div class="product-grid">
             {% for product in products %}
-
                 <div class="product-card">
+                    <div class="heart">♡</div>
 
-                    {% if product.is_deal and product.discount_price %}
-                        <div class="discount-badge">
-                            {% if product.deal_label %}
-                                {{ product.deal_label }}
-                            {% else %}
-                                DEAL
-                            {% endif %}
-                        </div>
-                    {% endif %}
+    <a href="{% url 'product_detail' product.id %}">
+        <div class="product-img-wrap">
+            {% if product.image %}
+                 <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/default.png' %}" alt="No image">
+            {% endif %}
+    </div>
 
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-                    {% endif %}
+    <div class="product-name">{{ product.name }}</div>
 
-                    <p class="seller-name">
-                        Seller:
-                        {% if product.seller and product.seller.sellerprofile and product.seller.sellerprofile.business_name %}
-                            {{ product.seller.sellerprofile.business_name }}
-                        {% elif product.seller %}
-                            {{ product.seller.username }}
-                        {% else %}
-                            Unknown Seller
-                        {% endif %}
-                    </p>
+    <div class="product-description">
+        {{ product.description|truncatechars:55 }}
+    </div>
 
-                    <h3>{{ product.name }}</h3>
-
-                    {% if product.category %}
-                        <p>{{ product.category }}</p>
-                    {% endif %}
-
-                    {% if product.is_deal and product.discount_price %}
-                        <p>
-                            <span class="old-price">SLE {{ product.amount }}</span><br>
-                            <span class="new-price">SLE {{ product.discount_price }}</span>
-                        </p>
-                    {% else %}
-                        <p><strong>SLE {{ product.amount }}</strong></p>
-                    {% endif %}
-
-                    <a href="{% url 'product_detail' product.id %}" class="view-btn">
-                        View Product
-                    </a>
-
+    <div class="price">SLE {{ product.amount }}</div>
+    <div class="condition">{{ product.condition }}</div>
+    <div class="rating">★★★★☆ <span>Seller Review</span></div>
+</a>                    
                 </div>
-
             {% empty %}
-
-                <p>No products found.</p>
-
+                <p>No products available yet.</p>
             {% endfor %}
-
         </div>
+    </section>
+</main>
 
-    </div>
-
-    <!-- MOBILE BOTTOM NAV -->
-    <div class="mobile-nav">
-        <a href="{% url 'home' %}">🏠<br>Home</a>
-        <a href="{% url 'products' %}">📦<br>Products</a>
-        <a href="{% url 'cart' %}">🛒<br>Cart</a>
-        <a href="{% url 'seller_dashboard' %}">👤<br>Account</a>
-    </div>
-
-
-<!-- ONLINE LUMA CHATBOT -->
 <div id="chatbot-box">
     <div id="chatbot-header">
         <span>💬 Online Luma Assistant</span>
-
         <div class="chatbot-controls">
             <button type="button" onclick="minimizeChat()">−</button>
             <button type="button" onclick="closeChat()">×</button>
@@ -1133,27 +592,31 @@ function sendChatMessage() {
 
     addMessage("You", message);
     input.value = "";
+
     addMessage("Online Luma AI", "Typing...");
+
     fetch("{% url 'chatbot_response' %}", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: message })
     })
     .then(response => response.json())
-  .then(data => {
-            const messages = document.getElementById("chatbot-messages");
-           const lastMessage = messages.lastElementChild;
-          if (lastMessage) {
-         lastMessage.innerHTML = `<strong>Online Luma AI:</strong> ${data.reply}`;
+    .then(data => {
+        const messages = document.getElementById("chatbot-messages");
+        const lastMessage = messages.lastElementChild;
+        if (lastMessage) {
+            lastMessage.innerHTML = `<strong>Online Luma AI:</strong> ${data.reply}`;
         }
-})    
-
-.catch(error => {
-        addMessage("Online Luma AI", "Sorry, I could not respond right now.");
+    })
+    .catch(error => {
+        const messages = document.getElementById("chatbot-messages");
+        const lastMessage = messages.lastElementChild;
+        if (lastMessage) {
+            lastMessage.innerHTML = `<strong>Online Luma AI:</strong> Sorry, I could not respond right now.`;
+        }
     });
-
-    
 }
 </script>
+
+</body>
+</html>
