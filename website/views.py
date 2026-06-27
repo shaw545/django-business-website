@@ -560,7 +560,7 @@ if request.session.get("awaiting_refund_choice"):
         reply = "Sorry, I could not find that order."
 
     return JsonResponse({"reply": reply})
-        return JsonResponse({"reply": reply})
+        
 
     if "hello" in user_message or "hi" in user_message or "hey" in user_message:
         reply = "Hello! Welcome to Online Luma. How can I help you today?"
