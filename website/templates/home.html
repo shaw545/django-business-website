@@ -12,203 +12,152 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f5f7fb;
+            background: #f6f7fb;
             color: #111827;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
         .main-header {
-            background: #FF6F00;
+            background: #ff6b00;
             color: white;
-            padding: 16px 28px;
+            padding: 12px 35px;
+            min-height: 72px;
             display: flex;
             align-items: center;
-            gap: 22px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            gap: 28px;
         }
 
         .logo {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
             white-space: nowrap;
         }
 
-        .logo span { color: #ffffff; }
-
         .search-box {
             flex: 1;
             display: flex;
-            background: white;
-            border-radius: 30px;
-            overflow: hidden;
-            max-width: 760px;
+            max-width: 850px;
+            margin: 0 auto;
         }
 
         .search-box input {
             flex: 1;
-            padding: 13px 18px;
+            height: 58px;
             border: none;
+            border-radius: 35px 0 0 35px;
+            padding: 0 28px;
+            font-size: 20px;
             outline: none;
-            font-size: 15px;
         }
 
         .search-box button {
-            background: #0053E2;
-            color: white;
+            width: 95px;
+            height: 58px;
             border: none;
-            padding: 0 22px;
-            font-size: 18px;
+            border-radius: 0 35px 35px 0;
+            background: #0053e2;
+            color: white;
+            font-size: 22px;
             cursor: pointer;
         }
 
         .header-links {
             display: flex;
-            gap: 16px;
-            align-items: center;
+            gap: 20px;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 15px;
+            white-space: nowrap;
         }
 
         .nav-bar {
             background: white;
-            padding: 13px 28px;
+            padding: 14px 35px;
             display: flex;
-            gap: 30px;
+            gap: 35px;
+            font-size: 18px;
             font-weight: bold;
             border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 15px;
             overflow-x: auto;
         }
 
-        .hero-wrap {
-            padding: 22px 28px;
-        }
+        .hero-banner {
+            width: 98%;
+            margin: 15px auto 25px;
+            border-radius: 20px;
+            overflow: hidden;
+       }
 
-        .worldcup-banner {
-            background: linear-gradient(120deg, #004aad, #009b4d, #ffd51a, #ef3b1d);
-            color: white;
-            border-radius: 22px;
-            min-height: 250px;
-            padding: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
+      .hero-banner img {
+          width: 100%;
+          display: block;
+          border-radius: 20px;
 
-        .worldcup-content h1 {
-            font-size: 42px;
-            margin: 0 0 15px;
-            line-height: 1.2;
-        }
-
-        .worldcup-content p {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .worldcup-btn {
-            background: white;
-            color: #0053E2;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .worldcup-images {
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .worldcup-images img {
-            width: 95px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 14px;
-            background: white;
-            padding: 6px;
-        }
-
-        .home-cards {
+      }     
+     .home-cards {
             padding: 0 28px 25px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 18px;
-        }
+       }
 
-        .home-card {
+      .home-card {
             background: white;
             border-radius: 18px;
-            padding: 22px;
-            min-height: 170px;
+            padding: 25px;
+            min-height: 160px;
             border: 1px solid #e5e7eb;
         }
 
         .home-card h2 {
-            margin: 0 0 12px;
-            font-size: 24px;
+            margin: 0 0 15px;
+            font-size: 28px;
         }
 
         .home-card a {
+            font-size: 18px;
             font-weight: bold;
             text-decoration: underline;
         }
 
-       .content {
-           width: 100%;
-           padding: 0 28px 35px;
-
-      }       
-      .sidebar {
-            background: white;
-            border-radius: 14px;
-            padding: 18px;
-            border: 1px solid #e5e7eb;
-            height: fit-content;
-        }
-
-        .sidebar h3 {
-            margin-top: 0;
-            font-size: 16px;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 8px 0;
-            font-size: 15px;
+        .content {
+            width: 100%;
+            padding: 0 28px 35px;
         }
 
         .section-title {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
 
         .section-title h2 {
+            font-size: 28px;
             margin: 0;
-            font-size: 22px;
+        }
+
+        .section-title a {
+            font-size: 18px;
         }
 
         .product-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
+            gap: 18px;
         }
 
         .product-card {
             background: white;
             border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 18px;
+            padding: 14px;
             position: relative;
-            min-height: 300px;
+            min-height: 320px;
             transition: 0.2s;
         }
 
@@ -219,14 +168,14 @@
 
         .heart {
             position: absolute;
-            top: 10px;
-            right: 12px;
-            font-size: 20px;
+            top: 12px;
+            right: 14px;
+            font-size: 22px;
             color: #111827;
         }
 
         .product-img-wrap {
-            height: 140px;
+            height: 155px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -235,21 +184,28 @@
 
         .product-img-wrap img {
             max-width: 100%;
-            max-height: 135px;
+            max-height: 150px;
             object-fit: contain;
         }
 
         .product-name {
-            font-size: 14px;
-            font-weight: 600;
-            min-height: 36px;
+            font-size: 15px;
+            font-weight: 700;
             line-height: 1.3;
             color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .product-description {
+            font-size: 12px;
+            color: #4b5563;
+            line-height: 1.3;
+            min-height: 32px;
             margin-bottom: 6px;
         }
 
         .price {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #008060;
             margin: 5px 0;
@@ -264,31 +220,10 @@
         .rating {
             font-size: 12px;
             color: #f59e0b;
-            margin-bottom: 10px;
         }
 
         .rating span {
             color: #6b7280;
-        }
-
-        .view-btn {
-            display: block;
-            width: 90px;
-            margin: 8px auto 0;
-            padding: 7px 0;
-            text-align: center;
-            background: white;
-            color: #111827;
-            border: 2px solid #111827;
-            border-radius: 22px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .view-btn:hover {
-            background: #3FA9F5;
-            color: white;
-            border-color: #3FA9F5;
         }
 
         #chatbot-button {
@@ -306,98 +241,55 @@
             z-index: 9999;
         }
 
-        #chatbot-box {
-            display: none;
-            position: fixed;
-            bottom: 95px;
-            right: 25px;
-            width: 340px;
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-            z-index: 9999;
-            overflow: hidden;
-        }
-
-        #chatbot-header {
-            background: #0053E2;
-            color: white;
-            padding: 14px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chatbot-controls button {
-            background: white;
-            color: #0053E2;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        #chatbot-messages {
-            height: 260px;
-            overflow-y: auto;
-            padding: 12px;
-            font-size: 14px;
-        }
-
-        .chat-message { margin-bottom: 10px; }
-
-        #chatbot-input-area {
-            display: flex;
-            border-top: 1px solid #ddd;
-        }
-
-        #chatbot-input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            outline: none;
-        }
-
-        #chatbot-input-area button {
-            background: #FF8C00;
-            border: none;
-            padding: 10px 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
         @media(max-width: 1000px) {
-            .content { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-            .product-grid { grid-template-columns: repeat(3, 1fr); }
-            .home-cards { grid-template-columns: 1fr; }
-            .main-header { flex-wrap: wrap; }
-            .search-box { order: 3; flex-basis: 100%; }
+            .main-header {
+                flex-wrap: wrap;
+            }
+
+            .search-box {
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .home-cards {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media(max-width: 600px) {
-            .main-header, .nav-bar, .hero-wrap, .content, .home-cards {
+            .main-header,
+            .nav-bar,
+            .content,
+            .home-cards {
                 padding-left: 12px;
                 padding-right: 12px;
             }
 
-            .logo { font-size: 26px; }
-
-            .worldcup-banner {
-                padding: 22px;
-                flex-direction: column;
-                align-items: flex-start;
+            .logo {
+                font-size: 24px;
             }
 
-            .worldcup-content h1 { font-size: 28px; }
-            .worldcup-content p { font-size: 15px; }
+            .header-links {
+                font-size: 14px;
+                gap: 12px;
+            }
 
-            .worldcup-images img {
-                width: 65px;
-                height: 85px;
+            .search-box input {
+                height: 48px;
+                font-size: 15px;
+            }
+
+            .search-box button {
+                height: 48px;
+                width: 70px;
+            }
+
+            .hero-banner img {
+                max-height: 220px;
             }
 
             .product-grid {
@@ -410,34 +302,33 @@
                 padding: 10px;
             }
 
-            .product-img-wrap { height: 110px; }
-
-            .product-img-wrap img { max-height: 105px; }
-
-            .product-name { font-size: 13px; }
-            .price { font-size: 15px; }
-
-            #chatbot-box {
-                width: 92%;
-                right: 4%;
+            .product-img-wrap {
+                height: 110px;
             }
 
-           .product-description {
-               font-size: 12px;
-               color: #4b5563;
-               line-height: 1.3;
-               min-height: 32px;
-               margin: 4px 0 6px;
-           }
+            .product-img-wrap img {
+                max-height: 105px;
+            }
 
-       }
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-description {
+                font-size: 11px;
+            }
+
+            .price {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
 <header class="main-header">
-    <a href="{% url 'home' %}" class="logo">Online <span>Luma</span></a>
+    <a href="{% url 'home' %}" class="logo">Online Luma</a>
 
     <form method="GET" action="{% url 'home' %}" class="search-box">
         <input type="text" name="q" placeholder="Search for products, brands and more...">
@@ -462,22 +353,8 @@
     <a href="{% url 'seller_dashboard' %}">Dashboard</a>
 </nav>
 
-<section class="hero-wrap">
-    <div class="worldcup-banner">
-        <div class="worldcup-content">
-            <h1>⚽ FIFA World Cup 2026<br>Jerseys</h1>
-            <p>Support your favorite nation with authentic World Cup jerseys.</p>
-            <a href="{% url 'products' %}" class="worldcup-btn">Shop now</a>
-        </div>
-
-        <div class="worldcup-images">
-            <img src="{% static 'Images/Argentina.jpg' %}" alt="Argentina">
-            <img src="{% static 'Images/Brazil.jpg' %}" alt="Brazil">
-            <img src="{% static 'Images/France.jpg' %}" alt="France">
-            <img src="{% static 'Images/England.jpg' %}" alt="England">
-            <img src="{% static 'Images/Senegal.png' %}" alt="Senegal">
-        </div>
-    </div>
+<section class="hero-banner">
+    <img src="{% static 'Images/imagesbanner.png' %}" alt="Online Luma Banner">
 </section>
 
 <section class="home-cards">
@@ -498,7 +375,6 @@
 </section>
 
 <main class="content">
-    
     <section class="products-area">
         <div class="section-title">
             <h2>Popular Products</h2>
@@ -507,29 +383,29 @@
 
         <div class="product-grid">
             {% for product in products %}
-                <div class="product-card">
-                    <div class="heart">♡</div>
+                <a href="{% url 'product_detail' product.id %}">
+                    <div class="product-card">
+                        <div class="heart">♡</div>
 
-    <a href="{% url 'product_detail' product.id %}">
-        <div class="product-img-wrap">
-            {% if product.image %}
-                 <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            {% else %}
-                <img src="{% static 'images/default.png' %}" alt="No image">
-            {% endif %}
-    </div>
+                        <div class="product-img-wrap">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{% static 'images/default.png' %}" alt="No image">
+                            {% endif %}
+                        </div>
 
-    <div class="product-name">{{ product.name }}</div>
+                        <div class="product-name">{{ product.name }}</div>
 
-    <div class="product-description">
-        {{ product.description|truncatechars:55 }}
-    </div>
+                        <div class="product-description">
+                            {{ product.description|truncatechars:55 }}
+                        </div>
 
-    <div class="price">SLE {{ product.amount }}</div>
-    <div class="condition">{{ product.condition }}</div>
-    <div class="rating">★★★★☆ <span>Seller Review</span></div>
-</a>                    
-                </div>
+                        <div class="price">SLE {{ product.amount }}</div>
+                        <div class="condition">{{ product.condition }}</div>
+                        <div class="rating">★★★★☆ <span>Seller Review</span></div>
+                    </div>
+                </a>
             {% empty %}
                 <p>No products available yet.</p>
             {% endfor %}
@@ -537,86 +413,7 @@
     </section>
 </main>
 
-<div id="chatbot-box">
-    <div id="chatbot-header">
-        <span>💬 Online Luma Assistant</span>
-        <div class="chatbot-controls">
-            <button type="button" onclick="minimizeChat()">−</button>
-            <button type="button" onclick="closeChat()">×</button>
-        </div>
-    </div>
-
-    <div id="chatbot-messages"></div>
-
-    <div id="chatbot-input-area">
-        <input type="text" id="chatbot-input" placeholder="Ask about orders, payment, delivery...">
-        <button type="button" onclick="sendChatMessage()">Send</button>
-    </div>
-</div>
-
 <button id="chatbot-button" onclick="openChat()">💬</button>
-
-<script>
-function openChat() {
-    document.getElementById("chatbot-box").style.display = "block";
-}
-
-function closeChat() {
-    document.getElementById("chatbot-box").style.display = "none";
-}
-
-function minimizeChat() {
-    const messages = document.getElementById("chatbot-messages");
-    const inputArea = document.getElementById("chatbot-input-area");
-
-    if (messages.style.display === "none") {
-        messages.style.display = "block";
-        inputArea.style.display = "flex";
-    } else {
-        messages.style.display = "none";
-        inputArea.style.display = "none";
-    }
-}
-
-function addMessage(sender, text) {
-    const messages = document.getElementById("chatbot-messages");
-    messages.innerHTML += `<div class="chat-message"><strong>${sender}:</strong> ${text}</div>`;
-    messages.scrollTop = messages.scrollHeight;
-}
-
-function sendChatMessage() {
-    const input = document.getElementById("chatbot-input");
-    const message = input.value.trim();
-
-    if (!message) return;
-
-    addMessage("You", message);
-    input.value = "";
-
-    addMessage("Online Luma AI", "Typing...");
-
-    fetch("{% url 'chatbot_response' %}", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const messages = document.getElementById("chatbot-messages");
-        const lastMessage = messages.lastElementChild;
-        if (lastMessage) {
-            lastMessage.innerHTML = `<strong>Online Luma AI:</strong> ${data.reply}`;
-        }
-    })
-    .catch(error => {
-        const messages = document.getElementById("chatbot-messages");
-        const lastMessage = messages.lastElementChild;
-        if (lastMessage) {
-            lastMessage.innerHTML = `<strong>Online Luma AI:</strong> Sorry, I could not respond right now.`;
-        }
-    });
-}
-</script>
 
 </body>
 </html>
