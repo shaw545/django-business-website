@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
 from .models import Order
 import re
+from .models import SupportTicket
 
 
 # =========================
@@ -372,6 +373,7 @@ def seller_dashboard(request):
         "paid_orders": paid_orders,
         "shipped_orders": shipped_orders,
         "delivered_orders": delivered_orders,
+        "support_tickets": support_tickets,
     })
 def add_product(request):
     if request.method == "POST":
@@ -391,7 +393,11 @@ def add_product(request):
 
         return redirect("seller_dashboard")
 
-    return render(request, "add_product.html")       
+    return render(request, "add_product.html") 
+
+  support_tickets = SupportTicket.objects.filter(
+      order__items__seller=request.user
+  ).distinct().order_by("-created_at")      
      
             
 @login_required

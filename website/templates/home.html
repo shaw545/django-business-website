@@ -1133,7 +1133,7 @@ function sendChatMessage() {
 
     addMessage("You", message);
     input.value = "";
-
+    addMessage("Online Luma AI", "Typing...");
     fetch("{% url 'chatbot_response' %}", {
         method: "POST",
         headers: {
@@ -1142,11 +1142,18 @@ function sendChatMessage() {
         body: JSON.stringify({ message: message })
     })
     .then(response => response.json())
-    .then(data => {
-        addMessage("Online Luma AI", data.reply);
-    })
-    .catch(error => {
+  .then(data => {
+            const messages = document.getElementById("chatbot-messages");
+           const lastMessage = messages.lastElementChild;
+          if (lastMessage) {
+         lastMessage.innerHTML = `<strong>Online Luma AI:</strong> ${data.reply}`;
+        }
+})    
+
+.catch(error => {
         addMessage("Online Luma AI", "Sorry, I could not respond right now.");
     });
+
+    
 }
 </script>

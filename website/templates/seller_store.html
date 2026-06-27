@@ -134,7 +134,21 @@
 <p><strong>Quantity:</strong> {{ item.quantity }}</p>
 
 <hr>
+<h2>Customer Support Requests</h2>
 
+{% if support_tickets %}
+    {% for ticket in support_tickets %}
+        <div style="background:#fff; padding:15px; margin-bottom:12px; border-radius:10px; border:1px solid #ddd;">
+            <p><strong>Order:</strong> #{{ ticket.order.id }}</p>
+            <p><strong>Type:</strong> {{ ticket.get_ticket_type_display }}</p>
+            <p><strong>Reason:</strong> {{ ticket.reason }}</p>
+            <p><strong>Status:</strong> {{ ticket.get_status_display }}</p>
+            <p><strong>Date:</strong> {{ ticket.created_at }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No support requests yet.</p>
+{% endif %}
 {% endfor %}
 
     {% if order.payment_proof %}
