@@ -16,6 +16,8 @@ from openai import OpenAI
 from .models import Order
 import re
 from .models import SupportTicket
+from django.db.models import Q
+
 
 
 # =========================
@@ -359,11 +361,12 @@ def seller_dashboard(request):
     products = Product.objects.filter(seller=request.user)
 
     order_items = OrderItem.objects.filter(
-        seller=request.user
+        Q(seller=request.user) | Q(product__seller=request.user)
     ).order_by("-order__created_at")
 
     support_tickets = SupportTicket.objects.filter(
-        order__items__seller=request.user
+        Q(order__items__seller=request.user) |
+        Q(order__items__product__seller=request.user)
     ).distinct().order_by("-created_at")
 
     total_orders = order_items.count()
@@ -505,35 +508,55 @@ def chatbot_response(request):
     try:
         data = json.loads(request.body)
         user_message = data.get("message", "").lower().strip()
-    except Exception:
-        return JsonResponse({"reply": "Sorry, I could not understand your message."})
+    if request.session.get("awaiting_refund_reason"):
+    request.session["refund_reason"] = user_message
+    request.session["awaiting_refund_reason"] = False
+    request.session["awaiting_refund_choice"] = True
 
-    if request.session.get("awaiting_ticket_reason"):
-        order_id = request.session.get("last_order_id")
-        ticket_type = request.session.get("pending_ticket_type")
-        reason = user_message
+    reply = (
+        "Thank you. Before we finalize the refund, would you like a replacement instead?\n\n"
+        "You can choose another item, product, size, or color.\n\n"
+        "Please reply: Replacement or Refund."
+    )
+    return JsonResponse({"reply": reply})
 
-        try:
-            order = Order.objects.get(id=order_id)
 
+if request.session.get("awaiting_refund_choice"):
+    order_id = request.session.get("last_order_id")
+    refund_reason = request.session.get("refund_reason", "")
+
+    try:
+        order = Order.objects.get(id=order_id)
+
+        if "replacement" in user_message or "replace" in user_message or "another" in user_message or "color" in user_message or "size" in user_message:
             SupportTicket.objects.create(
                 order=order,
-                ticket_type=ticket_type,
-                reason=reason,
+                ticket_type="replacement",
+                reason=f"Customer requested replacement instead of refund. Reason: {refund_reason}",
                 status="open"
             )
+            reply = "Replacement Request Received ✅ Online Luma support will review it and contact you shortly."
 
-            request.session["awaiting_ticket_reason"] = False
-            request.session["pending_ticket_type"] = ""
-
-            reply = (
-                "Request Received ✅\n\n"
-                "Online Luma support has received your request and will review it shortly."
+        elif "refund" in user_message:
+            SupportTicket.objects.create(
+                order=order,
+                ticket_type="refund",
+                reason=refund_reason,
+                status="open"
             )
+            reply = "Refund Request Received ✅ Online Luma support will review it and contact you shortly."
 
-        except Order.DoesNotExist:
-            reply = "Sorry, I could not find that order."
+        else:
+            reply = "Please reply with either Replacement or Refund."
+            return JsonResponse({"reply": reply})
 
+        request.session["awaiting_refund_choice"] = False
+        request.session["refund_reason"] = ""
+
+    except Order.DoesNotExist:
+        reply = "Sorry, I could not find that order."
+
+    return JsonResponse({"reply": reply})
         return JsonResponse({"reply": reply})
 
     if "hello" in user_message or "hi" in user_message or "hey" in user_message:
@@ -584,15 +607,14 @@ def chatbot_response(request):
     elif "refund" in user_message or "return" in user_message:
         order_id = request.session.get("last_order_id")
 
-        if order_id:
-            request.session["awaiting_ticket_reason"] = True
-            request.session["pending_ticket_type"] = "refund"
-            reply = "Please tell us the reason for your refund request."
-        else:
-            request.session["awaiting_order_number"] = True
-            reply = "Please provide your Order Number first."
-
-    elif "replacement" in user_message or "replace" in user_message:
+       if order_id:
+           request.session["awaiting_refund_reason"] = True
+           reply = "Please tell us the reason for your refund request."
+      else:
+          request.session["awaiting_order_number"] = True
+          reply = "Please provide your Order Number first."  
+ 
+ elif "replacement" in user_message or "replace" in user_message:
         order_id = request.session.get("last_order_id")
 
         if order_id:
@@ -603,7 +625,7 @@ def chatbot_response(request):
             request.session["awaiting_order_number"] = True
             reply = "Please provide your Order Number first."
 
-    elif "wrong item" in user_message or "wrong product" in user_message or "sent me the wrong" in user_message:
+ elif "wrong item" in user_message or "wrong product" in user_message or "sent me the wrong" in user_message:
         order_id = request.session.get("last_order_id")
 
         if order_id:
