@@ -484,7 +484,7 @@ def terms_view(request):
 def privacy_view(request):
     return render(request, "privacy.html")
 
-        @csrf_exempt
+@csrf_exempt
 def chatbot_response(request):
     import json
     import re
